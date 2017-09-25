@@ -6,6 +6,8 @@ This is very much a work in progress at the moment.
 
 The original idea comes from Pumpkin Hunt by TylerOG: https://www.spigotmc.org/resources/pumpkin-hunt.13966/
 
+The project home is: https://github.com/JakeMoe/BlockHunt
+
 ### Version History
 
 * 0.1 - Jake (John) Moe - 25 September 2017
@@ -22,4 +24,8 @@ The original idea comes from Pumpkin Hunt by TylerOG: https://www.spigotmc.org/r
 * 0.4 - Jake (John) Moe - 25 September 2017
   * Moved timer from Timer to BukkitRunnable
   * Fixed up various status messages
-  
+* 0.5 - Jake (John) Moe - 25 September 2017
+  * Made scoreboard title configurable
+  * Added winner notification
+  * Added player names instead of UUIDs
+  * Formatted about and syntax output with colors

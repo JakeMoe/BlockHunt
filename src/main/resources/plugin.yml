@@ -1,15 +1,16 @@
 name: BlockHunt
-version: 0.4
+version: 0.5
 author: Jake (John) Moe (JakesAddress@gmail.com)
 main: me.JohnMoe.BlockHunt.Main
+website: https://github.com/JakeMoe/BlockHunt
 database: false
 
 commands:
   bh:
     description: base command
-    usage: /<command>
     permission: BlockHunt.bh
     permission-message: You do not have access to this command.
+    usage: /bh
 
 permissions:
   BlockHunt.*:

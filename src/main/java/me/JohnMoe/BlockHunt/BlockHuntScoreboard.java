@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-public class BlockHuntScoreboard {
+class BlockHuntScoreboard {
 
   private Main plugin;
   private Scoreboard scoreboard;
@@ -46,7 +46,7 @@ public class BlockHuntScoreboard {
 
     for (int i = 0; i < total; i++) {
       Map.Entry entry = (Map.Entry) iterator.next();
-      Score score = objective.getScore(entry.getKey().toString());
+      Score score = objective.getScore(plugin.getServer().getOfflinePlayer((UUID) entry.getKey()).getName());
       score.setScore((int) entry.getValue());
     }
 
@@ -55,7 +55,7 @@ public class BlockHuntScoreboard {
   void reset() {
     scoreboard = plugin.getServer().getScoreboardManager().getNewScoreboard();
     Objective objective = scoreboard.registerNewObjective("score", "dummy");
-    objective.setDisplayName("THE HUNT");
+    objective.setDisplayName(plugin.config.getScoreboardTitle());
     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
   }
 

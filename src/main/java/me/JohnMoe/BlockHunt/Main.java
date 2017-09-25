@@ -17,19 +17,16 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    getServer().getLogger().log(Level.INFO, "[BlockHunt] Disabling plugin");
     config.saveConfig();
   }
 
   @Override
   public void onLoad() {
-    getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version 0.1");
+    getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version 0.5");
   }
 
   @Override
   public void onEnable() {
-    getServer().getLogger().log(Level.INFO, "[BlockHunt] Enabling plugin");
-
     config = new Config(this);
     config.loadConfig();
 

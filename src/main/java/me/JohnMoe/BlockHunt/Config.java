@@ -33,6 +33,11 @@ class Config {
       booChanged = true;
     }
 
+    if (!fileConfig.contains("BlockHunt.settings.scoreboardTitle")) {
+      fileConfig.set("BlockHunt.settings.scoreboardTitle", "TOP HUNTERS");
+      booChanged = true;
+    }
+
     if (!fileConfig.contains("BlockHunt.settings.startMessage")) {
       fileConfig.set("BlockHunt.settings.startMessage", "The Hunt has begun!");
       booChanged = true;
@@ -68,6 +73,15 @@ class Config {
 
   void setMaterial(String material) {
     fileConfig.set("BlockHunt.settings.materialToFind", material);
+    plugin.saveConfig();
+  }
+
+  String getScoreboardTitle() {
+    return fileConfig.getString("BlockHunt.settings.scoreboardTitle");
+  }
+
+  void setScoreboardTitle(String scoreboardTitle) {
+    fileConfig.set("BlockHunt.settings.scoreboardTitle", scoreboardTitle);
     plugin.saveConfig();
   }
 
