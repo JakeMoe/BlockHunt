@@ -1,21 +1,19 @@
 package me.JohnMoe.BlockHunt;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Timer;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  protected BlockHuntCommand blockHuntCommand;
-  protected boolean timerRunning;
-  protected Config config;
-  protected Scoreboard scoreboard;
-  protected Timer timer;
-  protected TreeMap<UUID, Integer> score;
+  BlockHuntScoreboard blockHuntScoreboard;
+  boolean timerRunning;
+  BukkitTask timer;
+  Config config;
+  TreeMap<UUID, Integer> score;
 
   @Override
   public void onDisable() {
@@ -35,8 +33,8 @@ public class Main extends JavaPlugin {
     config = new Config(this);
     config.loadConfig();
 
-    blockHuntCommand = new BlockHuntCommand(this);
-    getCommand("bh").setExecutor(blockHuntCommand);
+    blockHuntScoreboard = new BlockHuntScoreboard(this);
+    getCommand("bh").setExecutor(new BlockHuntCommand(this));
     getServer().getPluginManager().registerEvents(new BlockListener(this), this);
   }
 

@@ -2,9 +2,9 @@ package me.JohnMoe.BlockHunt;
 
 import java.util.*;
 
-public class Util {
+class Util {
 
-  protected static Map<UUID, Integer> sortTreeMapByValue(TreeMap<UUID, Integer> unsortedMap) {
+  static Map<UUID, Integer> sortTreeMapByValue(TreeMap<UUID, Integer> unsortedMap) {
 
     List<Map.Entry<UUID, Integer>> list = new LinkedList<Map.Entry<UUID, Integer>>(unsortedMap.entrySet());
 

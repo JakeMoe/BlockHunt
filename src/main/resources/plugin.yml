@@ -1,3 +1,22 @@
-name: me.JohnMoe.BlockHunt.BlockHunt
-version: 0.1
+name: BlockHunt
+version: 0.4
+author: Jake (John) Moe (JakesAddress@gmail.com)
 main: me.JohnMoe.BlockHunt.Main
+database: false
+
+commands:
+  bh:
+    description: base command
+    usage: /<command>
+    permission: BlockHunt.bh
+    permission-message: You do not have access to this command.
+
+permissions:
+  BlockHunt.*:
+    description: Gives access to all BlockHunt commands
+    default: true
+    children:
+      BlockHunt.bh: true
+  BlockHunt.bh:
+    description: Base BlockHunt command
+    default: true

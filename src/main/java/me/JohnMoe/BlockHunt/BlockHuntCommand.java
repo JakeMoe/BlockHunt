@@ -1,36 +1,26 @@
 package me.JohnMoe.BlockHunt;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Iterator;
 import java.util.logging.Level;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.TreeMap;
-import java.util.UUID;
 
 public class BlockHuntCommand implements CommandExecutor {
 
   private Main plugin;
 
-  public BlockHuntCommand(Main plugin) {
+  BlockHuntCommand(Main plugin) {
     this.plugin = plugin;
   }
 
   public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
     if (args.length == 0) {
-      sender.sendMessage("BlockHunt v0.1 developed by John Moe");
+      sender.sendMessage("BlockHunt v0.4 by Jake (John) Moe");
     } else if ((args.length == 1) && (args[0].equals("help"))) {
       showSyntax(sender);
     } else if ((args.length == 1) && (args[0].equals("start"))) {
@@ -39,22 +29,37 @@ public class BlockHuntCommand implements CommandExecutor {
       stopHunt();
     } else {
       switch (args[0]) {
+        case "duration":
+          if (args.length == 1) {
+            sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
+          } else if (args.length == 2) {
+            plugin.config.setHuntDuration(args[1]);
+            sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
+          } else {
+            showSyntax(sender);
+          }
+          break;
         case "endMessage":
           if (args.length == 1) {
-            sender.sendMessage(plugin.config.getEndMessage());
+            sender.sendMessage("Hunt End message is currently: " + plugin.config.getEndMessage());
           } else {
             String endMessage = "";
             for (int i = 1; i < args.length; i++) {
               endMessage += (i == args.length - 1) ? args[i] : args[i] + " ";
             }
             plugin.config.setEndMessage(endMessage);
+            sender.sendMessage("Hunt End message is now: " + plugin.config.getEndMessage());
           }
           break;
         case "material":
-          if (args.length == 2) {
+          if (args.length == 1) {
+            sender.sendMessage("Material to hunt is currently " + plugin.config.getMaterial());
+          } else if (args.length == 2) {
             try {
               Material m = Material.valueOf(args[1]);
               plugin.config.setMaterial(args[1]);
+              sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
+
             } catch (Exception x) {
               sender.sendMessage(args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
             }
@@ -64,24 +69,26 @@ public class BlockHuntCommand implements CommandExecutor {
           break;
         case "startMessage":
           if (args.length == 1) {
-            sender.sendMessage(plugin.config.getStartMessage());
+            sender.sendMessage("Hunt Start message is currently: " + plugin.config.getStartMessage());
           } else {
             String startMessage = "";
             for (int i = 1; i < args.length; i++) {
               startMessage += (i == args.length - 1) ? args[i] : args[i] + " ";
             }
             plugin.config.setStartMessage(startMessage);
+            sender.sendMessage("Hunt Start message is now: " + plugin.config.getStartMessage());
           }
           break;
         case "stopMessage":
           if (args.length == 1) {
-            sender.sendMessage(plugin.config.getStopMessage());
+            sender.sendMessage("Hunt Stop message is currently: " + plugin.config.getStopMessage());
           } else {
             String stopMessage = "";
             for (int i = 1; i < args.length; i++) {
               stopMessage += (i == args.length - 1) ? args[i] : args[i] + " ";
             }
             plugin.config.setStopMessage(stopMessage);
+            sender.sendMessage("Hunt Stop message is now: " + plugin.config.getStopMessage());
           }
           break;
         default:
@@ -96,7 +103,7 @@ public class BlockHuntCommand implements CommandExecutor {
   private void endHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
     plugin.getServer().broadcastMessage(plugin.config.getEndMessage());
-    clearScoreboards();
+    plugin.blockHuntScoreboard.clear();
   }
 
   private void startHunt(CommandSender sender) {
@@ -106,20 +113,16 @@ public class BlockHuntCommand implements CommandExecutor {
       plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Starting the hunt");
       plugin.getServer().broadcastMessage(plugin.config.getStartMessage());
       plugin.score = new TreeMap<>();
-
-      plugin.scoreboard = plugin.getServer().getScoreboardManager().getNewScoreboard();
-      Objective objective = plugin.scoreboard.registerNewObjective("score", "dummy");
-      objective.setDisplayName("THE HUNT");
-      objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+      plugin.blockHuntScoreboard.reset();
 
       plugin.timerRunning = true;
-      plugin.timer = new Timer();
-      plugin.timer.schedule(new TimerTask() {
+
+      plugin.timer = new BukkitRunnable() {
         @Override
         public void run() {
           endHunt();
         }
-      }, 5 * 60 * 1000);
+      }.runTaskLater(plugin, plugin.config.getHuntDuration() * 20);
     }
   }
 
@@ -128,50 +131,20 @@ public class BlockHuntCommand implements CommandExecutor {
     plugin.getServer().broadcastMessage(plugin.config.getStopMessage());
     plugin.timer.cancel();
     plugin.timerRunning = false;
-    clearScoreboards();
-  }
-
-  private void clearScoreboards() {
-    Scoreboard emptyBoard = plugin.getServer().getScoreboardManager().getNewScoreboard();
-    for (UUID uuid : plugin.score.keySet()) {
-      Player player = Bukkit.getPlayer(uuid);
-      player.setScoreboard(emptyBoard);
-    }
-  }
-
-  protected void refreshScoreboard() {
-
-    int total = plugin.score.size();
-    if (total > 10) {
-      total = 10;
-    }
-
-    Objective objective = plugin.scoreboard.getObjective("score");
-
-    Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
-    Iterator iterator = sortedMap.entrySet().iterator();
-
-    for (int i = 0; i < total; i++) {
-      Map.Entry entry = (Map.Entry) iterator.next();
-      Score score = objective.getScore(entry.getKey().toString());
-      score.setScore((int) entry.getValue());
-    }
-
+    plugin.blockHuntScoreboard.clear();
   }
 
   private void showSyntax(CommandSender sender) {
     sender.sendMessage("Syntax:");
     sender.sendMessage("  /bh - version info");
-    sender.sendMessage("  /bh endMessage - gets the current end message");
-    sender.sendMessage("  /bh endMessage <message> - sets the message at the end of the Hunt");
+    sender.sendMessage("  /bh duration [seconds] - gets or sets the length of the Hunt in seconds");
+    sender.sendMessage("  /bh endMessage [message] - gets or sets the message at the end of the Hunt");
     sender.sendMessage("  /bh help - shows this help message");
-    sender.sendMessage("  /bh material <material> - sets the block to hunt to MATERIAL");
+    sender.sendMessage("  /bh material [material] - gets or sets the block to hunt to MATERIAL");
     sender.sendMessage("  /bh start - start a new Hunt");
-    sender.sendMessage("  /bh startMessage - gets the current start message");
-    sender.sendMessage("  /bh startMessage <message> - sets the message at the end of the Hunt");
+    sender.sendMessage("  /bh startMessage [message] - gets or sets the message at the end of the Hunt");
     sender.sendMessage("  /bh stop - cancel a Hunt in progress");
-    sender.sendMessage("  /bh stopMessage - gets the current stop message");
-    sender.sendMessage("  /bh stopMessage <message> - sets the message at the end of the Hunt");
+    sender.sendMessage("  /bh stopMessage [message] - gets or sets the message at the end of the Hunt");
   }
 
 }

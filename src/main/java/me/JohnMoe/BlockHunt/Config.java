@@ -3,16 +3,16 @@ package me.JohnMoe.BlockHunt;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class Config {
+class Config {
 
   private Main plugin;
   private FileConfiguration fileConfig;
 
-  public Config(Main plugin) {
+  Config(Main plugin) {
     this.plugin = plugin;
   }
 
-  protected void loadConfig() {
+  void loadConfig() {
 
     boolean booChanged = false;
 
@@ -20,6 +20,11 @@ public class Config {
 
     if (!fileConfig.contains("BlockHunt.settings.endMessage")) {
       fileConfig.set("BlockHunt.settings.endMessage", "The Hunt has ended!");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.settings.huntDuration")) {
+      fileConfig.set("BlockHunt.settings.huntDuration", "30");
       booChanged = true;
     }
 
@@ -44,42 +49,51 @@ public class Config {
 
   }
 
-  protected void saveConfig() {
+  void saveConfig() {
     plugin.saveConfig();
   }
 
-  protected Material getMaterial() {
+  int getHuntDuration() {
+    return Integer.valueOf(fileConfig.getString("BlockHunt.settings.huntDuration"));
+  }
+
+  void setHuntDuration(String seconds) {
+    fileConfig.set("BlockHunt.settings.huntDuration", seconds);
+    plugin.saveConfig();
+  }
+
+  Material getMaterial() {
     return Material.valueOf(fileConfig.getString("BlockHunt.settings.materialToFind"));
   }
 
-  protected void setMaterial(String material) {
+  void setMaterial(String material) {
     fileConfig.set("BlockHunt.settings.materialToFind", material);
     plugin.saveConfig();
   }
 
-  protected String getStartMessage() {
+  String getStartMessage() {
     return fileConfig.getString("BlockHunt.settings.startMessage");
   }
 
-  protected void setStartMessage(String message) {
+  void setStartMessage(String message) {
     fileConfig.set("BlockHunt.settings.startMessage", message);
     plugin.saveConfig();
   }
 
-  protected String getStopMessage() {
+  String getStopMessage() {
     return fileConfig.getString("BlockHunt.settings.stopMessage");
   }
 
-  protected void setStopMessage(String message) {
+  void setStopMessage(String message) {
     fileConfig.set("BlockHunt.settings.stopMessage", message);
     plugin.saveConfig();
   }
 
-  protected String getEndMessage() {
+  String getEndMessage() {
     return fileConfig.getString("BlockHunt.settings.endMessage");
   }
 
-  protected void setEndMessage(String message) {
+  void setEndMessage(String message) {
     fileConfig.set("BlockHunt.settings.endMessage", message);
     plugin.saveConfig();
   }
