@@ -3,13 +3,36 @@ package me.JohnMoe.BlockHunt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.UUID;
 
 public class BlockListener implements Listener {
 
+  private Main plugin;
+
+  public BlockListener(Main plugin) {
+    this.plugin = plugin;
+  }
+
   @EventHandler
   public void onHit(PlayerInteractEvent event) {
-    Player player = event.getPlayer();
+    if ((plugin.timerRunning) &&
+        (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
+        (event.getClickedBlock().getType() == plugin.config.getMaterial())) {
+      Player player = event.getPlayer();
+      UUID playerUuid = player.getUniqueId();
+      int pScore;
+      if (plugin.score.containsKey(playerUuid)) {
+        pScore = plugin.score.get(playerUuid) + 1;
+      } else {
+        pScore = 1;
+        player.setScoreboard(plugin.scoreboard);
+      }
+      plugin.score.put(playerUuid, pScore);
+
+    }
   }
 
 }

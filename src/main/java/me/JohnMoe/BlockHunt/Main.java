@@ -1,20 +1,26 @@
 package me.JohnMoe.BlockHunt;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.Timer;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  BlockHunt bh;
-  Config config;
-  Integer blockId;
+  protected BlockHuntCommand blockHuntCommand;
+  protected boolean timerRunning;
+  protected Config config;
+  protected Scoreboard scoreboard;
+  protected Timer timer;
+  protected TreeMap<UUID, Integer> score;
 
   @Override
   public void onDisable() {
     getServer().getLogger().log(Level.INFO, "[BlockHunt] Disabling plugin");
-    this.saveConfig();
+    config.saveConfig();
   }
 
   @Override
@@ -26,11 +32,12 @@ public class Main extends JavaPlugin {
   public void onEnable() {
     getServer().getLogger().log(Level.INFO, "[BlockHunt] Enabling plugin");
 
-    this.config = new Config();
+    config = new Config(this);
     config.loadConfig();
 
-    bh = new BlockHunt(this);
-    this.getCommand("bh").setExecutor(bh);
+    blockHuntCommand = new BlockHuntCommand(this);
+    getCommand("bh").setExecutor(blockHuntCommand);
+    getServer().getPluginManager().registerEvents(new BlockListener(this), this);
   }
 
 }
