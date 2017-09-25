@@ -19,7 +19,7 @@ public class BlockListener implements Listener {
 
   @EventHandler
   public void onHit(PlayerInteractEvent event) {
-    if ((plugin.timerRunning) &&
+    if ((plugin.isTimerRunning()) &&
         (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
         (event.getClickedBlock().getType() == plugin.config.getMaterial())) {
       event.getClickedBlock().setType(Material.AIR);
@@ -30,10 +30,10 @@ public class BlockListener implements Listener {
         pScore = plugin.score.get(playerUuid) + 1;
       } else {
         pScore = 1;
-        player.setScoreboard(plugin.blockHuntScoreboard.getScoreboard());
+        player.setScoreboard(plugin.getBlockHuntScoreboard().getScoreboard());
       }
       plugin.score.put(playerUuid, pScore);
-      plugin.blockHuntScoreboard.refresh();
+      plugin.getBlockHuntScoreboard().refresh();
     }
   }
 

@@ -24,15 +24,15 @@ public class BlockHuntCommand implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
     if (args.length == 0) {
-      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.5" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
+      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.6" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
     } else if ((args.length == 1) && (args[0].equals("help"))) {
       showSyntax(sender);
     } else if ((args.length == 1) && (args[0].equals("start"))) {
       startHunt(sender);
     } else if ((args.length == 1) && (args[0].equals("stop"))) {
       stopHunt();
-    } else if (plugin.timerRunning) {
-      sender.sendMessage("You can't configure the hunt while a hunt is in progress!");
+    } else if (plugin.isTimerRunning()) {
+      sender.sendMessage(ChatColor.RED + "You can't configure the hunt while a hunt is in progress!");
     } else {
       switch (args[0]) {
         case "duration":
@@ -67,7 +67,7 @@ public class BlockHuntCommand implements CommandExecutor {
               sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
 
             } catch (Exception x) {
-              sender.sendMessage(args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
+              sender.sendMessage(ChatColor.RED + args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
             }
           } else {
             showSyntax(sender);
@@ -121,8 +121,8 @@ public class BlockHuntCommand implements CommandExecutor {
   private void endHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
     plugin.getServer().broadcastMessage(plugin.config.getEndMessage());
-    plugin.timerRunning = false;
-    plugin.blockHuntScoreboard.clear();
+    plugin.setTimerRunning(false);
+    plugin.getBlockHuntScoreboard().clear();
     Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
     Iterator iterator = sortedMap.entrySet().iterator();
     UUID winner = (UUID) ((Map.Entry) iterator.next()).getKey();
@@ -130,48 +130,48 @@ public class BlockHuntCommand implements CommandExecutor {
   }
 
   private void startHunt(CommandSender sender) {
-    if (plugin.timerRunning) {
+    if (plugin.isTimerRunning()) {
       sender.sendMessage("The Hunt has already begun! Stop the Hunt if you want to start another.");
     } else {
       plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Starting the hunt");
       plugin.getServer().broadcastMessage(plugin.config.getStartMessage());
       plugin.score = new TreeMap<>();
-      plugin.blockHuntScoreboard.reset();
-      plugin.timerRunning = true;
+      plugin.getBlockHuntScoreboard().reset();
+      plugin.setTimerRunning(true);
 
-      plugin.timer = new BukkitRunnable() {
+      plugin.startTimer(new BukkitRunnable() {
         @Override
         public void run() {
           endHunt();
         }
-      }.runTaskLater(plugin, plugin.config.getHuntDuration() * 20);
+      });
     }
   }
 
   private void stopHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
     plugin.getServer().broadcastMessage(plugin.config.getStopMessage());
-    plugin.timer.cancel();
-    plugin.timerRunning = false;
-    plugin.blockHuntScoreboard.clear();
+    plugin.getTimer().cancel();
+    plugin.setTimerRunning(false);
+    plugin.getBlockHuntScoreboard().clear();
   }
 
   private void showSyntax(CommandSender sender) {
     sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt Syntax:");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh" + ChatColor.WHITE + " - version info");
-    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh duration [seconds]" + ChatColor.WHITE + " - gets or sets the length of the");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh duration" + ChatColor.YELLOW + " [seconds]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the length of the");
     sender.sendMessage("      Hunt in seconds");
-    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh endMessage [message]" + ChatColor.WHITE + " - gets or sets the message at");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh endMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
     sender.sendMessage("      end of the Hunt");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh help" + ChatColor.WHITE + " - shows this help message");
-    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh material [material]" + ChatColor.WHITE + " - gets or sets the block to hunt to");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh material" + ChatColor.YELLOW + " [material]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the block to hunt to");
     sender.sendMessage("      MATERIAL");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh scoreboardTitle" + ChatColor.WHITE + " - gets or sets the scoreboard title");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh start" + ChatColor.WHITE + " - start a new Hunt");
-    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh startMessage [message]" + ChatColor.WHITE + " - gets or sets the message at");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh startMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
     sender.sendMessage("      the end of the Hunt");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh stop" + ChatColor.WHITE + " - cancel a Hunt in progress");
-    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh stopMessage [message]" + ChatColor.WHITE + " - gets or sets the message at");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh stopMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
     sender.sendMessage("      the end of the Hunt");
   }
 

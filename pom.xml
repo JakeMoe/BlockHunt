@@ -6,11 +6,15 @@
 
   <groupId>me.JohnMoe</groupId>
   <artifactId>BlockHunt</artifactId>
-  <version>0.5</version>
+  <version>0.6</version>
   <repositories>
     <repository>
       <id>Spigot Repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>sk89q-repo</id>
+      <url>http://maven.sk89q.com/repo/</url>
     </repository>
   </repositories>
   <dependencies>
@@ -18,6 +22,12 @@
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
       <version>1.12.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sk89q</groupId>
+      <artifactId>worldguard</artifactId>
+      <version>6.1</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

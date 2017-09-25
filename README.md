@@ -29,3 +29,6 @@ The project home is: https://github.com/JakeMoe/BlockHunt
   * Added winner notification
   * Added player names instead of UUIDs
   * Formatted about and syntax output with colors
+* 0.6 - Jake (John) Moe - 26 September 2017
+  * Added WorldGuard library and check for plugin
+  * Code cleanup

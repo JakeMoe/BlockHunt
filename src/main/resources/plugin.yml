@@ -1,9 +1,11 @@
 name: BlockHunt
-version: 0.5
+version: 0.6
 author: Jake (John) Moe (JakesAddress@gmail.com)
 main: me.JohnMoe.BlockHunt.Main
 website: https://github.com/JakeMoe/BlockHunt
 database: false
+depend: [WorldGuard]
+softdepend: [Nicky]
 
 commands:
   bh:

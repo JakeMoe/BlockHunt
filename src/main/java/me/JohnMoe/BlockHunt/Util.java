@@ -1,12 +1,19 @@
 package me.JohnMoe.BlockHunt;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
 
 class Util {
 
   static Map<UUID, Integer> sortTreeMapByValue(TreeMap<UUID, Integer> unsortedMap) {
 
-    List<Map.Entry<UUID, Integer>> list = new LinkedList<Map.Entry<UUID, Integer>>(unsortedMap.entrySet());
+    List<Map.Entry<UUID, Integer>> list = new LinkedList<>(unsortedMap.entrySet());
 
     Collections.sort(list, new Comparator<Map.Entry<UUID, Integer>>() {
       @Override
@@ -15,7 +22,7 @@ class Util {
       }
     });
 
-    Map<UUID, Integer> sortedMap = new LinkedHashMap<UUID, Integer>();
+    Map<UUID, Integer> sortedMap = new LinkedHashMap<>();
     for (Map.Entry<UUID, Integer> entry : list) {
       sortedMap.put(entry.getKey(), entry.getValue());
     }
