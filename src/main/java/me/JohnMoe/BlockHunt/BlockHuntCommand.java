@@ -24,7 +24,7 @@ public class BlockHuntCommand implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
     if (args.length == 0) {
-      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.6" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
+      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.7" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
     } else if ((args.length == 1) && (args[0].equals("help"))) {
       showSyntax(sender);
     } else if ((args.length == 1) && (args[0].equals("start"))) {
@@ -73,6 +73,16 @@ public class BlockHuntCommand implements CommandExecutor {
             showSyntax(sender);
           }
           break;
+        case "region":
+          if (args.length == 1) {
+            sender.sendMessage("WorldGuard region for the hunt is currently " + plugin.config.getHuntRegion().getId());
+          } else if (args.length == 2) {
+            plugin.config.setHuntRegion(args[1]);
+            sender.sendMessage("WorldGuard region for the hunt is now " + plugin.config.getHuntRegion());
+          } else {
+            showSyntax(sender);
+          }
+          break;
         case "scoreboardTitle":
           if (args.length == 1) {
             sender.sendMessage("Hunt scoreboard title is currently: " + plugin.config.getScoreboardTitle());
@@ -109,6 +119,37 @@ public class BlockHuntCommand implements CommandExecutor {
             sender.sendMessage("Hunt Stop message is now: " + plugin.config.getStopMessage());
           }
           break;
+        case "world":
+          if (args.length == 1) {
+            sender.sendMessage("Bukkit world for the hunt is currently " + plugin.config.getHuntWorld().getName());
+          } else if (args.length == 2) {
+            plugin.config.setHuntWorld(args[1]);
+            sender.sendMessage("Bukkit world for the hunt is now " + plugin.config.getHuntWorld().getName());
+          } else {
+            showSyntax(sender);
+          }
+          break;
+        case "useNicky":
+          if (args.length == 1) {
+            sender.sendMessage("Nicky support is currently " + (plugin.config.isNickyEnabled() ? "enabled" : "disabled"));
+          } else if (args.length == 2) {
+            if ((args[1].equals("true")) || (args[1].equals("enabled"))) {
+              if (plugin.getNickyPlugin() == null) {
+                plugin.config.setNickyEnabled(false);
+                sender.sendMessage("Nicky plugin not found, Nicky support is now disabled");
+              } else {
+                plugin.config.setNickyEnabled(true);
+                sender.sendMessage("Nicky support is now enabled");
+              }
+            } else if((args[1].equals("false")) || (args[1].equals("disabled"))) {
+              plugin.config.setNickyEnabled(false);
+              sender.sendMessage("Nicky support is now disabled");
+            } else {
+              showSyntax(sender);
+            }
+          } else {
+            showSyntax(sender);
+          }
         default:
           showSyntax(sender);
       }
@@ -166,6 +207,7 @@ public class BlockHuntCommand implements CommandExecutor {
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh help" + ChatColor.WHITE + " - shows this help message");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh material" + ChatColor.YELLOW + " [material]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the block to hunt to");
     sender.sendMessage("      MATERIAL");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the hunt");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh scoreboardTitle" + ChatColor.WHITE + " - gets or sets the scoreboard title");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh start" + ChatColor.WHITE + " - start a new Hunt");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh startMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
@@ -173,6 +215,8 @@ public class BlockHuntCommand implements CommandExecutor {
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh stop" + ChatColor.WHITE + " - cancel a Hunt in progress");
     sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh stopMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
     sender.sendMessage("      the end of the Hunt");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh useNicky" + ChatColor.YELLOW + " [disabled/enabled/false/true]" + ChatColor.WHITE + " - gets or sets whether to use Nicky for names");
+    sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the hunt");
   }
 
 }

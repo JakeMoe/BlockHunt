@@ -1,5 +1,5 @@
 name: BlockHunt
-version: 0.6
+version: 0.7
 author: Jake (John) Moe (JakesAddress@gmail.com)
 main: me.JohnMoe.BlockHunt.Main
 website: https://github.com/JakeMoe/BlockHunt
@@ -9,7 +9,7 @@ softdepend: [Nicky]
 
 commands:
   bh:
-    description: base command
+    description: BlockHunt base command
     permission: BlockHunt.bh
     permission-message: You do not have access to this command.
     usage: /bh
@@ -21,5 +21,5 @@ permissions:
     children:
       BlockHunt.bh: true
   BlockHunt.bh:
-    description: Base BlockHunt command
+    description: BlockHunt base command
     default: true

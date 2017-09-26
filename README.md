@@ -32,3 +32,6 @@ The project home is: https://github.com/JakeMoe/BlockHunt
 * 0.6 - Jake (John) Moe - 26 September 2017
   * Added WorldGuard library and check for plugin
   * Code cleanup
+* 0.7 - Jake (John) Moe - 26 September 2017
+  * Added WorldGuard region checks
+  * Added Nicky plugin support

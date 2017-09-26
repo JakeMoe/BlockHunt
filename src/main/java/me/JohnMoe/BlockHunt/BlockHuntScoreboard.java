@@ -1,6 +1,6 @@
 package me.JohnMoe.BlockHunt;
 
-import org.bukkit.Bukkit;
+import io.loyloy.nicky.Nick;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -22,13 +22,14 @@ class BlockHuntScoreboard {
 
   void clear() {
     Scoreboard emptyBoard = plugin.getServer().getScoreboardManager().getNewScoreboard();
-    for (UUID uuid : plugin.score.keySet()) {
-      Player player = Bukkit.getPlayer(uuid);
-      player.setScoreboard(emptyBoard);
+    for (Player player : plugin.getServer().getOnlinePlayers()) {
+      if (player.getScoreboard() == plugin.getBlockHuntScoreboard().getScoreboard()) {
+        player.setScoreboard(emptyBoard);
+      }
     }
   }
 
-  Scoreboard getScoreboard() {
+  private Scoreboard getScoreboard() {
     return scoreboard;
   }
 
@@ -46,9 +47,24 @@ class BlockHuntScoreboard {
 
     for (int i = 0; i < total; i++) {
       Map.Entry entry = (Map.Entry) iterator.next();
-      Score score = objective.getScore(plugin.getServer().getOfflinePlayer((UUID) entry.getKey()).getName());
+      Player player = plugin.getServer().getPlayer((UUID) entry.getKey());
+      String name = null;
+      if (plugin.config.isNickyEnabled()) {
+        name = (new Nick(player)).get();
+      }
+      if (name == null) {
+        name = plugin.getServer().getOfflinePlayer((UUID) entry.getKey()).getName();
+      }
+      Score score = objective.getScore(name);
       score.setScore((int) entry.getValue());
     }
+
+    for (Player player : plugin.getServer().getOnlinePlayers()) {
+      if (player.getScoreboard() != getScoreboard() && plugin.getBlockHuntRegion().isInRegion(player)) {
+         player.setScoreboard(getScoreboard());
+      }
+    }
+
 
   }
 
