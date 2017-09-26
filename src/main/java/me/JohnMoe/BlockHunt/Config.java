@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.List;
+
 class Config {
 
   private Main plugin;
@@ -19,6 +21,14 @@ class Config {
     boolean booChanged = false;
 
     fileConfig = plugin.getConfig();
+
+    if (!fileConfig.contains("BlockHunt.prizes")) {
+      String[] temp = new String[1];
+      temp[0] = "everyone's adoration";
+      temp[1] = "say %player% has won the Hunt! Everyone give them a round of applause!";
+      fileConfig.set("BlockHunt.settings.prizes", temp);
+      booChanged = true;
+    }
 
     if (!fileConfig.contains("BlockHunt.settings.endMessage")) {
       fileConfig.set("BlockHunt.settings.endMessage", "The Hunt has ended!");
@@ -36,7 +46,7 @@ class Config {
     }
 
     if (!fileConfig.contains("BlockHunt.settings.huntWorld")) {
-      fileConfig.set("BlockHunt.settings.huntWorld", "Survival");
+      fileConfig.set("BlockHunt.settings.huntWorld", "world");
       booChanged = true;
     }
 
@@ -122,6 +132,10 @@ class Config {
   void setMaterial(String material) {
     fileConfig.set("BlockHunt.settings.materialToFind", material);
     plugin.saveConfig();
+  }
+
+  String[][] getPrizes() {
+    return (String[][]) fileConfig.get("BlockHunt.prizes");
   }
 
   String getScoreboardTitle() {

@@ -34,7 +34,7 @@
       <artifactId>nicky</artifactId>
       <version>0.6.9</version>
       <scope>system</scope>
-      <systemPath>${basedir}\libraries\Nicky.jar</systemPath>
+      <systemPath>${basedir}/libraries/Nicky.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
