@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Config {
@@ -23,10 +24,12 @@ class Config {
     fileConfig = plugin.getConfig();
 
     if (!fileConfig.contains("BlockHunt.prizes")) {
-      String[] temp = new String[1];
-      temp[0] = "everyone's adoration";
-      temp[1] = "say %player% has won the Hunt! Everyone give them a round of applause!";
-      fileConfig.set("BlockHunt.settings.prizes", temp);
+      List<String[]> prizes = new ArrayList<>();
+      String[] prize = new String[2];
+      prize[0] = "everyone's adoration";
+      prize[1] = "say %player% has won the Hunt! Everyone give them a round of applause!";
+      prizes.add(prize);
+      fileConfig.set("BlockHunt.settings.prizes", prizes);
       booChanged = true;
     }
 
@@ -134,8 +137,8 @@ class Config {
     plugin.saveConfig();
   }
 
-  String[][] getPrizes() {
-    return (String[][]) fileConfig.get("BlockHunt.prizes");
+  ArrayList<String[]> getPrizes() {
+    return (ArrayList<String[]>) fileConfig.get("BlockHunt.prizes");
   }
 
   String getScoreboardTitle() {

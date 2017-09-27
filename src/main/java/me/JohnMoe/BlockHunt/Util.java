@@ -1,5 +1,9 @@
 package me.JohnMoe.BlockHunt;
 
+import io.loyloy.nicky.Nick;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -10,6 +14,18 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 class Util {
+
+  static String getNameByUUID(UUID uuid, boolean nickyEnabled) {
+    Player player = Bukkit.getPlayer(uuid);
+    String name = null;
+    if (nickyEnabled) {
+      name = (new Nick(player)).get();
+    }
+    if (name == null) {
+      name = Bukkit.getOfflinePlayer(uuid).getName();
+    }
+    return name;
+  }
 
   static Map<UUID, Integer> sortTreeMapByValue(TreeMap<UUID, Integer> unsortedMap) {
 

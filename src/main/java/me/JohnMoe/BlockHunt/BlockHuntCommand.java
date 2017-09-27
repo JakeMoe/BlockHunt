@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -195,12 +196,12 @@ public class BlockHuntCommand implements CommandExecutor {
     Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
     Iterator iterator = sortedMap.entrySet().iterator();
     UUID winner = (UUID) ((Map.Entry) iterator.next()).getKey();
-    String playerName = plugin.getServer().getOfflinePlayer(winner).getName();
+    String playerName = Util.getNameByUUID(winner, plugin.config.isNickyEnabled());
 
-    String[][] prizes = plugin.config.getPrizes();
-    String message = prizes[0][1].replaceAll("%player%", playerName);
+    ArrayList<String[]> prizes = plugin.config.getPrizes();
+    String message = (prizes.get(0))[1].replaceAll("%player%", playerName);
 
-    plugin.getServer().broadcastMessage(playerName + " has won the Hunt and receives " + prizes[0][0]);
+    plugin.getServer().broadcastMessage(playerName + " has won the Hunt and receives " + (prizes.get(0))[0]);
     plugin.getServer().broadcastMessage(message);
   }
 

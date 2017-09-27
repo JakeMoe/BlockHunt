@@ -1,6 +1,5 @@
 package me.JohnMoe.BlockHunt;
 
-import io.loyloy.nicky.Nick;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -47,15 +46,7 @@ class BlockHuntScoreboard {
 
     for (int i = 0; i < total; i++) {
       Map.Entry entry = (Map.Entry) iterator.next();
-      Player player = plugin.getServer().getPlayer((UUID) entry.getKey());
-      String name = null;
-      if (plugin.config.isNickyEnabled()) {
-        name = (new Nick(player)).get();
-      }
-      if (name == null) {
-        name = plugin.getServer().getOfflinePlayer((UUID) entry.getKey()).getName();
-      }
-      Score score = objective.getScore(name);
+      Score score = objective.getScore(Util.getNameByUUID((UUID) entry.getKey(), plugin.config.isNickyEnabled()));
       score.setScore((int) entry.getValue());
     }
 
