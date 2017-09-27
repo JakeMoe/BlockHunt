@@ -24,7 +24,7 @@ public class BlockHuntCommand implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
     if (args.length == 0) {
-      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.7" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
+      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.8" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
     } else if (args[0].equals("help")) {
       if (args.length == 1) {
         showSyntax(sender, "bh");

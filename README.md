@@ -1,12 +1,22 @@
 ## BlockHunt
 
-BlockHunt is a customizable Minecraft minigame where you try to find as many of the specified block in the time provided. The play area is defined by a WorldGuard region.
+### Description
+
+BlockHunt is a customizable Minecraft minigame where you try to find as many of the specified block in the time provided. The play area is defined by a WorldGuard region. While in the WorldGuard region, a scoreboard of the current top 10 players will appear. At the end, a prize from a customizable list be chosen and given to the winner.
 
 This is very much a work in progress at the moment.
 
 The original idea comes from Pumpkin Hunt by TylerOG: https://www.spigotmc.org/resources/pumpkin-hunt.13966/
 
 The project home is: https://github.com/JakeMoe/BlockHunt
+
+### Installation
+
+To install, just copy the jar file into your server's plugin folder. It will create a default config file the first time it is run.
+
+### Configuration
+
+To configure, you can edit the config.yml file by hand, or use in game commands. Type "/bh help" for more info. 
 
 ### Version History
 

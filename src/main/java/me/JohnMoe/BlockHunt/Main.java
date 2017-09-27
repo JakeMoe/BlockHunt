@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onLoad() {
-    getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version 0.6");
+    getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version 0.8");
   }
 
   @Override
