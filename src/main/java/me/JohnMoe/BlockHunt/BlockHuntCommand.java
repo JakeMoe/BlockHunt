@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -24,163 +25,165 @@ public class BlockHuntCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
-    if (args.length == 0) {
-      sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.8" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
-    } else if (args[0].equals("help")) {
-      if (args.length == 1) {
-        showSyntax(sender, "bh");
+    if ((!(sender instanceof Player)) || ((Player) sender).hasPermission("BlockParty.bh")) {
+      if (args.length == 0) {
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.8" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
+      } else if (args[0].equals("help")) {
+        if (args.length == 1) {
+          showSyntax(sender, "bh");
+        } else {
+          showSyntax(sender, args[1]);
+        }
+      } else if (args[0].equals("start")) {
+        if (args.length == 1) {
+          startHunt(sender);
+        } else {
+          showSyntax(sender, args[0]);
+        }
+      } else if (args[0].equals("stop")) {
+        if (args.length == 1) {
+          stopHunt();
+        } else {
+          showSyntax(sender, args[0]);
+        }
+      } else if (plugin.isTimerRunning()) {
+        sender.sendMessage(ChatColor.RED + "You can't configure the hunt while a hunt is in progress!");
       } else {
-        showSyntax(sender, args[1]);
-      }
-    } else if (args[0].equals("start")) {
-      if (args.length == 1) {
-        startHunt(sender);
-      } else {
-        showSyntax(sender, args[0]);
-      }
-    } else if (args[0].equals("stop")) {
-      if (args.length == 1) {
-        stopHunt();
-      } else {
-        showSyntax(sender, args[0]);
-      }
-    } else if (plugin.isTimerRunning()) {
-      sender.sendMessage(ChatColor.RED + "You can't configure the hunt while a hunt is in progress!");
-    } else {
-      switch (args[0]) {
-        case "duration":
-          if (args.length == 1) {
-            sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
-          } else if (args.length == 2) {
-            plugin.config.setHuntDuration(args[1]);
-            sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
-          } else {
-            showSyntax(sender, args[0]);
-          }
-          break;
-        case "endMessage":
-          if (args.length == 1) {
-            sender.sendMessage("Hunt End message is currently: " + plugin.config.getEndMessage());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else {
-            StringBuilder endMessage = new StringBuilder();
-            for (int i = 1; i < args.length; i++) {
-              endMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
-            }
-            plugin.config.setEndMessage(endMessage.toString());
-            sender.sendMessage("Hunt End message is now: " + plugin.config.getEndMessage());
-          }
-          break;
-        case "material":
-          if (args.length == 1) {
-            sender.sendMessage("Material to hunt is currently " + plugin.config.getMaterial());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else if (args.length == 2) {
-            try {
-              Material m = Material.valueOf(args[1]);
-              plugin.config.setMaterial(args[1]);
-              sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
-
-            } catch (Exception x) {
-              sender.sendMessage(ChatColor.RED + args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
-            }
-          } else {
-            showSyntax(sender, args[0]);
-          }
-          break;
-        case "region":
-          if (args.length == 1) {
-            sender.sendMessage("WorldGuard region for the hunt is currently " + plugin.config.getHuntRegion().getId());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else if (args.length == 2) {
-            plugin.config.setHuntRegion(args[1]);
-            sender.sendMessage("WorldGuard region for the hunt is now " + plugin.config.getHuntRegion());
-          } else {
-            showSyntax(sender, args[0]);
-          }
-          break;
-        case "scoreboardTitle":
-          if (args.length == 1) {
-            sender.sendMessage("Hunt scoreboard title is currently: " + plugin.config.getScoreboardTitle());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else {
-            StringBuilder scoreboardTitle = new StringBuilder();
-            for (int i = 1; i < args.length; i++) {
-              scoreboardTitle.append((i == args.length - 1) ? args[i] : args[i] + " ");
-            }
-            plugin.config.setScoreboardTitle(scoreboardTitle.toString());
-            sender.sendMessage("Hunt scoreboard title is now: " + plugin.config.getScoreboardTitle());
-          }
-          break;
-        case "startMessage":
-          if (args.length == 1) {
-            sender.sendMessage("Hunt Start message is currently: " + plugin.config.getStartMessage());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else {
-            StringBuilder startMessage = new StringBuilder();
-            for (int i = 1; i < args.length; i++) {
-              startMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
-            }
-            plugin.config.setStartMessage(startMessage.toString());
-            sender.sendMessage("Hunt Start message is now: " + plugin.config.getStartMessage());
-          }
-          break;
-        case "stopMessage":
-          if (args.length == 1) {
-            sender.sendMessage("Hunt Stop message is currently: " + plugin.config.getStopMessage());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else {
-            StringBuilder stopMessage = new StringBuilder();
-            for (int i = 1; i < args.length; i++) {
-              stopMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
-            }
-            plugin.config.setStopMessage(stopMessage.toString());
-            sender.sendMessage("Hunt Stop message is now: " + plugin.config.getStopMessage());
-          }
-          break;
-        case "world":
-          if (args.length == 1) {
-            sender.sendMessage("Bukkit world for the hunt is currently " + plugin.config.getHuntWorld().getName());
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else if (args.length == 2) {
-            plugin.config.setHuntWorld(args[1]);
-            sender.sendMessage("Bukkit world for the hunt is now " + plugin.config.getHuntWorld().getName());
-          } else {
-            showSyntax(sender, args[0]);
-          }
-          break;
-        case "useNicky":
-          if (args.length == 1) {
-            sender.sendMessage("Nicky support is currently " + (plugin.config.isNickyEnabled() ? "enabled" : "disabled"));
-          } else if (args[1].equals("help")) {
-            showSyntax(sender, args[0]);
-          } else if (args.length == 2) {
-            if ((args[1].equals("true")) || (args[1].equals("enabled"))) {
-              if (plugin.getNickyPlugin() == null) {
-                plugin.config.setNickyEnabled(false);
-                sender.sendMessage("Nicky plugin not found, Nicky support is now disabled");
-              } else {
-                plugin.config.setNickyEnabled(true);
-                sender.sendMessage("Nicky support is now enabled");
-              }
-            } else if((args[1].equals("false")) || (args[1].equals("disabled"))) {
-              plugin.config.setNickyEnabled(false);
-              sender.sendMessage("Nicky support is now disabled");
+        switch (args[0]) {
+          case "duration":
+            if (args.length == 1) {
+              sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
+            } else if (args.length == 2) {
+              plugin.config.setHuntDuration(args[1]);
+              sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
             } else {
               showSyntax(sender, args[0]);
             }
-          } else {
-            showSyntax(sender, args[0]);
-          }
-        default:
-          showSyntax(sender, "bh");
+            break;
+          case "endMessage":
+            if (args.length == 1) {
+              sender.sendMessage("Hunt End message is currently: " + plugin.config.getEndMessage());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else {
+              StringBuilder endMessage = new StringBuilder();
+              for (int i = 1; i < args.length; i++) {
+                endMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
+              }
+              plugin.config.setEndMessage(endMessage.toString());
+              sender.sendMessage("Hunt End message is now: " + plugin.config.getEndMessage());
+            }
+            break;
+          case "material":
+            if (args.length == 1) {
+              sender.sendMessage("Material to hunt is currently " + plugin.config.getMaterial());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else if (args.length == 2) {
+              try {
+                Material m = Material.valueOf(args[1]);
+                plugin.config.setMaterial(args[1]);
+                sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
+
+              } catch (Exception x) {
+                sender.sendMessage(ChatColor.RED + args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
+              }
+            } else {
+              showSyntax(sender, args[0]);
+            }
+            break;
+          case "region":
+            if (args.length == 1) {
+              sender.sendMessage("WorldGuard region for the hunt is currently " + plugin.config.getHuntRegion().getId());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else if (args.length == 2) {
+              plugin.config.setHuntRegion(args[1]);
+              sender.sendMessage("WorldGuard region for the hunt is now " + plugin.config.getHuntRegion());
+            } else {
+              showSyntax(sender, args[0]);
+            }
+            break;
+          case "scoreboardTitle":
+            if (args.length == 1) {
+              sender.sendMessage("Hunt scoreboard title is currently: " + plugin.config.getScoreboardTitle());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else {
+              StringBuilder scoreboardTitle = new StringBuilder();
+              for (int i = 1; i < args.length; i++) {
+                scoreboardTitle.append((i == args.length - 1) ? args[i] : args[i] + " ");
+              }
+              plugin.config.setScoreboardTitle(scoreboardTitle.toString());
+              sender.sendMessage("Hunt scoreboard title is now: " + plugin.config.getScoreboardTitle());
+            }
+            break;
+          case "startMessage":
+            if (args.length == 1) {
+              sender.sendMessage("Hunt Start message is currently: " + plugin.config.getStartMessage());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else {
+              StringBuilder startMessage = new StringBuilder();
+              for (int i = 1; i < args.length; i++) {
+                startMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
+              }
+              plugin.config.setStartMessage(startMessage.toString());
+              sender.sendMessage("Hunt Start message is now: " + plugin.config.getStartMessage());
+            }
+            break;
+          case "stopMessage":
+            if (args.length == 1) {
+              sender.sendMessage("Hunt Stop message is currently: " + plugin.config.getStopMessage());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else {
+              StringBuilder stopMessage = new StringBuilder();
+              for (int i = 1; i < args.length; i++) {
+                stopMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
+              }
+              plugin.config.setStopMessage(stopMessage.toString());
+              sender.sendMessage("Hunt Stop message is now: " + plugin.config.getStopMessage());
+            }
+            break;
+          case "world":
+            if (args.length == 1) {
+              sender.sendMessage("Bukkit world for the hunt is currently " + plugin.config.getHuntWorld().getName());
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else if (args.length == 2) {
+              plugin.config.setHuntWorld(args[1]);
+              sender.sendMessage("Bukkit world for the hunt is now " + plugin.config.getHuntWorld().getName());
+            } else {
+              showSyntax(sender, args[0]);
+            }
+            break;
+          case "useNicky":
+            if (args.length == 1) {
+              sender.sendMessage("Nicky support is currently " + (plugin.config.isNickyEnabled() ? "enabled" : "disabled"));
+            } else if (args[1].equals("help")) {
+              showSyntax(sender, args[0]);
+            } else if (args.length == 2) {
+              if ((args[1].equals("true")) || (args[1].equals("enabled"))) {
+                if (plugin.getNickyPlugin() == null) {
+                  plugin.config.setNickyEnabled(false);
+                  sender.sendMessage("Nicky plugin not found, Nicky support is now disabled");
+                } else {
+                  plugin.config.setNickyEnabled(true);
+                  sender.sendMessage("Nicky support is now enabled");
+                }
+              } else if ((args[1].equals("false")) || (args[1].equals("disabled"))) {
+                plugin.config.setNickyEnabled(false);
+                sender.sendMessage("Nicky support is now disabled");
+              } else {
+                showSyntax(sender, args[0]);
+              }
+            } else {
+              showSyntax(sender, args[0]);
+            }
+          default:
+            showSyntax(sender, "bh");
+        }
       }
     }
 
