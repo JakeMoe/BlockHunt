@@ -23,6 +23,47 @@ class Config {
 
     fileConfig = plugin.getConfig();
 
+
+    if (!fileConfig.contains("BlockHunt.areas.arena.Region")) {
+      fileConfig.set("BlockHunt.areas.arena.Region", "BlockHuntArena");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.arena.World")) {
+      fileConfig.set("BlockHunt.areas.arena.World", "world");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Region")) {
+      fileConfig.set("BlockHunt.areas.lobby.Region", "BlockHuntLobby");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.World")) {
+      fileConfig.set("BlockHunt.areas.lobby.World", "world");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.messages.End")) {
+      fileConfig.set("BlockHunt.messages.End", "The Hunt has ended!");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.messages.ScoreboardTitle")) {
+      fileConfig.set("BlockHunt.messages.ScoreboardTitle", "TOP HUNTERS");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.messages.Start")) {
+      fileConfig.set("BlockHunt.messages.Start", "The Hunt has begun!");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.messages.Stop")) {
+      fileConfig.set("BlockHunt.messages.Stop", "The Hunt has been stopped!");
+      booChanged = true;
+    }
+
     if (!fileConfig.contains("BlockHunt.prizes")) {
       List<String[]> prizes = new ArrayList<>();
       String[] prize = new String[2];
@@ -33,43 +74,13 @@ class Config {
       booChanged = true;
     }
 
-    if (!fileConfig.contains("BlockHunt.settings.endMessage")) {
-      fileConfig.set("BlockHunt.settings.endMessage", "The Hunt has ended!");
-      booChanged = true;
-    }
-
     if (!fileConfig.contains("BlockHunt.settings.huntDuration")) {
       fileConfig.set("BlockHunt.settings.huntDuration", "30");
       booChanged = true;
     }
 
-    if (!fileConfig.contains("BlockHunt.settings.huntRegion")) {
-      fileConfig.set("BlockHunt.settings.huntRegion", "BlockHunt");
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.settings.huntWorld")) {
-      fileConfig.set("BlockHunt.settings.huntWorld", "world");
-      booChanged = true;
-    }
-
     if (!fileConfig.contains("BlockHunt.settings.materialToFind")) {
       fileConfig.set("BlockHunt.settings.materialToFind", "PUMPKIN");
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.settings.scoreboardTitle")) {
-      fileConfig.set("BlockHunt.settings.scoreboardTitle", "TOP HUNTERS");
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.settings.startMessage")) {
-      fileConfig.set("BlockHunt.settings.startMessage", "The Hunt has begun!");
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.settings.stopMessage")) {
-      fileConfig.set("BlockHunt.settings.stopMessage", "The Hunt has been stopped!");
       booChanged = true;
     }
 
@@ -93,11 +104,11 @@ class Config {
   }
 
   String getEndMessage() {
-    return fileConfig.getString("BlockHunt.settings.endMessage");
+    return fileConfig.getString("BlockHunt.messages.End");
   }
 
   void setEndMessage(String message) {
-    fileConfig.set("BlockHunt.settings.endMessage", message);
+    fileConfig.set("BlockHunt.messages.End", message);
     plugin.saveConfig();
   }
 
@@ -110,21 +121,39 @@ class Config {
     plugin.saveConfig();
   }
 
-  ProtectedRegion getHuntRegion() {
-    return plugin.getWorldGuardPlugin().getRegionManager(getHuntWorld()).getRegion(fileConfig.getString("BlockHunt.settings.huntRegion"));
+  ProtectedRegion getLobbyRegion() {
+    return plugin.getWorldGuardPlugin().getRegionManager(getHuntWorld()).getRegion(fileConfig.getString("BlockHunt.areas.lobby.Region"));
   }
 
-  void setHuntRegion(String region) {
-    fileConfig.set("BlockHunt.settings.huntRegion", region);
+  void setLobbyRegion(String region) {
+    fileConfig.set("BlockHunt.areas.lobby.Region", region);
+    plugin.saveConfig();
+  }
+
+  World getLobbyWorld() {
+    return org.bukkit.Bukkit.getWorld(fileConfig.getString("BlockHunt.areas.lobby.World"));
+  }
+
+  void setLobbyWorld(String world) {
+    fileConfig.set("BlockHunt.areas.lobby.World", world);
+    plugin.saveConfig();
+  }
+
+  ProtectedRegion getArenaRegion() {
+    return plugin.getWorldGuardPlugin().getRegionManager(getHuntWorld()).getRegion(fileConfig.getString("BlockHunt.areas.arena.Region"));
+  }
+
+  void setArenaRegion(String region) {
+    fileConfig.set("BlockHunt.areas.arena.Region", region);
     plugin.saveConfig();
   }
 
   World getHuntWorld() {
-    return org.bukkit.Bukkit.getWorld(fileConfig.getString("BlockHunt.settings.huntWorld"));
+    return org.bukkit.Bukkit.getWorld(fileConfig.getString("BlockHunt.areas.arena.World"));
   }
 
   void setHuntWorld(String world) {
-    fileConfig.set("BlockHunt.settings.huntWorld", world);
+    fileConfig.set("BlockHunt.areas.arena.World", world);
     plugin.saveConfig();
   }
 
@@ -142,29 +171,29 @@ class Config {
   }
 
   String getScoreboardTitle() {
-    return fileConfig.getString("BlockHunt.settings.scoreboardTitle");
+    return fileConfig.getString("BlockHunt.messages.ScoreboardTitle");
   }
 
   void setScoreboardTitle(String scoreboardTitle) {
-    fileConfig.set("BlockHunt.settings.scoreboardTitle", scoreboardTitle);
+    fileConfig.set("BlockHunt.messages.ScoreboardTitle", scoreboardTitle);
     plugin.saveConfig();
   }
 
   String getStartMessage() {
-    return fileConfig.getString("BlockHunt.settings.startMessage");
+    return fileConfig.getString("BlockHunt.messages.Start");
   }
 
   void setStartMessage(String message) {
-    fileConfig.set("BlockHunt.settings.startMessage", message);
+    fileConfig.set("BlockHunt.messages.Start", message);
     plugin.saveConfig();
   }
 
   String getStopMessage() {
-    return fileConfig.getString("BlockHunt.settings.stopMessage");
+    return fileConfig.getString("BlockHunt.messages.Stop");
   }
 
   void setStopMessage(String message) {
-    fileConfig.set("BlockHunt.settings.stopMessage", message);
+    fileConfig.set("BlockHunt.messages.Stop", message);
     plugin.saveConfig();
   }
 

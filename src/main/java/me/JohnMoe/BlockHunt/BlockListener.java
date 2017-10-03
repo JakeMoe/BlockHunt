@@ -19,21 +19,23 @@ public class BlockListener implements Listener {
 
   @EventHandler
   public void onHit(PlayerInteractEvent event) {
-    if ((plugin.isTimerRunning()) &&
-        (plugin.getBlockHuntRegion().isInRegion(event.getClickedBlock())) &&
-        (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
-        (event.getClickedBlock().getType() == plugin.config.getMaterial())) {
-      event.getClickedBlock().setType(Material.AIR);
-      Player player = event.getPlayer();
-      UUID playerUuid = player.getUniqueId();
-      int pScore;
-      if (plugin.score.containsKey(playerUuid)) {
-        pScore = plugin.score.get(playerUuid) + 1;
-      } else {
-        pScore = 1;
+    if (plugin.getBlockHuntRegion().isInRegion(event.getClickedBlock())) {
+      if ((plugin.isTimerRunning()) &&
+          (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
+          (event.getClickedBlock().getType() == plugin.config.getMaterial())) {
+        event.getClickedBlock().setType(Material.AIR);
+        Player player = event.getPlayer();
+        UUID playerUuid = player.getUniqueId();
+        int pScore;
+        if (plugin.score.containsKey(playerUuid)) {
+          pScore = plugin.score.get(playerUuid) + 1;
+        } else {
+          pScore = 1;
+        }
+        plugin.score.put(playerUuid, pScore);
+        plugin.getBlockHuntScoreboard().refresh();
       }
-      plugin.score.put(playerUuid, pScore);
-      plugin.getBlockHuntScoreboard().refresh();
+      event.setCancelled(true);
     }
   }
 

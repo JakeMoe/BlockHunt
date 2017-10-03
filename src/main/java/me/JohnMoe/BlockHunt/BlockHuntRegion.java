@@ -14,7 +14,7 @@ class BlockHuntRegion  {
 
   boolean isInRegion(Player player) {
     for (ProtectedRegion region : plugin.getWorldGuardPlugin().getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation())) {
-      if (region == plugin.config.getHuntRegion()) {
+      if (region == plugin.config.getArenaRegion()) {
         return true;
       }
     }
@@ -23,7 +23,7 @@ class BlockHuntRegion  {
 
   boolean isInRegion(Block block) {
     for (ProtectedRegion region : plugin.getWorldGuardPlugin().getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation())) {
-      if (region == plugin.config.getHuntRegion()) {
+      if (region == plugin.config.getArenaRegion()) {
         return true;
       }
     }

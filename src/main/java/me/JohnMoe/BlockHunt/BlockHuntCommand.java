@@ -25,7 +25,7 @@ public class BlockHuntCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
-    if ((!(sender instanceof Player)) || ((Player) sender).hasPermission("BlockParty.bh")) {
+    if ((!(sender instanceof Player)) || (sender.hasPermission("BlockParty.bh"))) {
       if (args.length == 0) {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v0.8" + ChatColor.WHITE + " by " + ChatColor.AQUA + "Jake (John) Moe");
       } else if (args[0].equals("help")) {
@@ -80,26 +80,26 @@ public class BlockHuntCommand implements CommandExecutor {
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else if (args.length == 2) {
-              try {
-                Material m = Material.valueOf(args[1]);
-                plugin.config.setMaterial(args[1]);
-                sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
-
-              } catch (Exception x) {
-                sender.sendMessage(ChatColor.RED + args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
+              for (Material m : Material.values()) {
+                if (m.name().equals(args[1])) {
+                  plugin.config.setMaterial(args[1]);
+                  sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
+                  break;
+                }
               }
+              sender.sendMessage(ChatColor.RED + args[1] + " is not a valid Bukkit MATERIAL. See the Bukkit API reference for a list of materials");
             } else {
               showSyntax(sender, args[0]);
             }
             break;
           case "region":
             if (args.length == 1) {
-              sender.sendMessage("WorldGuard region for the hunt is currently " + plugin.config.getHuntRegion().getId());
+              sender.sendMessage("WorldGuard region for the hunt is currently " + plugin.config.getArenaRegion().getId());
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else if (args.length == 2) {
-              plugin.config.setHuntRegion(args[1]);
-              sender.sendMessage("WorldGuard region for the hunt is now " + plugin.config.getHuntRegion());
+              plugin.config.setArenaRegion(args[1]);
+              sender.sendMessage("WorldGuard region for the hunt is now " + plugin.config.getArenaRegion());
             } else {
               showSyntax(sender, args[0]);
             }
