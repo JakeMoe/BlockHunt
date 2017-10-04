@@ -3,6 +3,7 @@ package me.JohnMoe.BlockHunt;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import io.loyloy.nicky.Nicky;
+import me.JohnMoe.BlockHunt.Regions.Game;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,11 +15,11 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private BlockHuntRegion blockHuntRegion;
+  private Game blockHuntRegion;
   private BlockHuntScoreboard blockHuntScoreboard;
   private boolean timerRunning;
   private BukkitTask timer;
-  Config config;
+  public Config config;
   private Nicky nickyPlugin;
   TreeMap<UUID, Integer> score;
   private WorldGuardPlugin worldGuardPlugin;
@@ -51,13 +52,13 @@ public class Main extends JavaPlugin {
     config = new Config(this);
     config.loadConfig();
 
-    blockHuntRegion = new BlockHuntRegion(this);
+    blockHuntRegion = new Game(this);
     blockHuntScoreboard = new BlockHuntScoreboard(this);
     getCommand("bh").setExecutor(new BlockHuntCommand(this));
     getServer().getPluginManager().registerEvents(new BlockListener(this), this);
   }
 
-  BlockHuntRegion getBlockHuntRegion() {
+  Game getBlockHuntRegion() {
     return blockHuntRegion;
   }
 
@@ -81,7 +82,7 @@ public class Main extends JavaPlugin {
     return timer;
   }
 
-  WorldGuardPlugin getWorldGuardPlugin() {
+  public WorldGuardPlugin getWorldGuardPlugin() {
     if (worldGuardPlugin == null) {
       Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
       if ((plugin == null) || (!(plugin instanceof WorldGuardPlugin))) {

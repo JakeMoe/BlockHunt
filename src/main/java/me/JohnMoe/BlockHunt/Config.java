@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-class Config {
+public class Config {
 
   private Main plugin;
   private FileConfiguration fileConfig;
@@ -17,7 +17,7 @@ class Config {
     this.plugin = plugin;
   }
 
-  void loadConfig() {
+  public void loadConfig() {
 
     boolean booChanged = false;
 
@@ -139,11 +139,11 @@ class Config {
     plugin.saveConfig();
   }
 
-  ProtectedRegion getArenaRegion() {
+  public ProtectedRegion getArenaRegion() {
     return plugin.getWorldGuardPlugin().getRegionManager(getHuntWorld()).getRegion(fileConfig.getString("BlockHunt.areas.arena.Region"));
   }
 
-  void setArenaRegion(String region) {
+  public void setArenaRegion(String region) {
     fileConfig.set("BlockHunt.areas.arena.Region", region);
     plugin.saveConfig();
   }
