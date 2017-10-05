@@ -21,7 +21,7 @@ public class Listener implements org.bukkit.event.Listener {
     if (plugin.getGameRegion().isInRegion(event.getClickedBlock())) {
       if ((plugin.isTimerRunning()) &&
           (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
-          (event.getClickedBlock().getType() == plugin.config.getMaterial())) {
+          (event.getClickedBlock().getType() == plugin.getPluginConfig().getMaterial())) {
         event.getClickedBlock().setType(Material.AIR);
         Player player = event.getPlayer();
         UUID playerUuid = player.getUniqueId();

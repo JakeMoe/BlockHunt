@@ -26,6 +26,21 @@ public class Config {
       booChanged = true;
     }
 
+    if (!fileConfig.contains("BlockHunt.areas.game.Spawn.X")) {
+      fileConfig.set("BlockHunt.areas.game.Spawn.X", 0);
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.game.Spawn.Y")) {
+      fileConfig.set("BlockHunt.areas.game.Spawn.Y", 0);
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.game.Spawn.Z")) {
+      fileConfig.set("BlockHunt.areas.game.Spawn.Z", 0);
+      booChanged = true;
+    }
+
     if (!fileConfig.contains("BlockHunt.areas.game.World")) {
       fileConfig.set("BlockHunt.areas.game.World", "world");
       booChanged = true;
@@ -126,6 +141,10 @@ public class Config {
     fileConfig.set("BlockHunt.areas.game.Region", region);
     plugin.saveConfig();
     plugin.getGameRegion().updateRegion();
+  }
+
+  public int getGameSpawnX() {
+    return Integer.valueOf(fileConfig.getString("BlockHunt.areas.game.Spawn.X"));
   }
 
   public String getGameWorld() {

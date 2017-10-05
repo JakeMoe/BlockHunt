@@ -8,15 +8,13 @@ import java.util.ArrayList;
 
 public class Region {
 
-  private String name;
   private Main plugin;
   private String worldName;
   private String regionName;
   private ProtectedRegion gameRegion;
   private ArrayList<Player> players;
 
-  public Region(String name, Main plugin) {
-    this.name = name;
+  public Region(Main plugin) {
     this.plugin = plugin;
     updateRegion();
     this.players = new ArrayList<>();
@@ -27,8 +25,8 @@ public class Region {
   }
 
   public void updateRegion() {
-    this.worldName = plugin.config.getGameWorld();
-    this.regionName = plugin.config.getGameRegion();
+    this.worldName = plugin.getPluginConfig().getGameWorld();
+    this.regionName = plugin.getPluginConfig().getGameRegion();
     gameRegion = plugin.getWorldGuardPlugin().getRegionManager(plugin.getServer().getWorld(worldName)).getRegion(regionName);
   }
 

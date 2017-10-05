@@ -14,22 +14,22 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private static String version = "0.8";
-  private static String author = "Jake (John) Moe";
+  private static final String version = "0.8";
+  private static final String author = "Jake (John) Moe";
 
   private Region gameRegion;
   private Region lobbyRegion;
   private Scoreboard scoreboard;
   private boolean timerRunning;
   private BukkitTask timer;
-  public Config config;
+  private Config pluginConfig;
   private Nicky nickyPlugin;
   TreeMap<UUID, Integer> score;
   private WorldGuardPlugin worldGuardPlugin;
 
   @Override
   public void onDisable() {
-    config.saveConfig();
+    pluginConfig.saveConfig();
   }
 
   @Override
@@ -47,11 +47,11 @@ public class Main extends JavaPlugin {
       getServer().getLogger().log(Level.INFO, "[BlockHunt] Nicky plugin found");
     }
 
-    config = new Config(this);
-    config.loadConfig();
+    pluginConfig = new Config(this);
+    pluginConfig.loadConfig();
 
-    lobbyRegion = new Region("lobby", this);
-    gameRegion = new Region("game", this);
+    lobbyRegion = new Region(this);
+    gameRegion = new Region(this);
     scoreboard = new Scoreboard(this);
     getCommand("bh").setExecutor(new Command(this));
     getServer().getPluginManager().registerEvents(new Listener(this), this);
@@ -86,6 +86,10 @@ public class Main extends JavaPlugin {
     return nickyPlugin;
   }
 
+  public Config getPluginConfig() {
+    return pluginConfig;
+  }
+
   public BukkitTask getTimer() {
     return timer;
   }
@@ -111,7 +115,7 @@ public class Main extends JavaPlugin {
   }
 
   public void startTimer(BukkitRunnable bukkitRunnable) {
-    timer = bukkitRunnable.runTaskLater(this, this.config.getHuntDuration() * 20);
+    timer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getHuntDuration() * 20);
   }
 
   public String getAuthor() {

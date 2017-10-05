@@ -45,7 +45,7 @@ class Scoreboard {
 
     for (int i = 0; i < total; i++) {
       Map.Entry entry = (Map.Entry) iterator.next();
-      Score score = objective.getScore(Util.getNameByUUID((UUID) entry.getKey(), plugin.config.isNickyEnabled()));
+      Score score = objective.getScore(Util.getNameByUUID((UUID) entry.getKey(), plugin.getPluginConfig().isNickyEnabled()));
       score.setScore((int) entry.getValue());
     }
 
@@ -55,13 +55,12 @@ class Scoreboard {
       }
     }
 
-
   }
 
   void reset() {
     scoreboard = plugin.getServer().getScoreboardManager().getNewScoreboard();
     Objective objective = scoreboard.registerNewObjective("score", "dummy");
-    objective.setDisplayName(plugin.config.getScoreboardTitle());
+    objective.setDisplayName(plugin.getPluginConfig().getScoreboardTitle());
     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
   }
 

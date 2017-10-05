@@ -47,21 +47,81 @@ public class Command implements CommandExecutor {
         }
       } else if (plugin.isTimerRunning()) {
         sender.sendMessage(ChatColor.RED + "You can't configure the hunt while a hunt is in progress!");
+      } else if (args[0].equals("game")) {
+        if ((args.length == 1) || (args[1].equals("help"))) {
+          showSyntax(sender, args[0]);
+        } else if (args[1].equals("region")) {
+          if (args.length == 2) {
+            sender.sendMessage("WorldGuard region for the game is currently " + plugin.getPluginConfig().getGameRegion());
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setGameRegion(args[2]);
+            sender.sendMessage("WorldGuard region for the game is now " + plugin.getPluginConfig().getGameRegion());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        } else if (args[1].equals("spawn")) {
+          if (args.length == 2) {
+            sender.sendMessage("Game spawn point is currently " + plugin.getPluginConfig().getGameWorld());
+          } else if (args[2].equals("set")) {
+
+          } else {
+
+          }
+        } else if (args[1].equals("world")) {
+          if (args.length == 2) {
+            sender.sendMessage("Bukkit world for the game is currently " + plugin.getPluginConfig().getGameWorld());
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setGameWorld(args[2]);
+            sender.sendMessage(" Bukkit world for the game is now " + plugin.getPluginConfig().getGameWorld());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        }
+      } else if (args[0].equals("lobby")) {
+        if ((args.length == 1) || (args[1].equals("help"))) {
+          showSyntax(sender, args[0]);
+        } else if (args[1].equals("region")) {
+          if (args.length == 2) {
+            sender.sendMessage("WorldGuard region for the lobby is currently " + plugin.getPluginConfig().getLobbyRegion());
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setLobbyRegion(args[2]);
+            sender.sendMessage("WorldGuard region for the lobby is now " + plugin.getPluginConfig().getLobbyRegion());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        } else if (args[1].equals("world")) {
+          if (args.length == 2) {
+            sender.sendMessage("Bukkit world for the lobby is currently " + plugin.getPluginConfig().getLobbyWorld());
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setLobbyWorld(args[2]);
+            sender.sendMessage(" Bukkit world for the lobby is now " + plugin.getPluginConfig().getLobbyWorld());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        }
       } else {
         switch (args[0]) {
           case "duration":
             if (args.length == 1) {
-              sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
+              sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.getPluginConfig().getHuntDuration()) + " seconds.");
             } else if (args.length == 2) {
-              plugin.config.setHuntDuration(args[1]);
-              sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.config.getHuntDuration()) + " seconds.");
+              plugin.getPluginConfig().setHuntDuration(args[1]);
+              sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.getPluginConfig().getHuntDuration()) + " seconds.");
             } else {
               showSyntax(sender, args[0]);
             }
             break;
           case "endMessage":
             if (args.length == 1) {
-              sender.sendMessage("Hunt End message is currently: " + plugin.config.getEndMessage());
+              sender.sendMessage("Hunt End message is currently: " + plugin.getPluginConfig().getEndMessage());
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else {
@@ -69,20 +129,20 @@ public class Command implements CommandExecutor {
               for (int i = 1; i < args.length; i++) {
                 endMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
               }
-              plugin.config.setEndMessage(endMessage.toString());
-              sender.sendMessage("Hunt End message is now: " + plugin.config.getEndMessage());
+              plugin.getPluginConfig().setEndMessage(endMessage.toString());
+              sender.sendMessage("Hunt End message is now: " + plugin.getPluginConfig().getEndMessage());
             }
             break;
           case "material":
             if (args.length == 1) {
-              sender.sendMessage("Material to hunt is currently " + plugin.config.getMaterial());
+              sender.sendMessage("Material to hunt is currently " + plugin.getPluginConfig().getMaterial());
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else if (args.length == 2) {
               for (Material m : Material.values()) {
                 if (m.name().equals(args[1])) {
-                  plugin.config.setMaterial(args[1]);
-                  sender.sendMessage("Material to hunt is now " + plugin.config.getMaterial());
+                  plugin.getPluginConfig().setMaterial(args[1]);
+                  sender.sendMessage("Material to hunt is now " + plugin.getPluginConfig().getMaterial());
                   break;
                 }
               }
@@ -91,57 +151,9 @@ public class Command implements CommandExecutor {
               showSyntax(sender, args[0]);
             }
             break;
-          case "gameRegion":
-            if (args.length == 1) {
-              sender.sendMessage("WorldGuard region for the game is currently " + plugin.config.getGameRegion());
-            } else if (args[1].equals("help")) {
-              showSyntax(sender, args[0]);
-            } else if (args.length == 2) {
-              plugin.config.setGameRegion(args[1]);
-              sender.sendMessage("WorldGuard region for the game is now " + plugin.config.getGameRegion());
-            } else {
-              showSyntax(sender, args[0]);
-            }
-            break;
-          case "gameWorld":
-            if (args.length == 1) {
-              sender.sendMessage("Bukkit world for the game is currently " + plugin.config.getGameWorld());
-            } else if (args[1].equals("help")) {
-              showSyntax(sender, args[0]);
-            } else if (args.length == 2) {
-              plugin.config.setGameWorld(args[1]);
-              sender.sendMessage("Bukkit world for the game is now " + plugin.config.getGameWorld());
-            } else {
-              showSyntax(sender, args[0]);
-            }
-            break;
-          case "lobbyRegion":
-            if (args.length == 1) {
-              sender.sendMessage("WorldGuard region for the lobby is currently " + plugin.config.getLobbyRegion());
-            } else if (args[1].equals("help")) {
-              showSyntax(sender, args[0]);
-            } else if (args.length == 2) {
-              plugin.config.setLobbyRegion(args[1]);
-              sender.sendMessage("WorldGuard region for the lobby is now " + plugin.config.getLobbyRegion());
-            } else {
-              showSyntax(sender, args[0]);
-            }
-            break;
-          case "lobbyWorld":
-            if (args.length == 1) {
-              sender.sendMessage("Bukkit world for the lobby is currently " + plugin.config.getLobbyWorld());
-            } else if (args[1].equals("help")) {
-              showSyntax(sender, args[0]);
-            } else if (args.length == 2) {
-              plugin.config.setLobbyWorld(args[1]);
-              sender.sendMessage("Bukkit world for the lobby is now " + plugin.config.getLobbyWorld());
-            } else {
-              showSyntax(sender, args[0]);
-            }
-            break;
           case "scoreboardTitle":
             if (args.length == 1) {
-              sender.sendMessage("Hunt scoreboard title is currently: " + plugin.config.getScoreboardTitle());
+              sender.sendMessage("Hunt scoreboard title is currently: " + plugin.getPluginConfig().getScoreboardTitle());
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else {
@@ -149,13 +161,13 @@ public class Command implements CommandExecutor {
               for (int i = 1; i < args.length; i++) {
                 scoreboardTitle.append((i == args.length - 1) ? args[i] : args[i] + " ");
               }
-              plugin.config.setScoreboardTitle(scoreboardTitle.toString());
-              sender.sendMessage("Hunt scoreboard title is now: " + plugin.config.getScoreboardTitle());
+              plugin.getPluginConfig().setScoreboardTitle(scoreboardTitle.toString());
+              sender.sendMessage("Hunt scoreboard title is now: " + plugin.getPluginConfig().getScoreboardTitle());
             }
             break;
           case "startMessage":
             if (args.length == 1) {
-              sender.sendMessage("Hunt Start message is currently: " + plugin.config.getStartMessage());
+              sender.sendMessage("Hunt Start message is currently: " + plugin.getPluginConfig().getStartMessage());
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else {
@@ -163,13 +175,13 @@ public class Command implements CommandExecutor {
               for (int i = 1; i < args.length; i++) {
                 startMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
               }
-              plugin.config.setStartMessage(startMessage.toString());
-              sender.sendMessage("Hunt Start message is now: " + plugin.config.getStartMessage());
+              plugin.getPluginConfig().setStartMessage(startMessage.toString());
+              sender.sendMessage("Hunt Start message is now: " + plugin.getPluginConfig().getStartMessage());
             }
             break;
           case "stopMessage":
             if (args.length == 1) {
-              sender.sendMessage("Hunt Stop message is currently: " + plugin.config.getStopMessage());
+              sender.sendMessage("Hunt Stop message is currently: " + plugin.getPluginConfig().getStopMessage());
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else {
@@ -177,29 +189,34 @@ public class Command implements CommandExecutor {
               for (int i = 1; i < args.length; i++) {
                 stopMessage.append((i == args.length - 1) ? args[i] : args[i] + " ");
               }
-              plugin.config.setStopMessage(stopMessage.toString());
-              sender.sendMessage("Hunt Stop message is now: " + plugin.config.getStopMessage());
+              plugin.getPluginConfig().setStopMessage(stopMessage.toString());
+              sender.sendMessage("Hunt Stop message is now: " + plugin.getPluginConfig().getStopMessage());
             }
             break;
           case "useNicky":
             if (args.length == 1) {
-              sender.sendMessage("Nicky support is currently " + (plugin.config.isNickyEnabled() ? "enabled" : "disabled"));
+              sender.sendMessage("Nicky support is currently " + (plugin.getPluginConfig().isNickyEnabled() ? "enabled" : "disabled"));
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
             } else if (args.length == 2) {
-              if ((args[1].equals("true")) || (args[1].equals("enabled"))) {
-                if (plugin.getNickyPlugin() == null) {
-                  plugin.config.setNickyEnabled(false);
-                  sender.sendMessage("Nicky plugin not found, Nicky support is now disabled");
-                } else {
-                  plugin.config.setNickyEnabled(true);
-                  sender.sendMessage("Nicky support is now enabled");
-                }
-              } else if ((args[1].equals("false")) || (args[1].equals("disabled"))) {
-                plugin.config.setNickyEnabled(false);
-                sender.sendMessage("Nicky support is now disabled");
-              } else {
-                showSyntax(sender, args[0]);
+              switch (args[1]) {
+                case "enabled":
+                case "true":
+                  if (plugin.getNickyPlugin() == null) {
+                    plugin.getPluginConfig().setNickyEnabled(false);
+                    sender.sendMessage("Nicky plugin not found, Nicky support is now disabled");
+                  } else {
+                    plugin.getPluginConfig().setNickyEnabled(true);
+                    sender.sendMessage("Nicky support is now enabled");
+                  }
+                  break;
+                case "disabled":
+                case "false":
+                  plugin.getPluginConfig().setNickyEnabled(false);
+                  sender.sendMessage("Nicky support is now disabled");
+                  break;
+                default:
+                  showSyntax(sender, args[0]);
               }
             } else {
               showSyntax(sender, args[0]);
@@ -216,15 +233,15 @@ public class Command implements CommandExecutor {
 
   private void endHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
-    plugin.getServer().broadcastMessage(plugin.config.getEndMessage());
+    plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
     plugin.setTimerRunning(false);
     plugin.getScoreboard().clear();
     Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
     Iterator iterator = sortedMap.entrySet().iterator();
     UUID winner = (UUID) ((Map.Entry) iterator.next()).getKey();
-    String playerName = Util.getNameByUUID(winner, plugin.config.isNickyEnabled());
+    String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
 
-    ArrayList<String[]> prizes = plugin.config.getPrizes();
+    ArrayList<String[]> prizes = plugin.getPluginConfig().getPrizes();
     String message = (prizes.get(0))[1].replaceAll("%player%", playerName);
 
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt and receives " + (prizes.get(0))[0]);
@@ -236,7 +253,7 @@ public class Command implements CommandExecutor {
       sender.sendMessage("The Hunt has already begun! Stop the Hunt if you want to start another.");
     } else {
       plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Starting the hunt");
-      plugin.getServer().broadcastMessage(plugin.config.getStartMessage());
+      plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStartMessage());
       plugin.score = new TreeMap<>();
       plugin.getScoreboard().reset();
       plugin.setTimerRunning(true);
@@ -252,7 +269,7 @@ public class Command implements CommandExecutor {
 
   private void stopHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
-    plugin.getServer().broadcastMessage(plugin.config.getStopMessage());
+    plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
     plugin.getTimer().cancel();
     plugin.setTimerRunning(false);
     plugin.getScoreboard().clear();
