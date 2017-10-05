@@ -48,3 +48,5 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
 * 0.8 - Jake (John) Moe - 27 September 2017
   * Created individual help for each command
   * Added prizes
+  * Added Regions class
+  * Code cleanup

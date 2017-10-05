@@ -1,8 +1,6 @@
 package me.JohnMoe.BlockHunt;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -23,14 +21,13 @@ public class Config {
 
     fileConfig = plugin.getConfig();
 
-
-    if (!fileConfig.contains("BlockHunt.areas.arena.Region")) {
-      fileConfig.set("BlockHunt.areas.arena.Region", "BlockHuntArena");
+    if (!fileConfig.contains("BlockHunt.areas.game.Region")) {
+      fileConfig.set("BlockHunt.areas.game.Region", "BlockHuntGame");
       booChanged = true;
     }
 
-    if (!fileConfig.contains("BlockHunt.areas.arena.World")) {
-      fileConfig.set("BlockHunt.areas.arena.World", "world");
+    if (!fileConfig.contains("BlockHunt.areas.game.World")) {
+      fileConfig.set("BlockHunt.areas.game.World", "world");
       booChanged = true;
     }
 
@@ -99,62 +96,66 @@ public class Config {
 
   }
 
-  void saveConfig() {
+  public void saveConfig() {
     plugin.saveConfig();
   }
 
-  String getEndMessage() {
+  public String getEndMessage() {
     return fileConfig.getString("BlockHunt.messages.End");
   }
 
-  void setEndMessage(String message) {
+  public void setEndMessage(String message) {
     fileConfig.set("BlockHunt.messages.End", message);
     plugin.saveConfig();
   }
 
-  int getHuntDuration() {
+  public int getHuntDuration() {
     return Integer.valueOf(fileConfig.getString("BlockHunt.settings.huntDuration"));
   }
 
-  void setHuntDuration(String seconds) {
+  public void setHuntDuration(String seconds) {
     fileConfig.set("BlockHunt.settings.huntDuration", seconds);
     plugin.saveConfig();
   }
 
-  ProtectedRegion getLobbyRegion() {
-    return plugin.getWorldGuardPlugin().getRegionManager(getHuntWorld()).getRegion(fileConfig.getString("BlockHunt.areas.lobby.Region"));
+  public String getGameRegion() {
+    return fileConfig.getString("BlockHunt.areas.game.Region");
   }
 
-  void setLobbyRegion(String region) {
+  public void setGameRegion(String region) {
+    fileConfig.set("BlockHunt.areas.game.Region", region);
+    plugin.saveConfig();
+    plugin.getGameRegion().updateRegion();
+  }
+
+  public String getGameWorld() {
+    return fileConfig.getString("BlockHunt.areas.game.World");
+  }
+
+  public void setGameWorld(String world) {
+    fileConfig.set("BlockHunt.areas.game.World", world);
+    plugin.saveConfig();
+    plugin.getLobbyRegion().updateRegion();
+  }
+
+  public String getLobbyRegion() {
+    return fileConfig.getString("BlockHunt.areas.lobby.Region");
+  }
+
+  public void setLobbyRegion(String region) {
     fileConfig.set("BlockHunt.areas.lobby.Region", region);
     plugin.saveConfig();
+    plugin.getLobbyRegion().updateRegion();
   }
 
-  World getLobbyWorld() {
-    return org.bukkit.Bukkit.getWorld(fileConfig.getString("BlockHunt.areas.lobby.World"));
+  public String getLobbyWorld() {
+    return fileConfig.getString("BlockHunt.areas.lobby.World");
   }
 
-  void setLobbyWorld(String world) {
+  public void setLobbyWorld(String world) {
     fileConfig.set("BlockHunt.areas.lobby.World", world);
     plugin.saveConfig();
-  }
-
-  public ProtectedRegion getArenaRegion() {
-    return plugin.getWorldGuardPlugin().getRegionManager(getHuntWorld()).getRegion(fileConfig.getString("BlockHunt.areas.arena.Region"));
-  }
-
-  public void setArenaRegion(String region) {
-    fileConfig.set("BlockHunt.areas.arena.Region", region);
-    plugin.saveConfig();
-  }
-
-  World getHuntWorld() {
-    return org.bukkit.Bukkit.getWorld(fileConfig.getString("BlockHunt.areas.arena.World"));
-  }
-
-  void setHuntWorld(String world) {
-    fileConfig.set("BlockHunt.areas.arena.World", world);
-    plugin.saveConfig();
+    plugin.getLobbyRegion().updateRegion();
   }
 
   Material getMaterial() {

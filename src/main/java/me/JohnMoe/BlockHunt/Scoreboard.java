@@ -4,31 +4,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-class BlockHuntScoreboard {
+class Scoreboard {
 
   private Main plugin;
-  private Scoreboard scoreboard;
+  private org.bukkit.scoreboard.Scoreboard scoreboard;
 
-  BlockHuntScoreboard(Main plugin) {
+  Scoreboard(Main plugin) {
     this.plugin = plugin;
   }
 
   void clear() {
-    Scoreboard emptyBoard = plugin.getServer().getScoreboardManager().getNewScoreboard();
+    org.bukkit.scoreboard.Scoreboard emptyBoard = plugin.getServer().getScoreboardManager().getNewScoreboard();
     for (Player player : plugin.getServer().getOnlinePlayers()) {
-      if (player.getScoreboard() == plugin.getBlockHuntScoreboard().getScoreboard()) {
+      if (player.getScoreboard() == this.getScoreboard()) {
         player.setScoreboard(emptyBoard);
       }
     }
   }
 
-  private Scoreboard getScoreboard() {
+  private org.bukkit.scoreboard.Scoreboard getScoreboard() {
     return scoreboard;
   }
 
@@ -51,7 +50,7 @@ class BlockHuntScoreboard {
     }
 
     for (Player player : plugin.getServer().getOnlinePlayers()) {
-      if (player.getScoreboard() != getScoreboard() && plugin.getBlockHuntRegion().isInRegion(player)) {
+      if (player.getScoreboard() != getScoreboard() && plugin.getGameRegion().isInRegion(player)) {
          player.setScoreboard(getScoreboard());
       }
     }

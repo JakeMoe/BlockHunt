@@ -3,7 +3,6 @@ package me.JohnMoe.BlockHunt;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import io.loyloy.nicky.Nicky;
-import me.JohnMoe.BlockHunt.Regions.Game;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,8 +14,12 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private Game blockHuntRegion;
-  private BlockHuntScoreboard blockHuntScoreboard;
+  private static String version = "0.8";
+  private static String author = "Jake (John) Moe";
+
+  private Region gameRegion;
+  private Region lobbyRegion;
+  private Scoreboard scoreboard;
   private boolean timerRunning;
   private BukkitTask timer;
   public Config config;
@@ -27,11 +30,6 @@ public class Main extends JavaPlugin {
   @Override
   public void onDisable() {
     config.saveConfig();
-  }
-
-  @Override
-  public void onLoad() {
-    getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version 0.8");
   }
 
   @Override
@@ -52,21 +50,31 @@ public class Main extends JavaPlugin {
     config = new Config(this);
     config.loadConfig();
 
-    blockHuntRegion = new Game(this);
-    blockHuntScoreboard = new BlockHuntScoreboard(this);
-    getCommand("bh").setExecutor(new BlockHuntCommand(this));
-    getServer().getPluginManager().registerEvents(new BlockListener(this), this);
+    lobbyRegion = new Region("lobby", this);
+    gameRegion = new Region("game", this);
+    scoreboard = new Scoreboard(this);
+    getCommand("bh").setExecutor(new Command(this));
+    getServer().getPluginManager().registerEvents(new Listener(this), this);
   }
 
-  Game getBlockHuntRegion() {
-    return blockHuntRegion;
+  @Override
+  public void onLoad() {
+    getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version " + version);
   }
 
-  BlockHuntScoreboard getBlockHuntScoreboard() {
-    return blockHuntScoreboard;
+  public Region getGameRegion() {
+    return gameRegion;
   }
 
-  Nicky getNickyPlugin() {
+  public Region getLobbyRegion() {
+    return lobbyRegion;
+  }
+
+  public Scoreboard getScoreboard() {
+    return scoreboard;
+  }
+
+  public Nicky getNickyPlugin() {
     if (nickyPlugin == null) {
       Plugin plugin = getServer().getPluginManager().getPlugin("Nicky");
       if ((plugin == null) || (!(plugin instanceof Nicky))) {
@@ -78,7 +86,7 @@ public class Main extends JavaPlugin {
     return nickyPlugin;
   }
 
-  BukkitTask getTimer() {
+  public BukkitTask getTimer() {
     return timer;
   }
 
@@ -94,16 +102,24 @@ public class Main extends JavaPlugin {
     return worldGuardPlugin;
   }
 
-  boolean isTimerRunning() {
+  public boolean isTimerRunning() {
     return timerRunning;
   }
 
-  void setTimerRunning(boolean timerRunning) {
+  public void setTimerRunning(boolean timerRunning) {
     this.timerRunning = timerRunning;
   }
 
-  void startTimer(BukkitRunnable bukkitRunnable) {
+  public void startTimer(BukkitRunnable bukkitRunnable) {
     timer = bukkitRunnable.runTaskLater(this, this.config.getHuntDuration() * 20);
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  public String getVersion() {
+    return version;
   }
 
 }
