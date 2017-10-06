@@ -18,7 +18,16 @@ public class Listener implements org.bukkit.event.Listener {
 
   @EventHandler
   public void onHit(PlayerInteractEvent event) {
-    if (plugin.getGameRegion().isInRegion(event.getClickedBlock())) {
+    if (plugin.isSettingLobbyJoin() &&
+        event.getAction() == Action.LEFT_CLICK_BLOCK &&
+        !(event.getClickedBlock().getType() == Material.AIR)) {
+      plugin.getPluginConfig().setLobbyJoinLocation(event.getClickedBlock().getLocation());
+      plugin.setSettingLobbyJoin(false);
+    } else if ((event.getAction() == Action.LEFT_CLICK_BLOCK) &&
+               (event.getClickedBlock().getLocation() == plugin.getPluginConfig().getLobbyJoinLocation())) {
+      event.getPlayer().teleport(plugin.getLobbyRegion().randomLocation());
+      plugin.getLobbyRegion().addPlayer(event.getPlayer());
+    } else if (plugin.getGameRegion().getRegion().contains(event.getClickedBlock().getX(), event.getClickedBlock().getY(), event.getClickedBlock().getZ())) {
       if ((plugin.isTimerRunning()) &&
           (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
           (event.getClickedBlock().getType() == plugin.getPluginConfig().getMaterial())) {

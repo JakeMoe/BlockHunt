@@ -1,12 +1,13 @@
 package me.JohnMoe.BlockHunt;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Config {
+class Config {
 
   private Main plugin;
   private FileConfiguration fileConfig;
@@ -15,7 +16,7 @@ public class Config {
     this.plugin = plugin;
   }
 
-  public void loadConfig() {
+  void loadConfig() {
 
     boolean booChanged = false;
 
@@ -23,21 +24,6 @@ public class Config {
 
     if (!fileConfig.contains("BlockHunt.areas.game.Region")) {
       fileConfig.set("BlockHunt.areas.game.Region", "BlockHuntGame");
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.areas.game.Spawn.X")) {
-      fileConfig.set("BlockHunt.areas.game.Spawn.X", 0);
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.areas.game.Spawn.Y")) {
-      fileConfig.set("BlockHunt.areas.game.Spawn.Y", 0);
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.areas.game.Spawn.Z")) {
-      fileConfig.set("BlockHunt.areas.game.Spawn.Z", 0);
       booChanged = true;
     }
 
@@ -111,67 +97,77 @@ public class Config {
 
   }
 
-  public void saveConfig() {
+  void saveConfig() {
     plugin.saveConfig();
   }
 
-  public String getEndMessage() {
+  String getEndMessage() {
     return fileConfig.getString("BlockHunt.messages.End");
   }
 
-  public void setEndMessage(String message) {
+  void setEndMessage(String message) {
     fileConfig.set("BlockHunt.messages.End", message);
     plugin.saveConfig();
   }
 
-  public int getHuntDuration() {
+  int getHuntDuration() {
     return Integer.valueOf(fileConfig.getString("BlockHunt.settings.huntDuration"));
   }
 
-  public void setHuntDuration(String seconds) {
+  void setHuntDuration(String seconds) {
     fileConfig.set("BlockHunt.settings.huntDuration", seconds);
     plugin.saveConfig();
   }
 
-  public String getGameRegion() {
+  Location getLobbyJoinLocation() {
+    int x = Integer.valueOf(fileConfig.getString("BlockHunt.areas.lobby.Join.X"));
+    int y = Integer.valueOf(fileConfig.getString("BlockHunt.areas.lobby.Join.Y"));
+    int z = Integer.valueOf(fileConfig.getString("BlockHunt.areas.lobby.Join.Z"));
+    return new Location(plugin.getServer().getWorld(getLobbyWorld()), x, y, z);
+  }
+
+  void setLobbyJoinLocation(Location location) {
+    fileConfig.set("BlockHunt.areas.lobby.Join.X", location.getBlockX());
+    fileConfig.set("BlockHunt.areas.lobby.Join.Y", location.getBlockY());
+    fileConfig.set("BlockHunt.areas.lobby.Join.Z", location.getBlockZ());
+    plugin.saveConfig();
+  }
+
+  String getGameRegion() {
     return fileConfig.getString("BlockHunt.areas.game.Region");
   }
 
-  public void setGameRegion(String region) {
+  void setGameRegion(String region) {
     fileConfig.set("BlockHunt.areas.game.Region", region);
     plugin.saveConfig();
     plugin.getGameRegion().updateRegion();
   }
 
-  public int getGameSpawnX() {
-    return Integer.valueOf(fileConfig.getString("BlockHunt.areas.game.Spawn.X"));
-  }
-
-  public String getGameWorld() {
+  String getGameWorld() {
     return fileConfig.getString("BlockHunt.areas.game.World");
   }
 
-  public void setGameWorld(String world) {
+  void setGameWorld(String world) {
     fileConfig.set("BlockHunt.areas.game.World", world);
     plugin.saveConfig();
     plugin.getLobbyRegion().updateRegion();
   }
 
-  public String getLobbyRegion() {
+  String getLobbyRegion() {
     return fileConfig.getString("BlockHunt.areas.lobby.Region");
   }
 
-  public void setLobbyRegion(String region) {
+  void setLobbyRegion(String region) {
     fileConfig.set("BlockHunt.areas.lobby.Region", region);
     plugin.saveConfig();
     plugin.getLobbyRegion().updateRegion();
   }
 
-  public String getLobbyWorld() {
+  String getLobbyWorld() {
     return fileConfig.getString("BlockHunt.areas.lobby.World");
   }
 
-  public void setLobbyWorld(String world) {
+  void setLobbyWorld(String world) {
     fileConfig.set("BlockHunt.areas.lobby.World", world);
     plugin.saveConfig();
     plugin.getLobbyRegion().updateRegion();

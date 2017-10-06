@@ -61,14 +61,6 @@ public class Command implements CommandExecutor {
           } else {
             showSyntax(sender, args[0] + args[1]);
           }
-        } else if (args[1].equals("spawn")) {
-          if (args.length == 2) {
-            sender.sendMessage("Game spawn point is currently " + plugin.getPluginConfig().getGameWorld());
-          } else if (args[2].equals("set")) {
-
-          } else {
-
-          }
         } else if (args[1].equals("world")) {
           if (args.length == 2) {
             sender.sendMessage("Bukkit world for the game is currently " + plugin.getPluginConfig().getGameWorld());
@@ -84,6 +76,14 @@ public class Command implements CommandExecutor {
       } else if (args[0].equals("lobby")) {
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
+        } else if (args[1].equals("join")) {
+          if (args.length == 2) {
+            sender.sendMessage("Lobby join is currently " + plugin.getPluginConfig().getLobbyJoinLocation().getBlockX() + "," + plugin.getPluginConfig().getLobbyJoinLocation().getBlockY() + "," + plugin.getPluginConfig().getLobbyJoinLocation().getBlockZ());
+          } else if (args[2].equals("set")) {
+            plugin.setSettingLobbyJoin(true);
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
         } else if (args[1].equals("region")) {
           if (args.length == 2) {
             sender.sendMessage("WorldGuard region for the lobby is currently " + plugin.getPluginConfig().getLobbyRegion());

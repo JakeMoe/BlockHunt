@@ -1,66 +1,69 @@
 package me.JohnMoe.BlockHunt;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import org.bukkit.block.Block;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Region {
+class Region {
 
   private Main plugin;
-  private String worldName;
-  private String regionName;
   private ProtectedRegion gameRegion;
+  private World gameWorld;
   private ArrayList<Player> players;
 
-  public Region(Main plugin) {
+  Region(Main plugin) {
     this.plugin = plugin;
     updateRegion();
     this.players = new ArrayList<>();
   }
 
-  public ProtectedRegion getRegion() {
+  ProtectedRegion getRegion() {
     return gameRegion;
   }
 
-  public void updateRegion() {
-    this.worldName = plugin.getPluginConfig().getGameWorld();
-    this.regionName = plugin.getPluginConfig().getGameRegion();
-    gameRegion = plugin.getWorldGuardPlugin().getRegionManager(plugin.getServer().getWorld(worldName)).getRegion(regionName);
+  World getWorld() {
+    return gameWorld;
   }
 
-  public boolean isInRegion(Player player) {
-    for (ProtectedRegion region : plugin.getWorldGuardPlugin().getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation())) {
-      if (region == gameRegion) {
-        return true;
-      }
-    }
-    return false;
+  void updateRegion() {
+    gameWorld = plugin.getServer().getWorld(plugin.getPluginConfig().getGameWorld());
+    gameRegion = plugin.getWorldGuardPlugin().getRegionManager(gameWorld).getRegion(plugin.getPluginConfig().getGameRegion());
   }
 
-  public boolean isInRegion(Block block) {
-    for (ProtectedRegion region : plugin.getWorldGuardPlugin().getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation())) {
-      if (region == gameRegion) {
-        return true;
-      }
-    }
-    return false;
+  Location randomLocation() {
+
+    Random random = new Random();
+
+    int minX = gameRegion.getMinimumPoint().getBlockX();
+    int maxX = gameRegion.getMaximumPoint().getBlockX();
+    int minZ = gameRegion.getMinimumPoint().getBlockZ();
+    int maxZ = gameRegion.getMaximumPoint().getBlockZ();
+
+    int rndX = random.nextInt(maxX - minX + 1) + minX;
+    int rndZ = random.nextInt(maxZ - minZ + 1) + minZ;
+    int rndY = gameWorld.getHighestBlockYAt(rndX, rndZ);
+
+    return new Location(gameWorld, rndX, rndY, rndZ);
+
   }
 
-  public void addPlayer(Player player) {
+  void addPlayer(Player player) {
     if (!(players.contains(player))) {
       players.add(player);
     }
   }
 
-  public void removePlayer(Player player) {
+  void removePlayer(Player player) {
     if (players.contains(player)) {
       players.remove(player);
     }
   }
 
-  public ArrayList<Player> getPlayers() {
+  ArrayList<Player> getPlayers() {
     return players;
   }
 

@@ -20,6 +20,7 @@ public class Main extends JavaPlugin {
   private Region gameRegion;
   private Region lobbyRegion;
   private Scoreboard scoreboard;
+  private boolean settingLobbyJoin;
   private boolean timerRunning;
   private BukkitTask timer;
   private Config pluginConfig;
@@ -50,6 +51,8 @@ public class Main extends JavaPlugin {
     pluginConfig = new Config(this);
     pluginConfig.loadConfig();
 
+    timerRunning = false;
+
     lobbyRegion = new Region(this);
     gameRegion = new Region(this);
     scoreboard = new Scoreboard(this);
@@ -62,19 +65,19 @@ public class Main extends JavaPlugin {
     getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version " + version);
   }
 
-  public Region getGameRegion() {
+  Region getGameRegion() {
     return gameRegion;
   }
 
-  public Region getLobbyRegion() {
+  Region getLobbyRegion() {
     return lobbyRegion;
   }
 
-  public Scoreboard getScoreboard() {
+  Scoreboard getScoreboard() {
     return scoreboard;
   }
 
-  public Nicky getNickyPlugin() {
+  Nicky getNickyPlugin() {
     if (nickyPlugin == null) {
       Plugin plugin = getServer().getPluginManager().getPlugin("Nicky");
       if ((plugin == null) || (!(plugin instanceof Nicky))) {
@@ -86,15 +89,15 @@ public class Main extends JavaPlugin {
     return nickyPlugin;
   }
 
-  public Config getPluginConfig() {
+  Config getPluginConfig() {
     return pluginConfig;
   }
 
-  public BukkitTask getTimer() {
+  BukkitTask getTimer() {
     return timer;
   }
 
-  public WorldGuardPlugin getWorldGuardPlugin() {
+  WorldGuardPlugin getWorldGuardPlugin() {
     if (worldGuardPlugin == null) {
       Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
       if ((plugin == null) || (!(plugin instanceof WorldGuardPlugin))) {
@@ -106,23 +109,31 @@ public class Main extends JavaPlugin {
     return worldGuardPlugin;
   }
 
-  public boolean isTimerRunning() {
+  boolean isSettingLobbyJoin() {
+    return settingLobbyJoin;
+  }
+
+  void setSettingLobbyJoin(boolean settingLobbyJoin) {
+    this.settingLobbyJoin = settingLobbyJoin;
+  }
+
+  boolean isTimerRunning() {
     return timerRunning;
   }
 
-  public void setTimerRunning(boolean timerRunning) {
+  void setTimerRunning(boolean timerRunning) {
     this.timerRunning = timerRunning;
   }
 
-  public void startTimer(BukkitRunnable bukkitRunnable) {
+  void startTimer(BukkitRunnable bukkitRunnable) {
     timer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getHuntDuration() * 20);
   }
 
-  public String getAuthor() {
+  String getAuthor() {
     return author;
   }
 
-  public String getVersion() {
+  String getVersion() {
     return version;
   }
 
