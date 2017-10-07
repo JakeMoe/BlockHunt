@@ -3,11 +3,13 @@ package me.JohnMoe.BlockHunt;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import io.loyloy.nicky.Nicky;
+import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -25,6 +27,8 @@ public class Main extends JavaPlugin {
   private BukkitTask timer;
   private Config pluginConfig;
   private Nicky nickyPlugin;
+  private HashMap<UUID, Double> originalHealth;
+  private HashMap<UUID, Location> originalLocations;
   TreeMap<UUID, Integer> score;
   private WorldGuardPlugin worldGuardPlugin;
 
@@ -53,11 +57,12 @@ public class Main extends JavaPlugin {
 
     timerRunning = false;
 
-    lobbyRegion = new Region(this);
-    gameRegion = new Region(this);
+    lobbyRegion = new Region("lobby", this);
+    gameRegion = new Region("game", this);
     scoreboard = new Scoreboard(this);
     getCommand("bh").setExecutor(new Command(this));
-    getServer().getPluginManager().registerEvents(new Listener(this), this);
+    getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+    getServer().getPluginManager().registerEvents(new HitListener(this), this);
   }
 
   @Override
@@ -87,6 +92,22 @@ public class Main extends JavaPlugin {
       }
     }
     return nickyPlugin;
+  }
+
+  HashMap<UUID, Double> getOriginalHealth() {
+    return originalHealth;
+  }
+
+  void setOriginalHealth(UUID player, Double health) {
+    originalHealth.put(player, health);
+  }
+
+  HashMap<UUID, Location> getOriginalLocations() {
+    return originalLocations;
+  }
+
+  void setOriginalLocation(UUID player, Location location) {
+    originalLocations.put(player, location);
   }
 
   Config getPluginConfig() {

@@ -10,55 +10,75 @@ import java.util.Random;
 
 class Region {
 
+  private String name;
   private Main plugin;
-  private ProtectedRegion gameRegion;
-  private World gameWorld;
+  private ProtectedRegion region;
+  private World world;
   private ArrayList<Player> players;
 
-  Region(Main plugin) {
+  Region(String name, Main plugin) {
+    this.name = name;
     this.plugin = plugin;
     updateRegion();
     this.players = new ArrayList<>();
   }
 
   ProtectedRegion getRegion() {
-    return gameRegion;
+    return region;
   }
 
   World getWorld() {
-    return gameWorld;
+    return world;
   }
 
   void updateRegion() {
-    gameWorld = plugin.getServer().getWorld(plugin.getPluginConfig().getGameWorld());
-    gameRegion = plugin.getWorldGuardPlugin().getRegionManager(gameWorld).getRegion(plugin.getPluginConfig().getGameRegion());
+    if (name.equals("game")) {
+      world = plugin.getServer().getWorld(plugin.getPluginConfig().getGameWorld());
+      region = plugin.getWorldGuardPlugin().getRegionManager(world).getRegion(plugin.getPluginConfig().getGameRegion());
+    } else if (name.equals("lobby")) {
+      world = plugin.getServer().getWorld(plugin.getPluginConfig().getLobbyWorld());
+      region = plugin.getWorldGuardPlugin().getRegionManager(world).getRegion(plugin.getPluginConfig().getLobbyRegion());
+    }
   }
 
   Location randomLocation() {
 
     Random random = new Random();
 
-    int minX = gameRegion.getMinimumPoint().getBlockX();
-    int maxX = gameRegion.getMaximumPoint().getBlockX();
-    int minZ = gameRegion.getMinimumPoint().getBlockZ();
-    int maxZ = gameRegion.getMaximumPoint().getBlockZ();
+    int minX = region.getMinimumPoint().getBlockX();
+    int maxX = region.getMaximumPoint().getBlockX();
+    int minZ = region.getMinimumPoint().getBlockZ();
+    int maxZ = region.getMaximumPoint().getBlockZ();
 
     int rndX = random.nextInt(maxX - minX + 1) + minX;
     int rndZ = random.nextInt(maxZ - minZ + 1) + minZ;
-    int rndY = gameWorld.getHighestBlockYAt(rndX, rndZ);
+    int rndY = world.getHighestBlockYAt(rndX, rndZ);
 
-    return new Location(gameWorld, rndX, rndY, rndZ);
+    return new Location(world, rndX, rndY, rndZ);
 
   }
 
   void addPlayer(Player player) {
     if (!(players.contains(player))) {
+      plugin.setOriginalHealth(player.getUniqueId(), player.getHealth());
+      plugin.setOriginalLocation(player.getUniqueId(), player.getLocation());
+      player.teleport(randomLocation());
       players.add(player);
     }
   }
 
   void removePlayer(Player player) {
     if (players.contains(player)) {
+      player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
+      player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
+      players.remove(player);
+    }
+  }
+
+  void removePlayers() {
+    for (Player player : players) {
+      player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
+      player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
       players.remove(player);
     }
   }

@@ -27,34 +27,43 @@ public class Command implements CommandExecutor {
     if ((!(sender instanceof Player)) || (sender.hasPermission("BlockParty.bh"))) {
       if (args.length == 0) {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v" + plugin.getVersion() + ChatColor.WHITE + " by " + ChatColor.AQUA + plugin.getAuthor());
+      // bh help
       } else if (args[0].equals("help")) {
         if (args.length == 1) {
           showSyntax(sender, "bh");
         } else {
           showSyntax(sender, args[1]);
         }
+      // bh start
       } else if (args[0].equals("start")) {
         if (args.length == 1) {
           startHunt(sender);
         } else {
           showSyntax(sender, args[0]);
         }
+      // bh stop
       } else if (args[0].equals("stop")) {
         if (args.length == 1) {
           stopHunt();
         } else {
           showSyntax(sender, args[0]);
         }
+      // bh configuration commands after this; don't reconfigure while a game is running!
       } else if (plugin.isTimerRunning()) {
         sender.sendMessage(ChatColor.RED + "You can't configure the hunt while a hunt is in progress!");
+      // bh game
       } else if (args[0].equals("game")) {
+        // bh game help
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
         } else if (args[1].equals("region")) {
+          // bh game region
           if (args.length == 2) {
             sender.sendMessage("WorldGuard region for the game is currently " + plugin.getPluginConfig().getGameRegion());
+          // bh game region help
           } else if (args[2].equals("help")) {
             showSyntax(sender, args[0] + args[1]);
+          // bh game region <region>
           } else if (args.length == 3) {
             plugin.getPluginConfig().setGameRegion(args[2]);
             sender.sendMessage("WorldGuard region for the game is now " + plugin.getPluginConfig().getGameRegion());
@@ -62,10 +71,13 @@ public class Command implements CommandExecutor {
             showSyntax(sender, args[0] + args[1]);
           }
         } else if (args[1].equals("world")) {
+          // bh game world
           if (args.length == 2) {
             sender.sendMessage("Bukkit world for the game is currently " + plugin.getPluginConfig().getGameWorld());
+          // bh game world help
           } else if (args[2].equals("help")) {
             showSyntax(sender, args[0] + args[1]);
+          // bh game world <world>
           } else if (args.length == 3) {
             plugin.getPluginConfig().setGameWorld(args[2]);
             sender.sendMessage(" Bukkit world for the game is now " + plugin.getPluginConfig().getGameWorld());
@@ -73,22 +85,30 @@ public class Command implements CommandExecutor {
             showSyntax(sender, args[0] + args[1]);
           }
         }
+      // bh lobby
       } else if (args[0].equals("lobby")) {
+        // bh lobby help
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
         } else if (args[1].equals("join")) {
+          // bh lobby join
           if (args.length == 2) {
             sender.sendMessage("Lobby join is currently " + plugin.getPluginConfig().getLobbyJoinLocation().getBlockX() + "," + plugin.getPluginConfig().getLobbyJoinLocation().getBlockY() + "," + plugin.getPluginConfig().getLobbyJoinLocation().getBlockZ());
+          // bh lobby set
           } else if (args[2].equals("set")) {
+            sender.sendMessage("Click the block to use to join the lobby");
             plugin.setSettingLobbyJoin(true);
           } else {
             showSyntax(sender, args[0] + args[1]);
           }
         } else if (args[1].equals("region")) {
+          // bh lobby region
           if (args.length == 2) {
             sender.sendMessage("WorldGuard region for the lobby is currently " + plugin.getPluginConfig().getLobbyRegion());
+          // bh lobby region help
           } else if (args[2].equals("help")) {
             showSyntax(sender, args[0] + args[1]);
+          // bh lobby region <region>
           } else if (args.length == 3) {
             plugin.getPluginConfig().setLobbyRegion(args[2]);
             sender.sendMessage("WorldGuard region for the lobby is now " + plugin.getPluginConfig().getLobbyRegion());
@@ -236,16 +256,13 @@ public class Command implements CommandExecutor {
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
     plugin.setTimerRunning(false);
     plugin.getScoreboard().clear();
+    plugin.getGameRegion().removePlayers();
     Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
     Iterator iterator = sortedMap.entrySet().iterator();
     UUID winner = (UUID) ((Map.Entry) iterator.next()).getKey();
     String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
 
-    ArrayList<String[]> prizes = plugin.getPluginConfig().getPrizes();
-    String message = (prizes.get(0))[1].replaceAll("%player%", playerName);
-
-    plugin.getServer().broadcastMessage(playerName + " has won the Hunt and receives " + (prizes.get(0))[0]);
-    plugin.getServer().broadcastMessage(message);
+    plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
   }
 
   private void startHunt(CommandSender sender) {

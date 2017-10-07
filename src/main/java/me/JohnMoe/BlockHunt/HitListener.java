@@ -3,16 +3,17 @@ package me.JohnMoe.BlockHunt;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.UUID;
 
-public class Listener implements org.bukkit.event.Listener {
+public class HitListener implements Listener {
 
   private Main plugin;
 
-  Listener(Main plugin) {
+  HitListener(Main plugin) {
     this.plugin = plugin;
   }
 
@@ -24,8 +25,7 @@ public class Listener implements org.bukkit.event.Listener {
       plugin.getPluginConfig().setLobbyJoinLocation(event.getClickedBlock().getLocation());
       plugin.setSettingLobbyJoin(false);
     } else if ((event.getAction() == Action.LEFT_CLICK_BLOCK) &&
-               (event.getClickedBlock().getLocation() == plugin.getPluginConfig().getLobbyJoinLocation())) {
-      event.getPlayer().teleport(plugin.getLobbyRegion().randomLocation());
+               (event.getClickedBlock().getLocation().equals(plugin.getPluginConfig().getLobbyJoinLocation()))) {
       plugin.getLobbyRegion().addPlayer(event.getPlayer());
     } else if (plugin.getGameRegion().getRegion().contains(event.getClickedBlock().getX(), event.getClickedBlock().getY(), event.getClickedBlock().getZ())) {
       if ((plugin.isTimerRunning()) &&
@@ -42,8 +42,8 @@ public class Listener implements org.bukkit.event.Listener {
         }
         plugin.score.put(playerUuid, pScore);
         plugin.getScoreboard().refresh();
+        event.setCancelled(true);
       }
-      event.setCancelled(true);
     }
   }
 

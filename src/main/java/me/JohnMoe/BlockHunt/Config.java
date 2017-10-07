@@ -4,9 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class Config {
 
   private Main plugin;
@@ -29,6 +26,21 @@ class Config {
 
     if (!fileConfig.contains("BlockHunt.areas.game.World")) {
       fileConfig.set("BlockHunt.areas.game.World", "world");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Join.X")) {
+      fileConfig.set("BlockHunt.areas.lobby.Join.X", 0);
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Join.Y")) {
+      fileConfig.set("BlockHunt.areas.lobby.Join.Y", 0);
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Join.Z")) {
+      fileConfig.set("BlockHunt.areas.lobby.Join.Z", 0);
       booChanged = true;
     }
 
@@ -59,16 +71,6 @@ class Config {
 
     if (!fileConfig.contains("BlockHunt.messages.Stop")) {
       fileConfig.set("BlockHunt.messages.Stop", "The Hunt has been stopped!");
-      booChanged = true;
-    }
-
-    if (!fileConfig.contains("BlockHunt.prizes")) {
-      List<String[]> prizes = new ArrayList<>();
-      String[] prize = new String[2];
-      prize[0] = "everyone's adoration";
-      prize[1] = "say %player% has won the Hunt! Everyone give them a round of applause!";
-      prizes.add(prize);
-      fileConfig.set("BlockHunt.settings.prizes", prizes);
       booChanged = true;
     }
 
@@ -180,10 +182,6 @@ class Config {
   void setMaterial(String material) {
     fileConfig.set("BlockHunt.settings.materialToFind", material);
     plugin.saveConfig();
-  }
-
-  ArrayList<String[]> getPrizes() {
-    return (ArrayList<String[]>) fileConfig.get("BlockHunt.prizes");
   }
 
   String getScoreboardTitle() {
