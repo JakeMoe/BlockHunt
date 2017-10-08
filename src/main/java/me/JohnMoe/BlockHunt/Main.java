@@ -24,7 +24,8 @@ public class Main extends JavaPlugin {
   private Scoreboard scoreboard;
   private boolean settingLobbyJoin;
   private boolean timerRunning;
-  private BukkitTask timer;
+  private BukkitTask gameTimer;
+  private BukkitTask lobbyTimer;
   private Config pluginConfig;
   private Nicky nickyPlugin;
   private HashMap<UUID, Double> originalHealth;
@@ -114,8 +115,8 @@ public class Main extends JavaPlugin {
     return pluginConfig;
   }
 
-  BukkitTask getTimer() {
-    return timer;
+  BukkitTask getGameTimer() {
+    return gameTimer;
   }
 
   WorldGuardPlugin getWorldGuardPlugin() {
@@ -142,12 +143,20 @@ public class Main extends JavaPlugin {
     return timerRunning;
   }
 
-  void setTimerRunning(boolean timerRunning) {
+  void setGameRunning(boolean timerRunning) {
     this.timerRunning = timerRunning;
   }
 
-  void startTimer(BukkitRunnable bukkitRunnable) {
-    timer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getHuntDuration() * 20);
+  void startGameTimer(BukkitRunnable bukkitRunnable) {
+    gameTimer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getHuntDuration() * 20);
+  }
+
+  BukkitTask getLobbyTimer() {
+    return lobbyTimer;
+  }
+
+  void startLobbyTimer(BukkitRunnable bukkitRunnable) {
+    lobbyTimer = bukkitRunnable.runTaskLater(this, 20);
   }
 
   String getAuthor() {

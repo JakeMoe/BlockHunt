@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -254,7 +253,7 @@ public class Command implements CommandExecutor {
   private void endHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
-    plugin.setTimerRunning(false);
+    plugin.setGameRunning(false);
     plugin.getScoreboard().clear();
     plugin.getGameRegion().removePlayers();
     Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
@@ -273,9 +272,9 @@ public class Command implements CommandExecutor {
       plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStartMessage());
       plugin.score = new TreeMap<>();
       plugin.getScoreboard().reset();
-      plugin.setTimerRunning(true);
+      plugin.setGameRunning(true);
 
-      plugin.startTimer(new BukkitRunnable() {
+      plugin.startGameTimer(new BukkitRunnable() {
         @Override
         public void run() {
           endHunt();
@@ -287,8 +286,8 @@ public class Command implements CommandExecutor {
   private void stopHunt() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
-    plugin.getTimer().cancel();
-    plugin.setTimerRunning(false);
+    plugin.getGameTimer().cancel();
+    plugin.setGameRunning(false);
     plugin.getScoreboard().clear();
   }
 

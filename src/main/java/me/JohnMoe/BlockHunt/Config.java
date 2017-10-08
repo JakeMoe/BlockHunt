@@ -44,8 +44,23 @@ class Config {
       booChanged = true;
     }
 
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Max")) {
+      fileConfig.set("BlockHunt.areas.lobby.Max", 1);
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Min")) {
+      fileConfig.set("BlockHunt.areas.lobby.Min", 1);
+      booChanged = true;
+    }
+
     if (!fileConfig.contains("BlockHunt.areas.lobby.Region")) {
       fileConfig.set("BlockHunt.areas.lobby.Region", "BlockHuntLobby");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.areas.lobby.Timer")) {
+      fileConfig.set("BlockHunt.areas.lobby.Timer", 5);
       booChanged = true;
     }
 
@@ -121,6 +136,14 @@ class Config {
     plugin.saveConfig();
   }
 
+  int getLobbyDuration() {
+    return fileConfig.getInt("BlockHunt.areas.lobby.Timer");
+  }
+
+  void setLobbyDuration(int seconds) {
+    fileConfig.set("BlockHunt.areas.lobby.Timer", seconds);
+  }
+
   Location getLobbyJoinLocation() {
     int x = Integer.valueOf(fileConfig.getString("BlockHunt.areas.lobby.Join.X"));
     int y = Integer.valueOf(fileConfig.getString("BlockHunt.areas.lobby.Join.Y"));
@@ -133,6 +156,22 @@ class Config {
     fileConfig.set("BlockHunt.areas.lobby.Join.Y", location.getBlockY());
     fileConfig.set("BlockHunt.areas.lobby.Join.Z", location.getBlockZ());
     plugin.saveConfig();
+  }
+
+  int getLobbyMax() {
+    return fileConfig.getInt("BlockHunt.areas.lobby.Max");
+  }
+
+  void setLobbyMax(int max) {
+    fileConfig.set("BlockHunt.areas.lobby.Max", max);
+  }
+
+  int getLobbyMin() {
+    return fileConfig.getInt("BlockHunt.areas.lobby.Min");
+  }
+
+  void setLobbyMin(int min) {
+    fileConfig.set("BlockHunt.areas.lobby.Min", min);
   }
 
   String getGameRegion() {
