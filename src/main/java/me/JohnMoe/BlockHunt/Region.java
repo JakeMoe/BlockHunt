@@ -60,30 +60,43 @@ class Region {
   }
 
   void addPlayer(Player player) {
-    if (!players.contains(player) && players.size() < plugin.getPluginConfig().getLobbyMax()) {
-      plugin.setOriginalHealth(player.getUniqueId(), player.getHealth());
-      plugin.setOriginalLocation(player.getUniqueId(), player.getLocation());
-      player.teleport(randomLocation());
-      players.add(player);
-      if (players.size() >= plugin.getPluginConfig().getLobbyMin()) {
-        plugin.startLobbyTimer(new BukkitRunnable() {
+    if (!players.contains(player)) {
+      if (players.size() < plugin.getPluginConfig().getLobbyMax()) {
 
-          int count = plugin.getPluginConfig().getLobbyDuration();
+        plugin.setOriginalHealth(player.getUniqueId(), player.getHealth());
+        plugin.setOriginalLocation(player.getUniqueId(), player.getLocation());
+        player.teleport(randomLocation());
+        players.add(player);
 
-          @Override
-          public void run() {
-            if (count > 0) {
-              for (Player player : players) {
-                player.sendMessage("The game will begin in " + count + " seconds!");
-              }
-            } else {
-              for (Player player : players) {
-                player.sendMessage("The game has begun!");
-                player.teleport(plugin.getGameRegion().randomLocation());
+        if (plugin.getLobbyTimer() != null) {
+          plugin.clearLobbyTimer();
+        }
+
+        if (players.size() >= plugin.getPluginConfig().getLobbyMin()) {
+          plugin.startLobbyTimer(new BukkitRunnable() {
+
+            int count = plugin.getPluginConfig().getLobbyDuration();
+
+            @Override
+            public void run() {
+              if (count > 0) {
+                for (Player player : players) {
+                  player.sendMessage("The game will begin in " + count + " seconds!");
+                }
+              } else {
+                for (Player player : players) {
+                  player.teleport(plugin.getGameRegion().randomLocation());
+                  player.sendMessage("The game has begun!");
+                  players.remove(player);
+                }
+                plugin.getLobbyTimer().cancel();
               }
             }
-          }
-        });
+
+          });
+        } else {
+          player.sendMessage("The game lobby is full!");
+        }
       }
     }
   }

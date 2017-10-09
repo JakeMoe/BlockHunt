@@ -5,13 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.TreeMap;
 
 public class Command implements CommandExecutor {
 
@@ -36,20 +29,20 @@ public class Command implements CommandExecutor {
       // bh start
       } else if (args[0].equals("start")) {
         if (args.length == 1) {
-          startHunt(sender);
+          plugin.getGameManager().start(sender);
         } else {
           showSyntax(sender, args[0]);
         }
       // bh stop
       } else if (args[0].equals("stop")) {
         if (args.length == 1) {
-          stopHunt();
+          plugin.getGameManager().stop();
         } else {
           showSyntax(sender, args[0]);
         }
       // bh configuration commands after this; don't reconfigure while a game is running!
-      } else if (plugin.isTimerRunning()) {
-        sender.sendMessage(ChatColor.RED + "You can't configure the hunt while a hunt is in progress!");
+      } else if (plugin.getGameTimer() != null) {
+        sender.sendMessage(ChatColor.RED + "You can't configure the game while a game is in progress!");
       // bh game
       } else if (args[0].equals("game")) {
         // bh game help
@@ -248,47 +241,6 @@ public class Command implements CommandExecutor {
 
     return true;
 
-  }
-
-  private void endHunt() {
-    plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
-    plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
-    plugin.setGameRunning(false);
-    plugin.getScoreboard().clear();
-    plugin.getGameRegion().removePlayers();
-    Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
-    Iterator iterator = sortedMap.entrySet().iterator();
-    UUID winner = (UUID) ((Map.Entry) iterator.next()).getKey();
-    String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
-
-    plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
-  }
-
-  private void startHunt(CommandSender sender) {
-    if (plugin.isTimerRunning()) {
-      sender.sendMessage("The Hunt has already begun! Stop the Hunt if you want to start another.");
-    } else {
-      plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Starting the hunt");
-      plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStartMessage());
-      plugin.score = new TreeMap<>();
-      plugin.getScoreboard().reset();
-      plugin.setGameRunning(true);
-
-      plugin.startGameTimer(new BukkitRunnable() {
-        @Override
-        public void run() {
-          endHunt();
-        }
-      });
-    }
-  }
-
-  private void stopHunt() {
-    plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
-    plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
-    plugin.getGameTimer().cancel();
-    plugin.setGameRunning(false);
-    plugin.getScoreboard().clear();
   }
 
   private void showSyntax(CommandSender sender, String command) {

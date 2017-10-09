@@ -15,7 +15,7 @@ public class DamageListener implements Listener {
 
   @EventHandler
   public void onPlayerDamage(EntityDamageEvent event) {
-    if (plugin.isTimerRunning() &&
+    if ((plugin.getGameTimer() != null) &&
         plugin.getGameRegion().getRegion().contains(event.getEntity().getLocation().getBlockX(), event.getEntity().getLocation().getBlockY(), event.getEntity().getLocation().getBlockZ()) &&
         event.getEntity() instanceof Player &&
         ((Player) event.getEntity()).getHealth() < event.getFinalDamage()) {

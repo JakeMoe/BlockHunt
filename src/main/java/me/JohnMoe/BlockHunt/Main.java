@@ -19,11 +19,11 @@ public class Main extends JavaPlugin {
   private static final String version = "0.8";
   private static final String author = "Jake (John) Moe";
 
+  private GameManager gameManager;
   private Region gameRegion;
   private Region lobbyRegion;
   private Scoreboard scoreboard;
   private boolean settingLobbyJoin;
-  private boolean timerRunning;
   private BukkitTask gameTimer;
   private BukkitTask lobbyTimer;
   private Config pluginConfig;
@@ -56,8 +56,7 @@ public class Main extends JavaPlugin {
     pluginConfig = new Config(this);
     pluginConfig.loadConfig();
 
-    timerRunning = false;
-
+    gameManager = new GameManager(this);
     lobbyRegion = new Region("lobby", this);
     gameRegion = new Region("game", this);
     scoreboard = new Scoreboard(this);
@@ -69,6 +68,10 @@ public class Main extends JavaPlugin {
   @Override
   public void onLoad() {
     getServer().getLogger().log(Level.INFO, "[BlockHunt] Loading version " + version);
+  }
+
+  GameManager getGameManager() {
+    return gameManager;
   }
 
   Region getGameRegion() {
@@ -115,10 +118,6 @@ public class Main extends JavaPlugin {
     return pluginConfig;
   }
 
-  BukkitTask getGameTimer() {
-    return gameTimer;
-  }
-
   WorldGuardPlugin getWorldGuardPlugin() {
     if (worldGuardPlugin == null) {
       Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
@@ -139,16 +138,22 @@ public class Main extends JavaPlugin {
     this.settingLobbyJoin = settingLobbyJoin;
   }
 
-  boolean isTimerRunning() {
-    return timerRunning;
+  void clearGameTimer() {
+    gameTimer.cancel();
+    gameTimer = null;
   }
 
-  void setGameRunning(boolean timerRunning) {
-    this.timerRunning = timerRunning;
+  BukkitTask getGameTimer() {
+    return gameTimer;
   }
 
   void startGameTimer(BukkitRunnable bukkitRunnable) {
     gameTimer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getHuntDuration() * 20);
+  }
+
+  void clearLobbyTimer() {
+    lobbyTimer.cancel();
+    lobbyTimer = null;
   }
 
   BukkitTask getLobbyTimer() {
@@ -156,7 +161,7 @@ public class Main extends JavaPlugin {
   }
 
   void startLobbyTimer(BukkitRunnable bukkitRunnable) {
-    lobbyTimer = bukkitRunnable.runTaskLater(this, 20);
+    lobbyTimer = bukkitRunnable.runTaskTimer(this, 5, 20);
   }
 
   String getAuthor() {

@@ -45,7 +45,7 @@ class Config {
     }
 
     if (!fileConfig.contains("BlockHunt.areas.lobby.Max")) {
-      fileConfig.set("BlockHunt.areas.lobby.Max", 1);
+      fileConfig.set("BlockHunt.areas.lobby.Max", 5);
       booChanged = true;
     }
 

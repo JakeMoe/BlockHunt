@@ -28,7 +28,7 @@ public class HitListener implements Listener {
                (event.getClickedBlock().getLocation().equals(plugin.getPluginConfig().getLobbyJoinLocation()))) {
       plugin.getLobbyRegion().addPlayer(event.getPlayer());
     } else if (plugin.getGameRegion().getRegion().contains(event.getClickedBlock().getX(), event.getClickedBlock().getY(), event.getClickedBlock().getZ())) {
-      if ((plugin.isTimerRunning()) &&
+      if ((plugin.getGameTimer() != null) &&
           (event.getAction() == Action.LEFT_CLICK_BLOCK) &&
           (event.getClickedBlock().getType() == plugin.getPluginConfig().getMaterial())) {
         event.getClickedBlock().setType(Material.AIR);
