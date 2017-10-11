@@ -1,6 +1,5 @@
 package me.JohnMoe.BlockHunt;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Iterator;
@@ -17,7 +16,7 @@ class GameManager {
     this.plugin = plugin;
   }
 
-  void end() {
+  private void end() {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
     plugin.getScoreboard().clear();
@@ -29,6 +28,8 @@ class GameManager {
     String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
 
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
+
+    plugin.getGameRegion().removePlayers();
   }
 
   void start() {
@@ -43,6 +44,8 @@ class GameManager {
           end();
         }
       });
+    } else {
+      plugin.getServer().broadcastMessage("A game is already in progress.");
     }
   }
 
@@ -55,6 +58,7 @@ class GameManager {
       plugin.getGameTimer().cancel();
       plugin.getScoreboard().clear();
       plugin.clearGameTimer();
+      plugin.getGameRegion().removePlayers();
     }
   }
 

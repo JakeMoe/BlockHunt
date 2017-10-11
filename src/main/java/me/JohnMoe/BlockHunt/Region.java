@@ -42,7 +42,7 @@ class Region {
     }
   }
 
-  Location randomLocation() {
+  private Location randomLocation() {
 
     Random random = new Random();
 
@@ -82,8 +82,8 @@ class Region {
               if (count > 0) {
                 for (Player player : players) {
                   player.sendMessage("The game will begin in " + count + " seconds!");
-                  count--;
                 }
+                count--;
               } else {
                 for (Player player : players) {
                   player.teleport(plugin.getGameRegion().randomLocation());
@@ -113,9 +113,7 @@ class Region {
 
   void removePlayers() {
     for (Player player : players) {
-      player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
-      player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
-      players.remove(player);
+      removePlayer(player);
     }
   }
 
