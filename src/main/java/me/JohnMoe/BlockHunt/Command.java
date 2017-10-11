@@ -29,14 +29,22 @@ public class Command implements CommandExecutor {
       // bh start
       } else if (args[0].equals("start")) {
         if (args.length == 1) {
-          plugin.getGameManager().start(sender);
+          if (plugin.getGameTimer() == null) {
+            plugin.getGameManager().start();
+          } else {
+            sender.sendMessage("The Hunt has already begun! Stop the Hunt if you want to start another.");
+          }
         } else {
           showSyntax(sender, args[0]);
         }
       // bh stop
       } else if (args[0].equals("stop")) {
         if (args.length == 1) {
-          plugin.getGameManager().stop();
+          if (plugin.getGameTimer() == null) {
+            sender.sendMessage("No Hunt is in progress to stop.");
+          } else {
+            plugin.getGameManager().stop();
+          }
         } else {
           showSyntax(sender, args[0]);
         }

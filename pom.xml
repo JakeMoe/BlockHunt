@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.JohnMoe</groupId>
   <artifactId>BlockHunt</artifactId>
-  <version>0.8</version>
+  <version>0.9</version>
   <repositories>
     <repository>
       <id>Spigot Repo</id>

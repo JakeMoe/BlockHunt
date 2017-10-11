@@ -82,6 +82,7 @@ class Region {
               if (count > 0) {
                 for (Player player : players) {
                   player.sendMessage("The game will begin in " + count + " seconds!");
+                  count--;
                 }
               } else {
                 for (Player player : players) {
@@ -90,6 +91,7 @@ class Region {
                   players.remove(player);
                 }
                 plugin.getLobbyTimer().cancel();
+                plugin.getGameManager().start();
               }
             }
 

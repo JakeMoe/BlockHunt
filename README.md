@@ -50,3 +50,6 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
   * Added prizes
   * Added Regions class
   * Code cleanup
+* 0.9 - Jake Moe - 11 October 2017
+  * Transfer to lobby then to game works
+  * Lobby and game timers work

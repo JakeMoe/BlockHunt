@@ -31,7 +31,7 @@ class GameManager {
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
   }
 
-  void start(CommandSender sender) {
+  void start() {
     if (plugin.getGameTimer() == null) {
       plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStartMessage());
       plugin.score = new TreeMap<>();
@@ -43,17 +43,19 @@ class GameManager {
           end();
         }
       });
-    } else {
-      sender.sendMessage("The Hunt has already begun! Stop the Hunt if you want to start another.");
     }
   }
 
   void stop() {
-    plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
-    plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
-    plugin.getGameTimer().cancel();
-    plugin.getScoreboard().clear();
-    plugin.clearGameTimer();
+    if (plugin.getGameTimer() == null) {
+      plugin.getServer().broadcastMessage("The game has not yet begun!");
+    } else {
+      plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
+      plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
+      plugin.getGameTimer().cancel();
+      plugin.getScoreboard().clear();
+      plugin.clearGameTimer();
+    }
   }
 
 }
