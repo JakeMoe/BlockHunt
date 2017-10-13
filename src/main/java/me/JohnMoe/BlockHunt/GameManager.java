@@ -29,7 +29,6 @@ class GameManager {
 
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
 
-    plugin.getGameRegion().removePlayers();
   }
 
   void start() {

@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
 
 class Region {
 
@@ -104,6 +105,7 @@ class Region {
   }
 
   void removePlayer(Player player) {
+    plugin.getLogger().log(Level.INFO, "[BlockHunt] In removePlayer - " + player.getDisplayName());
     if (players.contains(player)) {
       player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
       player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
@@ -112,7 +114,9 @@ class Region {
   }
 
   void removePlayers() {
+    plugin.getLogger().log(Level.INFO, "[BlockHunt] In removePlayers - " + players.size() + " players");
     for (Player player : players) {
+      plugin.getLogger().log(Level.INFO, "[BlockHunt] Removing " + player.getDisplayName());
       removePlayer(player);
     }
   }
