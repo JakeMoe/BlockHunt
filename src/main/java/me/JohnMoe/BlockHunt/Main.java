@@ -16,12 +16,12 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private static final String version = "0.9";
+  private static final String version = "0.10";
   private static final String author = "Jake Moe";
 
   private GameManager gameManager;
-  private Region gameRegion;
-  private Region lobbyRegion;
+  private GameRegion gameRegion;
+  private LobbyRegion lobbyRegion;
   private Scoreboard scoreboard;
   private boolean settingLobbyJoin;
   private BukkitTask gameTimer;
@@ -57,8 +57,8 @@ public class Main extends JavaPlugin {
     pluginConfig.loadConfig();
 
     gameManager = new GameManager(this);
-    lobbyRegion = new Region("lobby", this);
-    gameRegion = new Region("game", this);
+    lobbyRegion = new LobbyRegion("lobby", this);
+    gameRegion = new GameRegion("game", this);
     scoreboard = new Scoreboard(this);
 
     originalHealth = new HashMap<>();

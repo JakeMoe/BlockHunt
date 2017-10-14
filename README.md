@@ -53,3 +53,5 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
 * 0.9 - Jake Moe - 11 October 2017
   * Transfer to lobby then to game works
   * Lobby and game timers work
+* 0.10 - Jake Moe - 14 October 2017
+  * Split out Lobby and Game regions

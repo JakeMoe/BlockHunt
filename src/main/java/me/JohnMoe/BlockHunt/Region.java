@@ -4,22 +4,19 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 
-class Region {
+abstract class Region {
 
-  private String name;
-  private Main plugin;
-  private ProtectedRegion region;
-  private World world;
-  private ArrayList<Player> players;
+  Main plugin;
+  ProtectedRegion region;
+  World world;
+  ArrayList<Player> players;
 
-  Region(String name, Main plugin) {
-    this.name = name;
+  Region(Main plugin) {
     this.plugin = plugin;
     updateRegion();
     this.players = new ArrayList<>();
@@ -33,17 +30,9 @@ class Region {
     return world;
   }
 
-  void updateRegion() {
-    if (name.equals("game")) {
-      world = plugin.getServer().getWorld(plugin.getPluginConfig().getGameWorld());
-      region = plugin.getWorldGuardPlugin().getRegionManager(world).getRegion(plugin.getPluginConfig().getGameRegion());
-    } else if (name.equals("lobby")) {
-      world = plugin.getServer().getWorld(plugin.getPluginConfig().getLobbyWorld());
-      region = plugin.getWorldGuardPlugin().getRegionManager(world).getRegion(plugin.getPluginConfig().getLobbyRegion());
-    }
-  }
+  abstract void updateRegion();
 
-  private Location randomLocation() {
+  Location randomLocation() {
 
     Random random = new Random();
 
@@ -60,66 +49,7 @@ class Region {
 
   }
 
-  void addPlayer(Player player) {
-    if (!players.contains(player)) {
-      if (players.size() < plugin.getPluginConfig().getLobbyMax()) {
-
-        plugin.setOriginalHealth(player.getUniqueId(), player.getHealth());
-        plugin.setOriginalLocation(player.getUniqueId(), player.getLocation());
-        player.teleport(randomLocation());
-        players.add(player);
-
-        if (plugin.getLobbyTimer() != null) {
-          plugin.clearLobbyTimer();
-        }
-
-        if (players.size() >= plugin.getPluginConfig().getLobbyMin()) {
-          plugin.startLobbyTimer(new BukkitRunnable() {
-
-            int count = plugin.getPluginConfig().getLobbyDuration();
-
-            @Override
-            public void run() {
-              if (count > 0) {
-                for (Player player : players) {
-                  player.sendMessage("The game will begin in " + count + " seconds!");
-                }
-                count--;
-              } else {
-                for (Player player : players) {
-                  player.teleport(plugin.getGameRegion().randomLocation());
-                  player.sendMessage("The game has begun!");
-                  players.remove(player);
-                }
-                plugin.getLobbyTimer().cancel();
-                plugin.getGameManager().start();
-              }
-            }
-
-          });
-        } else {
-          player.sendMessage("The game lobby is full!");
-        }
-      }
-    }
-  }
-
-  void removePlayer(Player player) {
-    plugin.getLogger().log(Level.INFO, "[BlockHunt] In removePlayer - " + player.getDisplayName());
-    if (players.contains(player)) {
-      player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
-      player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
-      players.remove(player);
-    }
-  }
-
-  void removePlayers() {
-    plugin.getLogger().log(Level.INFO, "[BlockHunt] In removePlayers - " + players.size() + " players");
-    for (Player player : players) {
-      plugin.getLogger().log(Level.INFO, "[BlockHunt] Removing " + player.getDisplayName());
-      removePlayer(player);
-    }
-  }
+  abstract void addPlayer(Player player);
 
   ArrayList<Player> getPlayers() {
     return players;
