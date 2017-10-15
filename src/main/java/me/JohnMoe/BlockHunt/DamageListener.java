@@ -9,7 +9,7 @@ public class DamageListener implements Listener {
 
   private Main plugin;
 
-  public DamageListener(Main plugin) {
+  DamageListener(Main plugin) {
     this.plugin = plugin;
   }
 

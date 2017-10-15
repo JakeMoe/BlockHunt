@@ -33,15 +33,14 @@ class Scoreboard {
 
   void refresh() {
 
-    int total = plugin.score.size();
+    int total = plugin.getAllScores().size();
     if (total > 10) {
       total = 10;
     }
 
     Objective objective = scoreboard.getObjective("score");
 
-    Map<UUID, Integer> sortedMap = Util.sortTreeMapByValue(plugin.score);
-    Iterator iterator = sortedMap.entrySet().iterator();
+    Iterator iterator = Util.sortByValue(plugin.getAllScores()).entrySet().iterator();
 
     for (int i = 0; i < total; i++) {
       Map.Entry entry = (Map.Entry) iterator.next();

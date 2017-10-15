@@ -3,6 +3,8 @@ package me.JohnMoe.BlockHunt;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Iterator;
+
 class LobbyRegion extends Region {
 
   LobbyRegion(Main plugin) {
@@ -17,8 +19,12 @@ class LobbyRegion extends Region {
       }
 
       plugin.setOriginalHealth(player.getUniqueId(), player.getHealth());
+      plugin.setOriginalInventory(player.getUniqueId(), player.getInventory().getContents());
+//      plugin.setOriginalItemInHand(player.getUniqueId(), player.getInventory().getItemInMainHand());
+      plugin.setOriginalArmor(player.getUniqueId(), player.getInventory().getArmorContents());
       plugin.setOriginalLocation(player.getUniqueId(), player.getLocation());
-      player.teleport(randomLocation());
+      player.getInventory().clear();
+      player.teleport(getRandomLocation());
       players.add(player);
 
       if (players.size() >= plugin.getPluginConfig().getLobbyMin()) {
@@ -34,9 +40,9 @@ class LobbyRegion extends Region {
               }
               count--;
             } else {
-              for (Player player : players) {
-                players.remove(player);
-                plugin.getGameRegion().addPlayer(player);
+              for (Iterator<Player> player = players.iterator(); player.hasNext(); ) {
+                plugin.getGameRegion().addPlayer(player.next());
+                player.remove();
               }
               plugin.getLobbyTimer().cancel();
               plugin.getGameManager().start();
@@ -48,6 +54,12 @@ class LobbyRegion extends Region {
         player.sendMessage("The game lobby is full!");
       }
     }
+  }
+
+  void removePlayer(Player player) {
+  }
+
+  void removePlayers() {
   }
 
   void updateRegion() {

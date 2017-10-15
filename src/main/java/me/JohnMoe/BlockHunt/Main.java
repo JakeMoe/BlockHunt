@@ -4,19 +4,19 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import io.loyloy.nicky.Nicky;
 import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
-import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private static final String version = "0.10";
+  private static final String version = "0.11";
   private static final String author = "Jake Moe";
 
   private GameManager gameManager;
@@ -30,7 +30,10 @@ public class Main extends JavaPlugin {
   private Nicky nickyPlugin;
   private HashMap<UUID, Double> originalHealth;
   private HashMap<UUID, Location> originalLocations;
-  TreeMap<UUID, Integer> score;
+  private HashMap<UUID, ItemStack[]> originalArmor;
+  private HashMap<UUID, ItemStack[]> originalInventory;
+//  private HashMap<UUID, ItemStack> originalItemInHand;
+  private HashMap<UUID, Integer> allScores;
   private WorldGuardPlugin worldGuardPlugin;
 
   @Override
@@ -57,14 +60,20 @@ public class Main extends JavaPlugin {
     pluginConfig.loadConfig();
 
     gameManager = new GameManager(this);
-    lobbyRegion = new LobbyRegion("lobby", this);
-    gameRegion = new GameRegion("game", this);
+    lobbyRegion = new LobbyRegion(this);
+    gameRegion = new GameRegion(this);
     scoreboard = new Scoreboard(this);
 
     originalHealth = new HashMap<>();
     originalLocations = new HashMap<>();
+    originalInventory = new HashMap<>();
+    originalArmor = new HashMap<>();
+//    originalItemInHand = new HashMap<>();
+
+    allScores = new HashMap<>();
 
     getCommand("bh").setExecutor(new Command(this));
+    getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
     getServer().getPluginManager().registerEvents(new DamageListener(this), this);
     getServer().getPluginManager().registerEvents(new HitListener(this), this);
   }
@@ -84,6 +93,22 @@ public class Main extends JavaPlugin {
 
   Region getLobbyRegion() {
     return lobbyRegion;
+  }
+
+  Integer getScore(UUID player) {
+    return allScores.get(player);
+  }
+
+  HashMap<UUID, Integer> getAllScores() {
+    return allScores;
+  }
+
+  void setScore(UUID player, int score) {
+    allScores.put(player, score);
+  }
+
+  void resetScore() {
+    allScores = new HashMap<>();
   }
 
   Scoreboard getScoreboard() {
@@ -116,6 +141,30 @@ public class Main extends JavaPlugin {
 
   void setOriginalLocation(UUID player, Location location) {
     originalLocations.put(player, location);
+  }
+
+  HashMap<UUID, ItemStack[]> getOriginalInventory() {
+    return originalInventory;
+  }
+
+  void setOriginalInventory(UUID player, ItemStack[] inventory) {
+    originalInventory.put(player, inventory);
+  }
+
+//  HashMap<UUID, ItemStack> getOriginalItemInHand() {
+//    return originalItemInHand;
+//  }
+
+//  void setOriginalItemInHand(UUID player, ItemStack item) {
+//    originalItemInHand.put(player, item);
+//  }
+
+  HashMap<UUID, ItemStack[]> getOriginalArmor() {
+    return originalArmor;
+  }
+
+  void setOriginalArmor(UUID player, ItemStack[] inventory) {
+    originalArmor.put(player, inventory);
   }
 
   Config getPluginConfig() {

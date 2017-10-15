@@ -55,3 +55,9 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
   * Lobby and game timers work
 * 0.10 - Jake Moe - 14 October 2017
   * Split out Lobby and Game regions
+* 0.11 - Jake Moe - 15 October 2017
+  * Stores inventory, health, location before game
+  * Restores inventory, health, location after game
+  * Fixed up score from public variable to private variable with public methods
+  * Found better way to sort HashMap by value; new method in Util class
+  * Bug fixes

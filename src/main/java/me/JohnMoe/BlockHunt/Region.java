@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
 
 abstract class Region {
 
@@ -32,7 +31,7 @@ abstract class Region {
 
   abstract void updateRegion();
 
-  Location randomLocation() {
+  Location getRandomLocation() {
 
     Random random = new Random();
 
@@ -50,6 +49,10 @@ abstract class Region {
   }
 
   abstract void addPlayer(Player player);
+
+  abstract void removePlayer(Player player);
+
+  abstract void removePlayers();
 
   ArrayList<Player> getPlayers() {
     return players;
