@@ -19,6 +19,11 @@ class Config {
 
     fileConfig = plugin.getConfig();
 
+    if (!fileConfig.contains("BlockHunt.settings.game.Duration")) {
+      fileConfig.set("BlockHunt.settings.game.duration", "30");
+      booChanged = true;
+    }
+
     if (!fileConfig.contains("BlockHunt.areas.game.Region")) {
       fileConfig.set("BlockHunt.areas.game.Region", "BlockHuntGame");
       booChanged = true;
@@ -89,11 +94,6 @@ class Config {
       booChanged = true;
     }
 
-    if (!fileConfig.contains("BlockHunt.settings.huntDuration")) {
-      fileConfig.set("BlockHunt.settings.huntDuration", "30");
-      booChanged = true;
-    }
-
     if (!fileConfig.contains("BlockHunt.settings.materialToFind")) {
       fileConfig.set("BlockHunt.settings.materialToFind", "PUMPKIN");
       booChanged = true;
@@ -127,13 +127,33 @@ class Config {
     plugin.saveConfig();
   }
 
-  int getHuntDuration() {
-    return Integer.valueOf(fileConfig.getString("BlockHunt.settings.huntDuration"));
+  int getGameDuration() {
+    return Integer.valueOf(fileConfig.getString("BlockHunt.settings.game.Duration"));
   }
 
-  void setHuntDuration(String seconds) {
-    fileConfig.set("BlockHunt.settings.huntDuration", seconds);
+  void setGameDuration(int seconds) {
+    fileConfig.set("BlockHunt.settings.game.Duration", seconds);
     plugin.saveConfig();
+  }
+
+  String getGameRegion() {
+    return fileConfig.getString("BlockHunt.areas.game.Region");
+  }
+
+  void setGameRegion(String region) {
+    fileConfig.set("BlockHunt.areas.game.Region", region);
+    plugin.saveConfig();
+    plugin.getGameRegion().updateRegion();
+  }
+
+  String getGameWorld() {
+    return fileConfig.getString("BlockHunt.areas.game.World");
+  }
+
+  void setGameWorld(String world) {
+    fileConfig.set("BlockHunt.areas.game.World", world);
+    plugin.saveConfig();
+    plugin.getLobbyRegion().updateRegion();
   }
 
   int getLobbyDuration() {
@@ -142,6 +162,7 @@ class Config {
 
   void setLobbyDuration(int seconds) {
     fileConfig.set("BlockHunt.areas.lobby.Timer", seconds);
+    plugin.saveConfig();
   }
 
   Location getLobbyJoinLocation() {
@@ -172,26 +193,6 @@ class Config {
 
   void setLobbyMin(int min) {
     fileConfig.set("BlockHunt.areas.lobby.Min", min);
-  }
-
-  String getGameRegion() {
-    return fileConfig.getString("BlockHunt.areas.game.Region");
-  }
-
-  void setGameRegion(String region) {
-    fileConfig.set("BlockHunt.areas.game.Region", region);
-    plugin.saveConfig();
-    plugin.getGameRegion().updateRegion();
-  }
-
-  String getGameWorld() {
-    return fileConfig.getString("BlockHunt.areas.game.World");
-  }
-
-  void setGameWorld(String world) {
-    fileConfig.set("BlockHunt.areas.game.World", world);
-    plugin.saveConfig();
-    plugin.getLobbyRegion().updateRegion();
   }
 
   String getLobbyRegion() {

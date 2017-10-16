@@ -57,7 +57,21 @@ public class Command implements CommandExecutor {
         // bh game help
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
-        // bh game region
+          // bh game duration
+        } else if (args[1].equals("duration")) {
+          if (args.length == 2) {
+            sender.sendMessage("Game duration is currently " + plugin.getPluginConfig().getGameDuration());
+          // bh game duration help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh game duration set <seconds>
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setGameDuration(Integer.parseInt(args[2]));
+            sender.sendMessage("Game duration is now " + plugin.getPluginConfig().getGameDuration());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+            // bh game region
         } else if (args[1].equals("region")) {
           if (args.length == 2) {
             sender.sendMessage("WorldGuard region for the game is currently " + plugin.getPluginConfig().getGameRegion());
@@ -91,6 +105,20 @@ public class Command implements CommandExecutor {
         // bh lobby help
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
+        // bh lobby duration
+        } else if (args[1].equals("duration")) {
+          if (args.length == 2) {
+            sender.sendMessage("Lobby wait time is currently " + plugin.getPluginConfig().getLobbyDuration());
+          // bh lobby duration help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh lobby duration set <world>
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setLobbyDuration(Integer.parseInt(args[2]));
+            sender.sendMessage("Lobby wait time is now " + plugin.getPluginConfig().getLobbyDuration());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
         } else if (args[1].equals("join")) {
           // bh lobby join
           if (args.length == 2) {
@@ -133,18 +161,6 @@ public class Command implements CommandExecutor {
         }
       } else {
         switch (args[0]) {
-          case "duration":
-            // bh duration
-            if (args.length == 1) {
-              sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.getPluginConfig().getHuntDuration()) + " seconds.");
-            // bh duration <seconds>
-            } else if (args.length == 2) {
-              plugin.getPluginConfig().setHuntDuration(args[1]);
-              sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.getPluginConfig().getHuntDuration()) + " seconds.");
-            } else {
-              showSyntax(sender, args[0]);
-            }
-            break;
           case "endMessage":
             // bh endMessage
             if (args.length == 1) {
@@ -281,7 +297,7 @@ public class Command implements CommandExecutor {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh duration" + ChatColor.YELLOW + " [seconds]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the length of the");
         sender.sendMessage("    Hunt in seconds");
         break;
-      case "endMessage":
+      case "endmessage":
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh endMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
         sender.sendMessage("    end of the Hunt");
         break;
@@ -327,16 +343,22 @@ public class Command implements CommandExecutor {
       default:
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt Syntax:");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh" + ChatColor.WHITE + " - version info");
-        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh duration" + ChatColor.YELLOW + " [seconds]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the length of the");
-        sender.sendMessage("      Hunt in seconds");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh endMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
-        sender.sendMessage("      end of the Hunt");
+        sender.sendMessage("      end of the game");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh help" + ChatColor.WHITE + " - shows this help message");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the game");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the Bukkit world name for the game");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby join" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the lobby");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the lobby");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the Bukkit world name for the lobby");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game duration" + ChatColor.YELLOW + " [seconds]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the length of the");
+        sender.sendMessage("      game in seconds");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby duration" + ChatColor.YELLOW + " [seconds]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the length of the");
+        sender.sendMessage("      time the lobby waits for new players before starting the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the game");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh material" + ChatColor.YELLOW + " [material]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the block to hunt to");
         sender.sendMessage("      MATERIAL");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh scoreboardTitle" + ChatColor.WHITE + " - gets or sets the scoreboard title");

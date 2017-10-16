@@ -201,7 +201,7 @@ public class Main extends JavaPlugin {
   }
 
   void startGameTimer(BukkitRunnable bukkitRunnable) {
-    gameTimer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getHuntDuration() * 20);
+    gameTimer = bukkitRunnable.runTaskLater(this, this.pluginConfig.getGameDuration() * 20);
   }
 
   void clearLobbyTimer() {
