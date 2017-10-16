@@ -19,6 +19,9 @@ public class DamageListener implements Listener {
         plugin.getGameRegion().getRegion().contains(event.getEntity().getLocation().getBlockX(), event.getEntity().getLocation().getBlockY(), event.getEntity().getLocation().getBlockZ()) &&
         event.getEntity() instanceof Player &&
         ((Player) event.getEntity()).getHealth() < event.getFinalDamage()) {
+      for (Player player : plugin.getGameRegion().getPlayers()) {
+        player.sendMessage(player.getDisplayName() + " has been eliminated from the game!");
+      }
       plugin.getGameRegion().removePlayer((Player) event.getEntity());
       event.setCancelled(true);
     }

@@ -19,7 +19,11 @@ class GameManager {
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
 
     Map<UUID, Integer> sortedMap = Util.sortByValue(plugin.getAllScores());
-    UUID winner = sortedMap.entrySet().iterator().next().getKey();
+    UUID winner = null;
+    for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
+      winner = entry.getKey();
+    }
+
     String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
 

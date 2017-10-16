@@ -17,6 +17,7 @@ public class Command implements CommandExecutor {
   public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String s, String[] args) {
 
     if ((!(sender instanceof Player)) || (sender.hasPermission("BlockParty.bh"))) {
+      // bh
       if (args.length == 0) {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v" + plugin.getVersion() + ChatColor.WHITE + " by " + ChatColor.AQUA + plugin.getAuthor());
       // bh help
@@ -56,8 +57,8 @@ public class Command implements CommandExecutor {
         // bh game help
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
+        // bh game region
         } else if (args[1].equals("region")) {
-          // bh game region
           if (args.length == 2) {
             sender.sendMessage("WorldGuard region for the game is currently " + plugin.getPluginConfig().getGameRegion());
           // bh game region help
@@ -116,10 +117,13 @@ public class Command implements CommandExecutor {
             showSyntax(sender, args[0] + args[1]);
           }
         } else if (args[1].equals("world")) {
+          // bh lobby world
           if (args.length == 2) {
             sender.sendMessage("Bukkit world for the lobby is currently " + plugin.getPluginConfig().getLobbyWorld());
+          // bh lobby world help
           } else if (args[2].equals("help")) {
             showSyntax(sender, args[0] + args[1]);
+          // bh lobby world <world>
           } else if (args.length == 3) {
             plugin.getPluginConfig().setLobbyWorld(args[2]);
             sender.sendMessage(" Bukkit world for the lobby is now " + plugin.getPluginConfig().getLobbyWorld());
@@ -130,8 +134,10 @@ public class Command implements CommandExecutor {
       } else {
         switch (args[0]) {
           case "duration":
+            // bh duration
             if (args.length == 1) {
               sender.sendMessage("Hunt duration currently set to " + Integer.toString(plugin.getPluginConfig().getHuntDuration()) + " seconds.");
+            // bh duration <seconds>
             } else if (args.length == 2) {
               plugin.getPluginConfig().setHuntDuration(args[1]);
               sender.sendMessage("Hunt duration now set to " + Integer.toString(plugin.getPluginConfig().getHuntDuration()) + " seconds.");
@@ -140,10 +146,13 @@ public class Command implements CommandExecutor {
             }
             break;
           case "endMessage":
+            // bh endMessage
             if (args.length == 1) {
               sender.sendMessage("Hunt End message is currently: " + plugin.getPluginConfig().getEndMessage());
+            // bh endMessage help
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
+            // bh endMessage <message with spaces>
             } else {
               StringBuilder endMessage = new StringBuilder();
               for (int i = 1; i < args.length; i++) {
@@ -154,10 +163,13 @@ public class Command implements CommandExecutor {
             }
             break;
           case "material":
+            // bh material
             if (args.length == 1) {
               sender.sendMessage("Material to hunt is currently " + plugin.getPluginConfig().getMaterial());
+            // bh material help
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
+           // bh material <material>
             } else if (args.length == 2) {
               for (Material m : Material.values()) {
                 if (m.name().equals(args[1])) {
@@ -172,10 +184,13 @@ public class Command implements CommandExecutor {
             }
             break;
           case "scoreboardTitle":
+            // bh scoreboardTitle
             if (args.length == 1) {
               sender.sendMessage("Hunt scoreboard title is currently: " + plugin.getPluginConfig().getScoreboardTitle());
+            // bh scoreboardTitle help
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
+            // bh scoreboardTitle <title with spaces>
             } else {
               StringBuilder scoreboardTitle = new StringBuilder();
               for (int i = 1; i < args.length; i++) {
@@ -186,10 +201,13 @@ public class Command implements CommandExecutor {
             }
             break;
           case "startMessage":
+            // bh startMessage
             if (args.length == 1) {
               sender.sendMessage("Hunt Start message is currently: " + plugin.getPluginConfig().getStartMessage());
+            // bh startMessage help
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
+            // bh startMessage <message with spaces>
             } else {
               StringBuilder startMessage = new StringBuilder();
               for (int i = 1; i < args.length; i++) {
@@ -200,10 +218,13 @@ public class Command implements CommandExecutor {
             }
             break;
           case "stopMessage":
+            // bh stopMessage
             if (args.length == 1) {
               sender.sendMessage("Hunt Stop message is currently: " + plugin.getPluginConfig().getStopMessage());
+            // bh stopMessage help
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
+            // bh stopMessage <message with spaces>
             } else {
               StringBuilder stopMessage = new StringBuilder();
               for (int i = 1; i < args.length; i++) {
@@ -214,10 +235,13 @@ public class Command implements CommandExecutor {
             }
             break;
           case "useNicky":
+            // bh useNicky
             if (args.length == 1) {
               sender.sendMessage("Nicky support is currently " + (plugin.getPluginConfig().isNickyEnabled() ? "enabled" : "disabled"));
+            // bh useNicky help
             } else if (args[1].equals("help")) {
               showSyntax(sender, args[0]);
+            // bh useNicky <boolean>
             } else if (args.length == 2) {
               switch (args[1]) {
                 case "enabled":
@@ -261,27 +285,29 @@ public class Command implements CommandExecutor {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh endMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
         sender.sendMessage("    end of the Hunt");
         break;
-      case "gameRegion":
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh gameRegion" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the game");
+      case "gameregion":
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh game region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the game");
         break;
-      case "gameWorld":
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh gameWorld" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the game");
+      case "gameworld":
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh game world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the Bukkit world name for the game");
         break;
-      case "lobbyRegion":
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh lobbyRegion" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the lobby");
+      case "lobbyjoin":
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh lobby join" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the lobby");
         break;
-      case "lobbyWorld":
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh lobbyWorld" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the lobby");
+      case "lobbyregion":
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh lobby region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the lobby");
+        break;
+      case "lobbyworld":
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh lobby world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the Bukkit world name for the lobby");
         break;
       case "material":
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh material" + ChatColor.YELLOW + " [material]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the block to hunt to");
-        sender.sendMessage("    MATERIAL");
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh material" + ChatColor.YELLOW + " [material]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the block to search for");
         break;
       case "scoreboardTitle":
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh scoreboardTitle" + ChatColor.WHITE + " - gets or sets the scoreboard title");
         break;
       case "start":
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh start" + ChatColor.WHITE + " - start a new Hunt");
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh start" + ChatColor.WHITE + " - start a new game");
         break;
       case "startMessage":
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "/bh startMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
@@ -306,10 +332,11 @@ public class Command implements CommandExecutor {
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh endMessage" + ChatColor.YELLOW + " [message]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the message at");
         sender.sendMessage("      end of the Hunt");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh help" + ChatColor.WHITE + " - shows this help message");
-        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh gameRegion" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the game");
-        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh gameWorld" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the game");
-        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobbyRegion" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the WorldGuard region name for the game");
-        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobbyWorld" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or sets the Bukkit world name for the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh game world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the Bukkit world name for the game");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby join" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the lobby");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby region" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the WorldGuard region name for the lobby");
+        sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh lobby world" + ChatColor.YELLOW + " [name]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the Bukkit world name for the lobby");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh material" + ChatColor.YELLOW + " [material]" + ChatColor.WHITE + " - gets or" + ChatColor.YELLOW + " sets" + ChatColor.WHITE + " the block to hunt to");
         sender.sendMessage("      MATERIAL");
         sender.sendMessage("  " + ChatColor.LIGHT_PURPLE + "/bh scoreboardTitle" + ChatColor.WHITE + " - gets or sets the scoreboard title");
