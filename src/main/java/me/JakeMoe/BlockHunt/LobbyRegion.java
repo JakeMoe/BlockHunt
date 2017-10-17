@@ -1,4 +1,4 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -55,13 +55,13 @@ class LobbyRegion extends Region {
       }
     }
   }
-
+/*
   void removePlayer(Player player) {
   }
 
   void removePlayers() {
   }
-
+*/
   void updateRegion() {
     world = plugin.getServer().getWorld(plugin.getPluginConfig().getLobbyWorld());
     region = plugin.getWorldGuardPlugin().getRegionManager(world).getRegion(plugin.getPluginConfig().getLobbyRegion());

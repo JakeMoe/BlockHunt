@@ -1,4 +1,4 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -75,6 +75,7 @@ public class Main extends JavaPlugin {
     getCommand("bh").setExecutor(new Command(this));
     getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
     getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+    getServer().getPluginManager().registerEvents(new DisconnectListener(this), this);
     getServer().getPluginManager().registerEvents(new HitListener(this), this);
   }
 

@@ -1,4 +1,4 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;

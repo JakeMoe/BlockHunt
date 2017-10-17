@@ -1,4 +1,4 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +21,11 @@ class Config {
 
     if (!fileConfig.contains("BlockHunt.settings.game.Duration")) {
       fileConfig.set("BlockHunt.settings.game.duration", "30");
+      booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.settings.game.numBlocks")) {
+      fileConfig.set("BlockHunt.settings.game.numBlocks", "10");
       booChanged = true;
     }
 
@@ -133,6 +138,15 @@ class Config {
 
   void setGameDuration(int seconds) {
     fileConfig.set("BlockHunt.settings.game.Duration", seconds);
+    plugin.saveConfig();
+  }
+
+  int getGameNumBlocks() {
+    return Integer.valueOf(fileConfig.getString("BlockHunt.settings.game.numBlocks"));
+  }
+
+  void setGameNumBlocks(int numBlocks) {
+    fileConfig.set("BlockHunt.settings.game.numBlocks", numBlocks);
     plugin.saveConfig();
   }
 

@@ -1,4 +1,4 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

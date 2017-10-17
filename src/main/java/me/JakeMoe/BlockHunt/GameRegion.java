@@ -1,10 +1,10 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Iterator;
+//import java.util.Iterator;
 
 class GameRegion extends Region {
 
@@ -24,17 +24,15 @@ class GameRegion extends Region {
     players.add(player);
     player.sendMessage(plugin.getPluginConfig().getStartMessage());
   }
-
+/*
   void removePlayer(Player player) {
-    if (players.contains(player)) {
-      player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
-      player.getInventory().clear();
-      player.getInventory().setContents(plugin.getOriginalInventory().get(player.getUniqueId()));
-      player.getInventory().setArmorContents(plugin.getOriginalArmor().get(player.getUniqueId()));
-//      player.getInventory().setItemInMainHand(plugin.getOriginalItemInHand().get(player.getUniqueId()));
-      player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
-      players.remove(player);
-    }
+    player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
+    player.getInventory().clear();
+    player.getInventory().setContents(plugin.getOriginalInventory().get(player.getUniqueId()));
+    player.getInventory().setArmorContents(plugin.getOriginalArmor().get(player.getUniqueId()));
+//    player.getInventory().setItemInMainHand(plugin.getOriginalItemInHand().get(player.getUniqueId()));
+    player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
+    players.remove(player);
   }
 
   void removePlayers() {
@@ -48,6 +46,11 @@ class GameRegion extends Region {
       currPlayer.teleport(plugin.getOriginalLocations().get(currPlayer.getUniqueId()));
       player.remove();
     }
+  }
+*/
+
+  void resetBlocks() {
+
   }
 
   void updateRegion() {

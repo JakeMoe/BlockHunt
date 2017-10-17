@@ -1,4 +1,4 @@
-package me.JohnMoe.BlockHunt;
+package me.JakeMoe.BlockHunt;
 
 import io.loyloy.nicky.Nick;
 import org.bukkit.Bukkit;
