@@ -1,17 +1,27 @@
 package me.JakeMoe.BlockHunt;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 
 class GameManager {
 
   private Main plugin;
+  private ArrayList<Location> previousLocations;
 
   GameManager(Main plugin) {
     this.plugin = plugin;
+    this.previousLocations = null;
+  }
+
+  void dropRandomBlock() {
+    plugin.getGameRegion().getWorld().getBlockAt(plugin.getGameRegion().getRandomLocation()).setType(plugin.getPluginConfig().getMaterial());
   }
 
   private void end() {
@@ -34,9 +44,32 @@ class GameManager {
 
   }
 
+  private void resetBlocks() {
+
+    if (!previousLocations.isEmpty()) {
+      for (Location previousLocation : previousLocations) {
+        plugin.getGameRegion().getWorld().getBlockAt(previousLocation).setType(Material.AIR);
+      }
+    }
+
+    ArrayList<Location> locations = new ArrayList<>();
+    for (int i = 0; i < plugin.getPluginConfig().getGameNumBlocks(); i++) {
+      Location location = plugin.getGameRegion().getRandomLocation();
+      while (locations.contains(location)) {
+        location = plugin.getGameRegion().getRandomLocation();
+      }
+      locations.add(location);
+      plugin.getGameRegion().getWorld().getBlockAt(location).setType(plugin.getPluginConfig().getMaterial());
+    }
+
+    previousLocations = locations;
+
+  }
+
   void start() {
     if (plugin.getGameTimer() == null) {
       plugin.getScoreboard().reset();
+      resetBlocks();
 
       plugin.startGameTimer(new BukkitRunnable() {
         @Override
@@ -44,6 +77,16 @@ class GameManager {
           end();
         }
       });
+
+      BukkitRunnable dropTimer = new BukkitRunnable() {
+        @Override
+        public void run() {
+          dropRandomBlock();
+          this.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
+        }
+      };
+      dropTimer.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
+
     } else {
       plugin.getServer().broadcastMessage("A game is already in progress.");
     }

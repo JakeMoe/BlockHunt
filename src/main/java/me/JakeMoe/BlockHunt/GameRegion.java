@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Random;
+
 //import java.util.Iterator;
 
 class GameRegion extends Region {
@@ -48,10 +50,6 @@ class GameRegion extends Region {
     }
   }
 */
-
-  void resetBlocks() {
-
-  }
 
   void updateRegion() {
     world = plugin.getServer().getWorld(plugin.getPluginConfig().getGameWorld());
