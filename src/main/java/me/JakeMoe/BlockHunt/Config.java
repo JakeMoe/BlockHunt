@@ -19,7 +19,7 @@ class Config {
 
     fileConfig = plugin.getConfig();
 
-    if (!fileConfig.contains("BlockHunt.settings.game.Duration")) {
+    if (!fileConfig.contains("BlockHunt.settings.game.duration")) {
       fileConfig.set("BlockHunt.settings.game.duration", "30");
       booChanged = true;
     }
@@ -133,11 +133,11 @@ class Config {
   }
 
   int getGameDuration() {
-    return Integer.valueOf(fileConfig.getString("BlockHunt.settings.game.Duration"));
+    return Integer.valueOf(fileConfig.getString("BlockHunt.settings.game.duration"));
   }
 
   void setGameDuration(int seconds) {
-    fileConfig.set("BlockHunt.settings.game.Duration", seconds);
+    fileConfig.set("BlockHunt.settings.game.duration", seconds);
     plugin.saveConfig();
   }
 

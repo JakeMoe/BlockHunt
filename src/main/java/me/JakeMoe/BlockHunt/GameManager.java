@@ -13,15 +13,33 @@ import java.util.logging.Level;
 class GameManager {
 
   private Main plugin;
-  private ArrayList<Location> previousLocations;
+  private ArrayList<Location> blockLocations;
+  private BukkitRunnable dropTimer;
+  private boolean stopTimer;
+
+  class DropTimer extends BukkitRunnable {
+    @Override
+    public void run() {
+      if (stopTimer) {
+        dropTimer.cancel();
+        dropTimer = null;
+      } else {
+        dropRandomBlock();
+        dropTimer = new DropTimer();
+        dropTimer.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
+      }
+    }
+  }
 
   GameManager(Main plugin) {
     this.plugin = plugin;
-    this.previousLocations = null;
+    this.blockLocations = null;
   }
 
-  void dropRandomBlock() {
-    plugin.getGameRegion().getWorld().getBlockAt(plugin.getGameRegion().getRandomLocation()).setType(plugin.getPluginConfig().getMaterial());
+  private void dropRandomBlock() {
+    Location location = plugin.getGameRegion().getRandomLocation();
+    plugin.getGameRegion().getWorld().getBlockAt(location).setType(plugin.getPluginConfig().getMaterial());
+    blockLocations.add(location);
   }
 
   private void end() {
@@ -37,8 +55,17 @@ class GameManager {
     String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
 
+    if (!(blockLocations== null)) {
+      for (Location blockLocation : blockLocations) {
+        plugin.getGameRegion().getWorld().getBlockAt(blockLocation).setType(Material.AIR);
+      }
+    }
+
     plugin.getScoreboard().clear();
     plugin.resetScore();
+
+    stopTimer = true;
+
     plugin.clearGameTimer();
     plugin.getGameRegion().removePlayers();
 
@@ -46,23 +73,15 @@ class GameManager {
 
   private void resetBlocks() {
 
-    if (!previousLocations.isEmpty()) {
-      for (Location previousLocation : previousLocations) {
-        plugin.getGameRegion().getWorld().getBlockAt(previousLocation).setType(Material.AIR);
-      }
-    }
-
-    ArrayList<Location> locations = new ArrayList<>();
+    blockLocations = new ArrayList<>();
     for (int i = 0; i < plugin.getPluginConfig().getGameNumBlocks(); i++) {
       Location location = plugin.getGameRegion().getRandomLocation();
-      while (locations.contains(location)) {
+      while (blockLocations.contains(location)) {
         location = plugin.getGameRegion().getRandomLocation();
       }
-      locations.add(location);
+      blockLocations.add(location);
       plugin.getGameRegion().getWorld().getBlockAt(location).setType(plugin.getPluginConfig().getMaterial());
     }
-
-    previousLocations = locations;
 
   }
 
@@ -78,14 +97,10 @@ class GameManager {
         }
       });
 
-      BukkitRunnable dropTimer = new BukkitRunnable() {
-        @Override
-        public void run() {
-          dropRandomBlock();
-          this.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
-        }
-      };
+      stopTimer = false;
+      dropTimer = new DropTimer();
       dropTimer.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
+
 
     } else {
       plugin.getServer().broadcastMessage("A game is already in progress.");
@@ -100,8 +115,17 @@ class GameManager {
       plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
       plugin.getGameTimer().cancel();
 
+      if (!(blockLocations== null)) {
+        for (Location blockLocation : blockLocations) {
+          plugin.getGameRegion().getWorld().getBlockAt(blockLocation).setType(Material.AIR);
+        }
+      }
+
       plugin.getScoreboard().clear();
       plugin.resetScore();
+
+      stopTimer = true;
+
       plugin.clearGameTimer();
       plugin.getGameRegion().removePlayers();
     }
