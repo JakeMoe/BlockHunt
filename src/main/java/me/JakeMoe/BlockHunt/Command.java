@@ -137,10 +137,38 @@ public class Command implements CommandExecutor {
           // bh lobby join
           if (args.length == 2) {
             sender.sendMessage("Lobby join is currently " + plugin.getPluginConfig().getLobbyJoinLocation().getBlockX() + "," + plugin.getPluginConfig().getLobbyJoinLocation().getBlockY() + "," + plugin.getPluginConfig().getLobbyJoinLocation().getBlockZ());
-          // bh lobby set
+            // bh lobby set
           } else if (args[2].equals("set")) {
             sender.sendMessage("Click the block to use to join the lobby");
             plugin.setSettingLobbyJoin(true);
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        } else if (args[1].equals("max")) {
+          // bh lobby max
+          if (args.length == 2) {
+            sender.sendMessage("Lobby max players is currently " + plugin.getPluginConfig().getLobbyMax());
+          // bh lobby max help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh lobby max #
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setLobbyMax(Integer.parseInt(args[2]));
+            sender.sendMessage("Lobby max players is now " + plugin.getPluginConfig().getLobbyMax());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        } else if (args[1].equals("min")) {
+          // bh lobby min
+          if (args.length == 2) {
+            sender.sendMessage("Lobby min players is currently " + plugin.getPluginConfig().getLobbyMin());
+          // bh lobby min help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh lobby min #
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setLobbyMin(Integer.parseInt(args[2]));
+            sender.sendMessage("Lobby min players is now " + plugin.getPluginConfig().getLobbyMin());
           } else {
             showSyntax(sender, args[0] + args[1]);
           }
@@ -299,6 +327,8 @@ public class Command implements CommandExecutor {
             showSyntax(sender, "bh");
         }
       }
+    } else {
+      return false;
     }
 
     return true;
