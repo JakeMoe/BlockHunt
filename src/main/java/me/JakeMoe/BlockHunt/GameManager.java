@@ -2,9 +2,15 @@ package me.JakeMoe.BlockHunt;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -46,6 +52,8 @@ class GameManager {
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
 
+    saveScores(plugin.getAllScores());
+
     Map<UUID, Integer> sortedMap = Util.sortByValue(plugin.getAllScores());
     UUID winner = null;
     for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
@@ -83,6 +91,29 @@ class GameManager {
       plugin.getGameRegion().getWorld().getBlockAt(location).setType(plugin.getPluginConfig().getMaterial());
     }
 
+  }
+
+  void saveScores(HashMap<UUID, Integer> scores) {
+    File scoreFile = new File(plugin.getDataFolder(), (new SimpleDateFormat("yyMMdd-hhmmss")).format(new Date()) + ".yml");
+    if (!scoreFile.exists()) {
+      try {
+        scoreFile.createNewFile();
+      } catch (IOException e) {
+        plugin.getLogger().log(Level.INFO, e.getMessage());
+      }
+    }
+
+    YamlConfiguration yc = new YamlConfiguration();
+    for (Object object : scores.entrySet()) {
+      Map.Entry entry = (Map.Entry) object;
+      yc.set(entry.getKey().toString(), entry.getValue());
+    }
+
+    try {
+      yc.save(scoreFile);
+    } catch (IOException e) {
+      plugin.getLogger().log(Level.INFO, e.getMessage());
+    }
   }
 
   void start() {
