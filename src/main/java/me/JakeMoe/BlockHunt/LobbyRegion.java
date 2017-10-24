@@ -27,7 +27,7 @@ class LobbyRegion extends Region {
       player.getInventory().clear();
       player.teleport(getRandomLocation());
       players.add(player);
-      player.sendTitle(ChatColor.YELLOW + "PUMPKIN HUNT", "", 20, 100, 20);
+      player.sendTitle(ChatColor.GOLD + "PUMPKIN HUNT", "", 20, 100, 20);
 
       for (Player p : players) {
         p.sendMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + "has joined " + ChatColor.YELLOW + "[" + players.size() + "/" + plugin.getPluginConfig().getLobbyMax() + "]");
@@ -42,12 +42,12 @@ class LobbyRegion extends Region {
           public void run() {
             if (count > 5) {
               for (Player player : players) {
-                player.sendMessage(ChatColor.YELLOW + "The game will begin in " + ChatColor.GOLD + count + " seconds!");
+                player.sendMessage(ChatColor.YELLOW + "The hunt starts in " + ChatColor.GOLD + count + " seconds!");
               }
               count--;
             } else if (count > 0) {
                 for (Player player : players) {
-                  player.sendMessage(ChatColor.YELLOW + "The game will begin in " + ChatColor.RED + count + " seconds!");
+                  player.sendMessage(ChatColor.YELLOW + "The hunt starts in " + ChatColor.RED + count + " seconds!");
                 }
                 count--;
             } else {
