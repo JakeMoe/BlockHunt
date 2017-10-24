@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.UUID;
-import java.util.logging.Level;
 
 class BlockBreakListener implements Listener {
 
@@ -23,7 +22,6 @@ class BlockBreakListener implements Listener {
           (event.getBlock().getType() == plugin.getPluginConfig().getMaterial())) {
         event.getBlock().setType(Material.AIR);
         UUID playerUuid = event.getPlayer().getUniqueId();
-        plugin.getLogger().log(Level.INFO, "[BlockHunt] Total scores: " + plugin.getAllScores().size());
         Integer newScore = plugin.getScore(playerUuid) + 1;
         plugin.setScore(playerUuid, newScore);
         plugin.getScoreboard().refresh();

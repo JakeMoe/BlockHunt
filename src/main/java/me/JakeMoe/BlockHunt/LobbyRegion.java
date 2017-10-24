@@ -1,5 +1,6 @@
 package me.JakeMoe.BlockHunt;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,6 +27,11 @@ class LobbyRegion extends Region {
       player.getInventory().clear();
       player.teleport(getRandomLocation());
       players.add(player);
+      player.sendTitle(ChatColor.YELLOW + "PUMPKIN HUNT", "", 20, 100, 20);
+
+      for (Player p : players) {
+        p.sendMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + "has joined " + ChatColor.YELLOW + "[" + players.size() + "/" + plugin.getPluginConfig().getLobbyMax() + "]");
+      }
 
       if (players.size() >= plugin.getPluginConfig().getLobbyMin()) {
         plugin.startLobbyTimer(new BukkitRunnable() {
@@ -34,11 +40,16 @@ class LobbyRegion extends Region {
 
           @Override
           public void run() {
-            if (count > 0) {
+            if (count > 5) {
               for (Player player : players) {
-                player.sendMessage("The game will begin in " + count + " seconds!");
+                player.sendMessage(ChatColor.YELLOW + "The game will begin in " + ChatColor.GOLD + count + " seconds!");
               }
               count--;
+            } else if (count > 0) {
+                for (Player player : players) {
+                  player.sendMessage(ChatColor.YELLOW + "The game will begin in " + ChatColor.RED + count + " seconds!");
+                }
+                count--;
             } else {
               for (Iterator<Player> player = players.iterator(); player.hasNext(); ) {
                 plugin.getGameRegion().addPlayer(player.next());

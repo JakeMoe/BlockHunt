@@ -61,3 +61,8 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
   * Fixed up score from public variable to private variable with public methods
   * Found better way to sort HashMap by value; new method in Util class
   * Bug fixes
+* 0.12 - Jake Moe - 25 October 2017
+  * Save scores to files
+  * Reset game with random block drops
+  * Random potion drops
+  * Better looking messages

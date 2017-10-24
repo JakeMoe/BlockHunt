@@ -108,7 +108,7 @@ class GameManager {
     itemStack.setItemMeta(potionMeta);
 
     Location randomLocation = plugin.getGameRegion().getRandomLocation();
-    plugin.getGameRegion().getWorld().strikeLightning(randomLocation);
+    plugin.getGameRegion().getWorld().strikeLightningEffect(randomLocation);
     plugin.getGameRegion().getWorld().dropItem(randomLocation, itemStack);
 
   }

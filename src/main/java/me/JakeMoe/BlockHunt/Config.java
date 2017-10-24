@@ -70,7 +70,7 @@ class Config {
     }
 
     if (!fileConfig.contains("BlockHunt.areas.lobby.Timer")) {
-      fileConfig.set("BlockHunt.areas.lobby.Timer", 5);
+      fileConfig.set("BlockHunt.areas.lobby.Timer", 10);
       booChanged = true;
     }
 

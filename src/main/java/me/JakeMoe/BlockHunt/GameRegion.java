@@ -1,5 +1,6 @@
 package me.JakeMoe.BlockHunt;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ class GameRegion extends Region {
     plugin.setScore(player.getUniqueId(), 0);
 
     players.add(player);
-    player.sendMessage(plugin.getPluginConfig().getStartMessage());
+    player.sendMessage(ChatColor.YELLOW + plugin.getPluginConfig().getStartMessage());
   }
 /*
   void removePlayer(Player player) {
