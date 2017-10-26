@@ -64,5 +64,8 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
 * 0.12 - Jake Moe - 25 October 2017
   * Save scores to files
   * Reset game with random block drops
-  * Random potion drops
+  * Random potion drops with lightning effect
   * Better looking messages
+* 0.13 - Jake Moe - 27 October 2017
+  * Added check to getRandomLocation to ensure point is within poly WorldGuard regions
+  * Added sound on potion pickup event

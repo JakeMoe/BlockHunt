@@ -34,16 +34,20 @@ abstract class Region {
 
   Location getRandomLocation() {
 
-    Random random = new Random();
-
     int minX = region.getMinimumPoint().getBlockX();
     int maxX = region.getMaximumPoint().getBlockX();
     int minZ = region.getMinimumPoint().getBlockZ();
     int maxZ = region.getMaximumPoint().getBlockZ();
 
-    int rndX = random.nextInt(maxX - minX + 1) + minX;
-    int rndZ = random.nextInt(maxZ - minZ + 1) + minZ;
-    int rndY = world.getHighestBlockYAt(rndX, rndZ);
+    Random random = new Random();
+
+    int rndX, rndY, rndZ;
+
+    do {
+      rndX = random.nextInt(maxX - minX + 1) + minX;
+      rndZ = random.nextInt(maxZ - minZ + 1) + minZ;
+      rndY = world.getHighestBlockYAt(rndX, rndZ);
+    } while (!region.contains(rndX, rndY, rndZ));
 
     return new Location(world, rndX, rndY, rndZ);
 
@@ -51,16 +55,11 @@ abstract class Region {
 
   abstract void addPlayer(Player player);
 
-//  abstract void removePlayer(Player player);
-
-//  abstract void removePlayers();
-
   void removePlayer(Player player) {
     player.setHealth(plugin.getOriginalHealth().get(player.getUniqueId()));
     player.getInventory().clear();
     player.getInventory().setContents(plugin.getOriginalInventory().get(player.getUniqueId()));
     player.getInventory().setArmorContents(plugin.getOriginalArmor().get(player.getUniqueId()));
-//    player.getInventory().setItemInMainHand(plugin.getOriginalItemInHand().get(player.getUniqueId()));
     player.teleport(plugin.getOriginalLocations().get(player.getUniqueId()));
     players.remove(player);
   }
@@ -72,7 +71,6 @@ abstract class Region {
       currPlayer.getInventory().clear();
       currPlayer.getInventory().setContents(plugin.getOriginalInventory().get(currPlayer.getUniqueId()));
       currPlayer.getInventory().setArmorContents(plugin.getOriginalArmor().get(currPlayer.getUniqueId()));
-//      player.getInventory().setItemInMainHand(plugin.getOriginalItemInHand().get(player.getUniqueId()));
       currPlayer.teleport(plugin.getOriginalLocations().get(currPlayer.getUniqueId()));
       player.remove();
     }

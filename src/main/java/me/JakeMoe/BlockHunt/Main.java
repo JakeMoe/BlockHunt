@@ -16,7 +16,7 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private static final String version = "0.12";
+  private static final String version = "0.13";
   private static final String author = "Jake Moe";
 
   private GameManager gameManager;
@@ -32,7 +32,6 @@ public class Main extends JavaPlugin {
   private HashMap<UUID, Location> originalLocations;
   private HashMap<UUID, ItemStack[]> originalArmor;
   private HashMap<UUID, ItemStack[]> originalInventory;
-//  private HashMap<UUID, ItemStack> originalItemInHand;
   private HashMap<UUID, Integer> allScores;
   private WorldGuardPlugin worldGuardPlugin;
 
@@ -68,7 +67,6 @@ public class Main extends JavaPlugin {
     originalLocations = new HashMap<>();
     originalInventory = new HashMap<>();
     originalArmor = new HashMap<>();
-//    originalItemInHand = new HashMap<>();
 
     allScores = new HashMap<>();
 
@@ -152,14 +150,6 @@ public class Main extends JavaPlugin {
   void setOriginalInventory(UUID player, ItemStack[] inventory) {
     originalInventory.put(player, inventory);
   }
-
-//  HashMap<UUID, ItemStack> getOriginalItemInHand() {
-//    return originalItemInHand;
-//  }
-
-//  void setOriginalItemInHand(UUID player, ItemStack item) {
-//    originalItemInHand.put(player, item);
-//  }
 
   HashMap<UUID, ItemStack[]> getOriginalArmor() {
     return originalArmor;

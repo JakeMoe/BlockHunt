@@ -21,7 +21,6 @@ class LobbyRegion extends Region {
 
       plugin.setOriginalHealth(player.getUniqueId(), player.getHealth());
       plugin.setOriginalInventory(player.getUniqueId(), player.getInventory().getContents());
-//      plugin.setOriginalItemInHand(player.getUniqueId(), player.getInventory().getItemInMainHand());
       plugin.setOriginalArmor(player.getUniqueId(), player.getInventory().getArmorContents());
       plugin.setOriginalLocation(player.getUniqueId(), player.getLocation());
       player.getInventory().clear();
@@ -42,12 +41,12 @@ class LobbyRegion extends Region {
           public void run() {
             if (count > 5) {
               for (Player player : players) {
-                player.sendMessage(ChatColor.YELLOW + "The hunt starts in " + ChatColor.GOLD + count + " seconds!");
+                player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "» " + ChatColor.RESET + ChatColor.YELLOW + "The hunt starts in " + ChatColor.GOLD + count + " seconds!");
               }
               count--;
             } else if (count > 0) {
                 for (Player player : players) {
-                  player.sendMessage(ChatColor.YELLOW + "The hunt starts in " + ChatColor.RED + count + " seconds!");
+                  player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "» " + ChatColor.RESET + ChatColor.YELLOW + "The hunt starts in " + ChatColor.RED + count + " seconds!");
                 }
                 count--;
             } else {
@@ -66,13 +65,7 @@ class LobbyRegion extends Region {
       }
     }
   }
-/*
-  void removePlayer(Player player) {
-  }
 
-  void removePlayers() {
-  }
-*/
   void updateRegion() {
     world = plugin.getServer().getWorld(plugin.getPluginConfig().getLobbyWorld());
     region = plugin.getWorldGuardPlugin().getRegionManager(world).getRegion(plugin.getPluginConfig().getLobbyRegion());
