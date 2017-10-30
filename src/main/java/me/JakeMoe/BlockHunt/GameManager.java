@@ -103,7 +103,7 @@ class GameManager {
         break;
     }
 
-    PotionEffect potionEffect = new PotionEffect(potionEffectType, 5 * 20, 0, true, true);
+    PotionEffect potionEffect = new PotionEffect(potionEffectType, 10 * 20, 0, true, true);
     potionMeta.addCustomEffect(potionEffect, true);
     itemStack.setItemMeta(potionMeta);
 

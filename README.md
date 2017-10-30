@@ -69,3 +69,9 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
 * 0.13 - Jake Moe - 27 October 2017
   * Added check to getRandomLocation to ensure point is within poly WorldGuard regions
   * Added sound on potion pickup event
+* 0.14 - Jake Moe - 31 October 2017
+  * Added check to ensure blocks on spawn on grass or dirt
+  * Added chat message to inform player what potion was picked up
+  * Added title message for lobby countdown
+  * Modified lobby countdown timers
+  * Fixed elimination message to show actual player eliminated

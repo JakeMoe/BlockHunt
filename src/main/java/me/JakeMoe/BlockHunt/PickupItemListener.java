@@ -21,6 +21,7 @@ class PickupItemListener implements Listener {
       PotionMeta meta = (PotionMeta) e.getItem().getItemStack().getItemMeta();
       for (PotionEffect effect : meta.getCustomEffects()) {
         e.getEntity().addPotionEffect(effect);
+        e.getEntity().sendMessage("You got " + effect.toString());
       }
       e.getItem().remove();
       e.setCancelled(true);
