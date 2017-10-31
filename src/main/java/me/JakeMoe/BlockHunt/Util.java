@@ -2,7 +2,7 @@ package me.JakeMoe.BlockHunt;
 
 import io.loyloy.nicky.Nick;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,13 +12,12 @@ import java.util.stream.Collectors;
 class Util {
 
   static String getNameByUUID(UUID uuid, boolean nickyEnabled) {
-    Player player = Bukkit.getPlayer(uuid);
-    String name = null;
-    if (nickyEnabled) {
-      name = (new Nick(player)).get();
-    }
-    if (name == null) {
-      name = Bukkit.getOfflinePlayer(uuid).getName();
+    String name;
+    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+    if (player.isOnline() && nickyEnabled) {
+      name = (new Nick(Bukkit.getPlayer(uuid))).get();
+    } else {
+      name = player.getName();
     }
     return name;
   }

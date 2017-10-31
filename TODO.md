@@ -31,4 +31,4 @@ DONE Change the countdown messages from 15 - 0 to:
     - 2
     - 1
 
-Harming potions are continuous until death
+DONE Harming potions are continuous until death

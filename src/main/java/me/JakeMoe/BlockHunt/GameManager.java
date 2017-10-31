@@ -65,45 +65,46 @@ class GameManager {
 
     ItemStack itemStack = new ItemStack(Material.POTION, 1);
     PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-    PotionEffectType potionEffectType;
+    PotionEffect potionEffect;
+
+    int duration = 10;
 
     switch ((new Random()).nextInt(10)) {
       case 0:
-        potionEffectType = PotionEffectType.ABSORPTION;
+        potionEffect = new PotionEffect(PotionEffectType.ABSORPTION, duration * 20, 0, true, true);
         break;
       case 1:
-        potionEffectType = PotionEffectType.BLINDNESS;
+        potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, duration * 20, 0, true, true);
         break;
       case 2:
-        potionEffectType = PotionEffectType.CONFUSION;
+        potionEffect = new PotionEffect(PotionEffectType.CONFUSION, duration * 20, 0, true, true);
         break;
       case 3:
-        potionEffectType = PotionEffectType.DAMAGE_RESISTANCE;
+        potionEffect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 0, true, true);
         break;
       case 4:
-        potionEffectType = PotionEffectType.FAST_DIGGING;
+        potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, duration * 20, 0, true, true);
         break;
       case 5:
-        potionEffectType = PotionEffectType.HARM;
+        potionEffect = new PotionEffect(PotionEffectType.HARM, 1, 0, true, true);
         break;
       case 6:
-        potionEffectType = PotionEffectType.HEAL;
+        potionEffect = new PotionEffect(PotionEffectType.HEAL, 1, 0, true, true);
         break;
       case 7:
-        potionEffectType = PotionEffectType.JUMP;
+        potionEffect = new PotionEffect(PotionEffectType.JUMP, duration * 20, 0, true, true);
         break;
       case 8:
-        potionEffectType = PotionEffectType.SLOW;
+        potionEffect = new PotionEffect(PotionEffectType.SLOW, duration * 20, 0, true, true);
         break;
       case 9:
-        potionEffectType = PotionEffectType.SPEED;
+        potionEffect = new PotionEffect(PotionEffectType.SPEED, duration * 20, 0, true, true);
         break;
       default:
-        potionEffectType = PotionEffectType.GLOWING;
+        potionEffect = new PotionEffect(PotionEffectType.GLOWING, duration * 20, 0, true, true);
         break;
     }
 
-    PotionEffect potionEffect = new PotionEffect(potionEffectType, 10 * 20, 0, true, true);
     potionMeta.addCustomEffect(potionEffect, true);
     itemStack.setItemMeta(potionMeta);
 
@@ -120,6 +121,10 @@ class GameManager {
   }
 
   private void end() {
+
+    stopTimer = true;
+    plugin.clearGameTimer();
+
     plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] The hunt has finished");
     plugin.getServer().broadcastMessage(plugin.getPluginConfig().getEndMessage());
 
@@ -143,9 +148,6 @@ class GameManager {
     plugin.getScoreboard().clear();
     plugin.resetScore();
 
-    stopTimer = true;
-
-    plugin.clearGameTimer();
     plugin.getGameRegion().removePlayers();
 
   }
@@ -216,6 +218,10 @@ class GameManager {
     if (plugin.getGameTimer() == null) {
       plugin.getServer().broadcastMessage("The game has not yet begun!");
     } else {
+
+      stopTimer = true;
+      plugin.clearGameTimer();
+
       plugin.getServer().getLogger().log(Level.INFO, "[BlockHunt] Stopping the hunt");
       plugin.getServer().broadcastMessage(plugin.getPluginConfig().getStopMessage());
       plugin.getGameTimer().cancel();
@@ -229,9 +235,6 @@ class GameManager {
       plugin.getScoreboard().clear();
       plugin.resetScore();
 
-      stopTimer = true;
-
-      plugin.clearGameTimer();
       plugin.getGameRegion().removePlayers();
     }
   }

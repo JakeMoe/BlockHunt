@@ -16,7 +16,7 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-  private static final String version = "0.13";
+  private static final String version = "1.0";
   private static final String author = "Jake Moe";
 
   private GameManager gameManager;
