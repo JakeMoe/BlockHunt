@@ -12,19 +12,27 @@ import org.bukkit.potion.PotionEffect;
 
 class PickupItemListener implements Listener {
 
+  Main plugin;
+
+  PickupItemListener(Main plugin) {
+    this.plugin = plugin;
+  }
+
   @EventHandler
-  void onPlayerPickupItem(EntityPickupItemEvent e) {
+  void onPlayerPickupItem(EntityPickupItemEvent event) {
     ItemStack itemStack = new ItemStack(Material.POTION, 1);
-    if ((e.getEntity() instanceof Player) && (e.getItem().getItemStack().getType().equals(itemStack.getType()))) {
-//      ((Player) e.getEntity()).playSound(e.getEntity().getLocation(), Sound.ENTITY_SPLASH_POTION_THROW, 1, 1);
-      ((Player) e.getEntity()).playSound(e.getEntity().getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1, 1);
-      PotionMeta meta = (PotionMeta) e.getItem().getItemStack().getItemMeta();
+    if (plugin.getGameRegion().getRegion().contains((int) event.getEntity().getLocation().getX(), (int) event.getEntity().getLocation().getY(), (int) event.getEntity().getLocation().getZ()) &&
+        (event.getEntity() instanceof Player) &&
+        (event.getItem().getItemStack().getType().equals(itemStack.getType()))) {
+      ((Player) event.getEntity()).playSound(event.getEntity().getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1, 1);
+      PotionMeta meta = (PotionMeta) event.getItem().getItemStack().getItemMeta();
       for (PotionEffect effect : meta.getCustomEffects()) {
-        e.getEntity().addPotionEffect(effect);
-        e.getEntity().sendMessage("You got " + effect.toString());
+        event.getEntity().addPotionEffect(effect);
+        event.getEntity().sendMessage("You got " + effect.toString());
       }
-      e.getItem().remove();
-      e.setCancelled(true);
+      plugin.getGameManager().getPotionsDropped().remove(event.getItem().getItemStack());
+      event.getItem().remove();
+      event.setCancelled(true);
     }
   }
 

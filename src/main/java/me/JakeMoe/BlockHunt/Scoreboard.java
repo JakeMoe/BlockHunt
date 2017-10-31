@@ -48,9 +48,8 @@ class Scoreboard {
       score.setScore((int) entry.getValue());
     }
 
-    for (Player player : plugin.getServer().getOnlinePlayers()) {
-      if (player.getScoreboard() != getScoreboard() &&
-          plugin.getGameRegion().getRegion().contains(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())) {
+    for (Player player : plugin.getGameRegion().getPlayers()) {
+      if (player.getScoreboard() != getScoreboard()) {
          player.setScoreboard(getScoreboard());
       }
     }

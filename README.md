@@ -77,3 +77,6 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
   * Fixed elimination message to show actual player eliminated
   * Fixed up HARM and HEAL potions repeating, rather than being instant
   * Moved game timers to beginning of end and stop functions
+* 1.1 - Jake Moe - 1 November 2017
+  * Removes potions still on ground at game end
+  * Scoreboard appears at game start, rather than on first score

@@ -24,6 +24,7 @@ class GameManager {
 
   private Main plugin;
   private ArrayList<Location> blockLocations;
+  private ArrayList<ItemStack> potionsDropped;
   private BukkitRunnable potionTimer;
   private BukkitRunnable pumpkinTimer;
   private boolean stopTimer;
@@ -59,6 +60,7 @@ class GameManager {
   GameManager(Main plugin) {
     this.plugin = plugin;
     this.blockLocations = null;
+    this.potionsDropped = null;
   }
 
   private void dropPotion() {
@@ -111,6 +113,7 @@ class GameManager {
     Location randomLocation = plugin.getGameRegion().getRandomLocation();
     plugin.getGameRegion().getWorld().strikeLightningEffect(randomLocation);
     plugin.getGameRegion().getWorld().dropItem(randomLocation, itemStack);
+    potionsDropped.add(itemStack);
 
   }
 
@@ -139,9 +142,15 @@ class GameManager {
     String playerName = Util.getNameByUUID(winner, plugin.getPluginConfig().isNickyEnabled());
     plugin.getServer().broadcastMessage(playerName + " has won the Hunt!");
 
-    if (!(blockLocations== null)) {
+    if (blockLocations != null) {
       for (Location blockLocation : blockLocations) {
         plugin.getGameRegion().getWorld().getBlockAt(blockLocation).setType(Material.AIR);
+      }
+    }
+
+    if (potionsDropped != null) {
+      for (ItemStack potion : potionsDropped) {
+        potion.setType(Material.AIR);
       }
     }
 
@@ -150,6 +159,10 @@ class GameManager {
 
     plugin.getGameRegion().removePlayers();
 
+  }
+
+  ArrayList<ItemStack> getPotionsDropped() {
+    return potionsDropped;
   }
 
   private void resetBlocks() {
@@ -192,6 +205,7 @@ class GameManager {
   void start() {
     if (plugin.getGameTimer() == null) {
       plugin.getScoreboard().reset();
+      plugin.getScoreboard().refresh();
       resetBlocks();
 
       plugin.startGameTimer(new BukkitRunnable() {
@@ -229,6 +243,12 @@ class GameManager {
       if (!(blockLocations== null)) {
         for (Location blockLocation : blockLocations) {
           plugin.getGameRegion().getWorld().getBlockAt(blockLocation).setType(Material.AIR);
+        }
+      }
+
+      if (potionsDropped != null) {
+        for (ItemStack potion : potionsDropped) {
+          potion.setType(Material.AIR);
         }
       }
 

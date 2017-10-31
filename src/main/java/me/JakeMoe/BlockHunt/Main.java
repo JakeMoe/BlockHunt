@@ -75,7 +75,7 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new DamageListener(this), this);
     getServer().getPluginManager().registerEvents(new DisconnectListener(this), this);
     getServer().getPluginManager().registerEvents(new HitListener(this), this);
-    getServer().getPluginManager().registerEvents(new PickupItemListener(), this);
+    getServer().getPluginManager().registerEvents(new PickupItemListener(this), this);
   }
 
   @Override
