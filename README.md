@@ -80,3 +80,4 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
 * 1.1 - Jake Moe - 1 November 2017
   * Removes potions still on ground at game end
   * Scoreboard appears at game start, rather than on first score
+  * Added display name for potions, and use that to display to players on pickup

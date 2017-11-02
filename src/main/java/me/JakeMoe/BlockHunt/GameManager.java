@@ -68,46 +68,59 @@ class GameManager {
     ItemStack itemStack = new ItemStack(Material.POTION, 1);
     PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
     PotionEffect potionEffect;
+    String potionName;
 
     int duration = 10;
 
     switch ((new Random()).nextInt(10)) {
       case 0:
         potionEffect = new PotionEffect(PotionEffectType.ABSORPTION, duration * 20, 0, true, true);
+        potionName = "Absorption";
         break;
       case 1:
         potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, duration * 20, 0, true, true);
+        potionName = "Blindness";
         break;
       case 2:
         potionEffect = new PotionEffect(PotionEffectType.CONFUSION, duration * 20, 0, true, true);
+        potionName = "Confusion";
         break;
       case 3:
-        potionEffect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 0, true, true);
+        potionEffect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 1, true, true);
+        potionName = "Resistance II";
         break;
       case 4:
-        potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, duration * 20, 0, true, true);
+        potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, duration * 20, 1, true, true);
+        potionName = "Haste II";
         break;
       case 5:
         potionEffect = new PotionEffect(PotionEffectType.HARM, 1, 0, true, true);
+        potionName = "Harming";
         break;
       case 6:
-        potionEffect = new PotionEffect(PotionEffectType.HEAL, 1, 0, true, true);
+        potionEffect = new PotionEffect(PotionEffectType.HEAL, 1, 1, true, true);
+        potionName = "Healing II";
         break;
       case 7:
-        potionEffect = new PotionEffect(PotionEffectType.JUMP, duration * 20, 0, true, true);
+        potionEffect = new PotionEffect(PotionEffectType.JUMP, duration * 20, 2, true, true);
+        potionName = "Jump Boost II";
         break;
       case 8:
         potionEffect = new PotionEffect(PotionEffectType.SLOW, duration * 20, 0, true, true);
+        potionName = "Slow";
         break;
       case 9:
-        potionEffect = new PotionEffect(PotionEffectType.SPEED, duration * 20, 0, true, true);
+        potionEffect = new PotionEffect(PotionEffectType.SPEED, duration * 20, 1, true, true);
+        potionName = "Speed II";
         break;
       default:
         potionEffect = new PotionEffect(PotionEffectType.GLOWING, duration * 20, 0, true, true);
+        potionName = "Glowing";
         break;
     }
 
     potionMeta.addCustomEffect(potionEffect, true);
+    potionMeta.setDisplayName(potionName);
     itemStack.setItemMeta(potionMeta);
 
     Location randomLocation = plugin.getGameRegion().getRandomLocation();

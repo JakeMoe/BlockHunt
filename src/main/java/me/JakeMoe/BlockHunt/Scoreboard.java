@@ -18,7 +18,7 @@ class Scoreboard {
     this.plugin = plugin;
   }
 
-  void clear() {
+    void clear() {
     org.bukkit.scoreboard.Scoreboard emptyBoard = plugin.getServer().getScoreboardManager().getNewScoreboard();
     for (Player player : plugin.getServer().getOnlinePlayers()) {
       if (player.getScoreboard() == this.getScoreboard()) {
