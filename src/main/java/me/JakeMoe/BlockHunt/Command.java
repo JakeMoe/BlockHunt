@@ -57,14 +57,42 @@ public class Command implements CommandExecutor {
         // bh game help
         if ((args.length == 1) || (args[1].equals("help"))) {
           showSyntax(sender, args[0]);
+        // bh game blockAddBase
+        } else if (args[1].equals("blockAddBase")) {
+          if (args.length == 2) {
+            sender.sendMessage("Base seconds is currently " + plugin.getPluginConfig().getBlockAddBaseSeconds());
+          // bh game blockAddBase help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh game blockAddBase <seconds>
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setBlockAddBaseSeconds(Integer.parseInt(args[2]));
+            sender.sendMessage("Base seconds is now " + plugin.getPluginConfig().getBlockAddBaseSeconds());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        // bh game blockAddRand
+        } else if (args[1].equals("blockAddRand")) {
+          if (args.length == 2) {
+            sender.sendMessage("Random seconds is currently " + plugin.getPluginConfig().getBlockAddRandSeconds());
+          // bh game blockAddRand help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh game blockAddRand <seconds>
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setBlockAddRandSeconds(Integer.parseInt(args[2]));
+            sender.sendMessage("Random seconds is now " + plugin.getPluginConfig().getBlockAddRandSeconds());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
         // bh game blocks
         } else if (args[1].equals("blocks")) {
           if (args.length == 2) {
             sender.sendMessage("Number of blocks is currently " + plugin.getPluginConfig().getGameNumBlocks());
-          // bh game blocks help
+            // bh game blocks help
           } else if (args[2].equals("help")) {
             showSyntax(sender, args[0] + args[1]);
-          // bh game blocks <number>
+            // bh game blocks <number>
           } else if (args.length == 3) {
             plugin.getPluginConfig().setGameNumBlocks(Integer.parseInt(args[2]));
             sender.sendMessage("Number of blocks is now " + plugin.getPluginConfig().getGameNumBlocks());
@@ -82,6 +110,34 @@ public class Command implements CommandExecutor {
           } else if (args.length == 3) {
             plugin.getPluginConfig().setGameDuration(Integer.parseInt(args[2]));
             sender.sendMessage("Game duration is now " + plugin.getPluginConfig().getGameDuration());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        // bh game potionAddBase
+        } else if (args[1].equals("potionAddBase")) {
+          if (args.length == 2) {
+            sender.sendMessage("Base seconds is currently " + plugin.getPluginConfig().getPotionAddBaseSeconds());
+          // bh game potionAddBase help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh game potionAddBase <seconds>
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setPotionAddBaseSeconds(Integer.parseInt(args[2]));
+            sender.sendMessage("Base seconds is now " + plugin.getPluginConfig().getPotionAddBaseSeconds());
+          } else {
+            showSyntax(sender, args[0] + args[1]);
+          }
+        // bh game potionAddRand
+        } else if (args[1].equals("potionAddRand")) {
+          if (args.length == 2) {
+            sender.sendMessage("Random seconds is currently " + plugin.getPluginConfig().getPotionAddRandSeconds());
+          // bh game potionAddRand help
+          } else if (args[2].equals("help")) {
+            showSyntax(sender, args[0] + args[1]);
+          // bh game potionAddRand <seconds>
+          } else if (args.length == 3) {
+            plugin.getPluginConfig().setPotionAddRandSeconds(Integer.parseInt(args[2]));
+            sender.sendMessage("Random seconds is now " + plugin.getPluginConfig().getPotionAddRandSeconds());
           } else {
             showSyntax(sender, args[0] + args[1]);
           }

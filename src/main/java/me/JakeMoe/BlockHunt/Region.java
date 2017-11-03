@@ -47,8 +47,12 @@ abstract class Region {
     int rndX, rndY, rndZ;
 
     ArrayList<Material> whitelist = new ArrayList<>();
+    whitelist.add(Material.COBBLESTONE);
     whitelist.add(Material.DIRT);
     whitelist.add(Material.GRASS);
+    whitelist.add(Material.GRASS_PATH);
+    whitelist.add(Material.SAND);
+    whitelist.add(Material.STONE);
 
     Material materialUnder;
 

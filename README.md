@@ -84,3 +84,6 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
 * 1.2 - Jake Moe - 3 November 2017
   * Fixed potions being removed from world when game ends
   * Scores are saved with names rather than UUIDs
+* 1.3 - Jake Moe - 4 November 2017
+  * Added configuration option for block and potion timers
+  * Added more valid blocks to spawn on to

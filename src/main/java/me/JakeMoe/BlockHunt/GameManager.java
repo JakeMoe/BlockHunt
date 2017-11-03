@@ -39,7 +39,7 @@ class GameManager {
       } else {
         dropPotion();
         potionTimer = new PotionTimer();
-        potionTimer.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
+        potionTimer.runTaskLater(plugin, (new Random().nextInt(plugin.getPluginConfig().getPotionAddRandSeconds())) + plugin.getPluginConfig().getPotionAddBaseSeconds());
       }
     }
   }
@@ -53,7 +53,7 @@ class GameManager {
       } else {
         dropRandomBlock();
         pumpkinTimer = new PumpkinTimer();
-        pumpkinTimer.runTaskLater(plugin, (new Random().nextInt(100)) + 100);
+        pumpkinTimer.runTaskLater(plugin, (new Random().nextInt(plugin.getPluginConfig().getBlockAddRandSeconds())) + plugin.getPluginConfig().getBlockAddBaseSeconds());
       }
     }
   }

@@ -19,6 +19,14 @@ class Config {
 
     fileConfig = plugin.getConfig();
 
+    if (!fileConfig.contains("BlockHunt.settings.game.blockAddBaseSeconds")) {
+      fileConfig.set("BlockHunt.settings.game.blockAddBaseSeconds", 10);
+    }
+
+    if (!fileConfig.contains("BlockHunt.settings.game.blockAddRandSeconds")) {
+      fileConfig.set("BlockHunt.settings.game.blockAddRandSeconds", 10);
+    }
+
     if (!fileConfig.contains("BlockHunt.settings.game.duration")) {
       fileConfig.set("BlockHunt.settings.game.duration", "30");
       booChanged = true;
@@ -27,6 +35,14 @@ class Config {
     if (!fileConfig.contains("BlockHunt.settings.game.numBlocks")) {
       fileConfig.set("BlockHunt.settings.game.numBlocks", "10");
       booChanged = true;
+    }
+
+    if (!fileConfig.contains("BlockHunt.settings.game.potionAddBaseSeconds")) {
+      fileConfig.set("BlockHunt.settings.game.potionAddBaseSeconds", 10);
+    }
+
+    if (!fileConfig.contains("BlockHunt.settings.game.potionAddRandSeconds")) {
+      fileConfig.set("BlockHunt.settings.game.potionAddRandSeconds", 10);
     }
 
     if (!fileConfig.contains("BlockHunt.areas.game.Region")) {
@@ -121,6 +137,22 @@ class Config {
 
   void saveConfig() {
     plugin.saveConfig();
+  }
+
+  int getBlockAddBaseSeconds() {
+    return fileConfig.getInt("BlockHunt.settings.game.blockAddBaseSeconds");
+  }
+
+  void setBlockAddBaseSeconds(int seconds) {
+    fileConfig.set("BlockHunt.settings.game.blockAddBaseSeconds", seconds);
+  }
+
+  int getBlockAddRandSeconds() {
+    return fileConfig.getInt("BlockHunt.settings.game.blockAddRandSeconds");
+  }
+
+  void setBlockAddRandSeconds(int seconds) {
+    fileConfig.set("BlockHunt.settings.game.blockAddRandSeconds", seconds);
   }
 
   String getEndMessage() {
@@ -236,6 +268,22 @@ class Config {
   void setMaterial(String material) {
     fileConfig.set("BlockHunt.settings.materialToFind", material);
     plugin.saveConfig();
+  }
+
+  int getPotionAddBaseSeconds() {
+    return fileConfig.getInt("BlockHunt.settings.game.potionAddBaseSeconds");
+  }
+
+  void setPotionAddBaseSeconds(int seconds) {
+    fileConfig.set("BlockHunt.settings.game.potionAddBaseSeconds", seconds);
+  }
+
+  int getPotionAddRandSeconds() {
+    return fileConfig.getInt("BlockHunt.settings.game.potionAddRandSeconds");
+  }
+
+  void setPotionAddRandSeconds(int seconds) {
+    fileConfig.set("BlockHunt.settings.game.potionAddRandSeconds", seconds);
   }
 
   String getScoreboardTitle() {
