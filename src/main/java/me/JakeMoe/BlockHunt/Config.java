@@ -21,10 +21,12 @@ class Config {
 
     if (!fileConfig.contains("BlockHunt.settings.game.blockAddBaseSeconds")) {
       fileConfig.set("BlockHunt.settings.game.blockAddBaseSeconds", 10);
+      booChanged = true;
     }
 
     if (!fileConfig.contains("BlockHunt.settings.game.blockAddRandSeconds")) {
       fileConfig.set("BlockHunt.settings.game.blockAddRandSeconds", 10);
+      booChanged = true;
     }
 
     if (!fileConfig.contains("BlockHunt.settings.game.duration")) {
@@ -39,10 +41,12 @@ class Config {
 
     if (!fileConfig.contains("BlockHunt.settings.game.potionAddBaseSeconds")) {
       fileConfig.set("BlockHunt.settings.game.potionAddBaseSeconds", 10);
+      booChanged = true;
     }
 
     if (!fileConfig.contains("BlockHunt.settings.game.potionAddRandSeconds")) {
       fileConfig.set("BlockHunt.settings.game.potionAddRandSeconds", 10);
+      booChanged = true;
     }
 
     if (!fileConfig.contains("BlockHunt.areas.game.Region")) {
@@ -145,6 +149,7 @@ class Config {
 
   void setBlockAddBaseSeconds(int seconds) {
     fileConfig.set("BlockHunt.settings.game.blockAddBaseSeconds", seconds);
+    plugin.saveConfig();
   }
 
   int getBlockAddRandSeconds() {
@@ -153,6 +158,7 @@ class Config {
 
   void setBlockAddRandSeconds(int seconds) {
     fileConfig.set("BlockHunt.settings.game.blockAddRandSeconds", seconds);
+    plugin.saveConfig();
   }
 
   String getEndMessage() {
@@ -231,6 +237,7 @@ class Config {
 
   void setLobbyMax(int max) {
     fileConfig.set("BlockHunt.areas.lobby.Max", max);
+    plugin.saveConfig();
   }
 
   int getLobbyMin() {
@@ -239,6 +246,7 @@ class Config {
 
   void setLobbyMin(int min) {
     fileConfig.set("BlockHunt.areas.lobby.Min", min);
+    plugin.saveConfig();
   }
 
   String getLobbyRegion() {
@@ -276,6 +284,7 @@ class Config {
 
   void setPotionAddBaseSeconds(int seconds) {
     fileConfig.set("BlockHunt.settings.game.potionAddBaseSeconds", seconds);
+    plugin.saveConfig();
   }
 
   int getPotionAddRandSeconds() {
@@ -284,6 +293,7 @@ class Config {
 
   void setPotionAddRandSeconds(int seconds) {
     fileConfig.set("BlockHunt.settings.game.potionAddRandSeconds", seconds);
+    plugin.saveConfig();
   }
 
   String getScoreboardTitle() {
