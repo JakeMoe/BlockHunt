@@ -3,6 +3,7 @@ package me.JakeMoe.BlockHunt;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -15,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -25,7 +25,7 @@ class GameManager {
 
   private Main plugin;
   private ArrayList<Location> blockLocations;
-  private ArrayList<ItemStack> potionsDropped;
+  private ArrayList<Item> potionsDropped;
   private BukkitRunnable potionTimer;
   private BukkitRunnable pumpkinTimer;
   private boolean stopTimer;
@@ -123,11 +123,10 @@ class GameManager {
     potionMeta.addCustomEffect(potionEffect, true);
     potionMeta.setDisplayName(potionName);
     itemStack.setItemMeta(potionMeta);
-    potionsDropped.add(itemStack);
 
     Location randomLocation = plugin.getGameRegion().getRandomLocation();
     plugin.getGameRegion().getWorld().strikeLightningEffect(randomLocation);
-    plugin.getGameRegion().getWorld().dropItem(randomLocation, itemStack);
+    potionsDropped.add(plugin.getGameRegion().getWorld().dropItem(randomLocation, itemStack));
 
   }
 
@@ -163,10 +162,8 @@ class GameManager {
     }
 
     if (potionsDropped != null) {
-      Iterator<ItemStack> iterator = potionsDropped.iterator();
-      while (iterator.hasNext()) {
-        iterator.next();
-        iterator.remove();
+      for (Item potion : potionsDropped) {
+        potion.remove();
       }
     }
 
@@ -177,7 +174,7 @@ class GameManager {
 
   }
 
-  ArrayList<ItemStack> getPotionsDropped() {
+  ArrayList<Item> getPotionsDropped() {
     return potionsDropped;
   }
 
@@ -207,7 +204,7 @@ class GameManager {
     YamlConfiguration yc = new YamlConfiguration();
     for (Object object : scores.entrySet()) {
       Map.Entry entry = (Map.Entry) object;
-      yc.set(entry.getKey().toString(), entry.getValue());
+      yc.set(Util.getNameByUUID(UUID.fromString(entry.getKey().toString()), plugin.getPluginConfig().isNickyEnabled()), entry.getValue());
     }
 
     try {
@@ -266,8 +263,8 @@ class GameManager {
       }
 
       if (potionsDropped != null) {
-        for (ItemStack potion : potionsDropped) {
-          potion.setType(Material.AIR);
+        for (Item potion : potionsDropped) {
+          potion.remove();
         }
       }
 

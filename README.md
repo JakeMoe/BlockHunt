@@ -81,3 +81,6 @@ To configure, you can edit the config.yml file by hand, or use in game commands.
   * Removes potions still on ground at game end
   * Scoreboard appears at game start, rather than on first score
   * Added display name for potions, and use that to display to players on pickup
+* 1.2 - Jake Moe - 3 November 2017
+  * Fixed potions being removed from world when game ends
+  * Scores are saved with names rather than UUIDs
