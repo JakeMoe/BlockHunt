@@ -52,7 +52,7 @@ class LobbyRegion extends Region {
                 player.sendTitle("" + ChatColor.YELLOW + "The hunt starts in " + ChatColor.RED + count + " seconds!", "", 2, 16, 2);
               }
               count--;
-            } else  if (count % 5 == 0) {
+            } else if (count % 5 == 0) {
               for (Player player : players) {
                 player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "» " + ChatColor.RESET + ChatColor.YELLOW + "The hunt starts in " + ChatColor.GOLD + count + " seconds!");
                 player.sendTitle("" + ChatColor.YELLOW + "The hunt starts in " + ChatColor.GOLD + count + " seconds!", "", 5, 20, 5);
@@ -64,9 +64,9 @@ class LobbyRegion extends Region {
           }
 
         });
-      } else {
-        player.sendMessage("The game lobby is full!");
       }
+    } else {
+      player.sendMessage("The game lobby is full!");
     }
   }
 

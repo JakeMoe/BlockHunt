@@ -16,7 +16,7 @@ public class Command implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String s, String[] args) {
 
-    if ((!(sender instanceof Player)) || (sender.hasPermission("BlockParty.bh"))) {
+    if ((!(sender instanceof Player)) || (sender.hasPermission("BlockHunt.bh"))) {
       // bh
       if (args.length == 0) {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "BlockHunt v" + plugin.getVersion() + ChatColor.WHITE + " by " + ChatColor.AQUA + plugin.getAuthor());
