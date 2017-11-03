@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -83,7 +84,7 @@ class GameManager {
         break;
       case 2:
         potionEffect = new PotionEffect(PotionEffectType.CONFUSION, duration * 20, 0, true, true);
-        potionName = "Confusion";
+        potionName = "Nausea";
         break;
       case 3:
         potionEffect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 1, true, true);
@@ -122,11 +123,11 @@ class GameManager {
     potionMeta.addCustomEffect(potionEffect, true);
     potionMeta.setDisplayName(potionName);
     itemStack.setItemMeta(potionMeta);
+    potionsDropped.add(itemStack);
 
     Location randomLocation = plugin.getGameRegion().getRandomLocation();
     plugin.getGameRegion().getWorld().strikeLightningEffect(randomLocation);
     plugin.getGameRegion().getWorld().dropItem(randomLocation, itemStack);
-    potionsDropped.add(itemStack);
 
   }
 
@@ -162,8 +163,10 @@ class GameManager {
     }
 
     if (potionsDropped != null) {
-      for (ItemStack potion : potionsDropped) {
-        potion.setType(Material.AIR);
+      Iterator<ItemStack> iterator = potionsDropped.iterator();
+      while (iterator.hasNext()) {
+        iterator.next();
+        iterator.remove();
       }
     }
 
@@ -180,7 +183,6 @@ class GameManager {
 
   private void resetBlocks() {
 
-    blockLocations = new ArrayList<>();
     for (int i = 0; i < plugin.getPluginConfig().getGameNumBlocks(); i++) {
       Location location = plugin.getGameRegion().getRandomLocation();
       while (blockLocations.contains(location)) {
@@ -219,6 +221,10 @@ class GameManager {
     if (plugin.getGameTimer() == null) {
       plugin.getScoreboard().reset();
       plugin.getScoreboard().refresh();
+
+      blockLocations = new ArrayList<>();
+      potionsDropped = new ArrayList<>();
+
       resetBlocks();
 
       plugin.startGameTimer(new BukkitRunnable() {
